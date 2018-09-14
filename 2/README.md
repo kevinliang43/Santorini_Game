@@ -22,7 +22,8 @@
 - jackson-databind-2.9.6.jar: included for use of JSON Object Mapper
 
 <h2>How to Run Tests</h2> 
-Within the aux folder, there is a test file with JUnit testing, MainTest. We've tested for the following cases:
+The full path to the test file is 2/aux/test/MainTest.java.
+The test file contains multiple JUnit tests within the MainTest class. We've tested for the following cases:
 
 Strings
 
