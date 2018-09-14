@@ -26,14 +26,14 @@ public class Main {
     // Parse JSON
     parseJson(jsonString, values);
     // Print the values
-    printStack(values);
+    printValues(values);
   }
 
   /**
    * Prints out a given list of JSON values
    * @param values Contains a list of JSON values to be printed
    */
-  private static void printStack(ArrayList<String> values) {
+  private static void printValues(ArrayList<String> values) {
     for (int i = 0; i < values.size(); i++) {
       System.out.println("[" + (values.size() - i - 1) + ", " + values.get(i) + "]");
     }
