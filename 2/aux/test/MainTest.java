@@ -1,12 +1,8 @@
-
-
 import org.junit.Assert;
 import org.junit.Test;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintStream;
 
 /**
@@ -14,6 +10,11 @@ import java.io.PrintStream;
 **/
 
 public class MainTest {
+
+  public static void main(String args[]) {
+    org.junit.runner.JUnitCore.main("MainTest");
+
+  }
 
   @Test
   public void testEmptyStringJson() {
