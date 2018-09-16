@@ -1,8 +1,8 @@
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -14,6 +14,7 @@ public class Main {
   private static int PORT_NUMBER = 8000;
 
   public static void main(String args[]) {
+
 
 
     // Initialize Variables
@@ -41,14 +42,15 @@ public class Main {
       System.exit(1);
     }
 
-
-
-/* TEST ONLY
-    String initialString = "[2,3]";
-    InputStream inputStream = new ByteArrayInputStream(initialString.getBytes());
-    */
-
+    // Set up input Stream
     System.setIn(inputStream);
+
+    // Set up output Stream
+
+    ByteArrayOutputStream jsonParserByteOutStream = new ByteArrayOutputStream();
+    PrintStream jsonParserPrintStream = new PrintStream(jsonParserByteOutStream);
+    System.setOut(jsonParserPrintStream);
+
 
     // Call the JSON Parser
     try {
@@ -58,30 +60,43 @@ public class Main {
       System.exit(1);
     }
 
+    // Retrieve JSON Parser output
+    String outString = new String(jsonParserByteOutStream.toByteArray());
 
 
+    // Send the JSON Parser output to client
+    try {
+      outputStream.write(jsonParserByteOutStream.toByteArray());
+    } catch (IOException e) {
+      e.printStackTrace();
+      System.exit(1);
+    }
 
+    // Close the Server
+    try {
+      server.close();
+    } catch (IOException e) {
 
-
-
+    }
 
   }
 
 
-  private static Socket connectServer(ServerSocket serverSocket) {
 
+  private static Socket connectServer(ServerSocket serverSocket) {
+    Socket server = null;
     while(true) {
       try {
-        Socket server = serverSocket.accept();
-        return server;
+        server = serverSocket.accept();
       } catch (IOException e) {
         System.err.println("IO Exception when trying to connect to Client.\n");
         break;
       }
 
     }
-
+    return server;
   }
+
 
 
 
