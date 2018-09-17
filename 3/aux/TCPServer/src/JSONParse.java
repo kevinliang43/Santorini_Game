@@ -2,6 +2,8 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
+
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -53,14 +55,28 @@ public class JSONParse {
     JsonFactory factory = objectMapper.getFactory();
     JsonParser parser = factory.createParser(reader);
 
+    BufferedReader in = new BufferedReader(reader);
+    String line;
+    String acc = "";
+
+
     // Parse JSON String
-    while (!parser.isClosed()) {
-      JsonNode currentNode = objectMapper.readTree(parser);
+    while ((line = in.readLine()) != null) {
+      JsonNode currentNode = null;
+      line = acc + line;
+
+      try {
+        currentNode = objectMapper.readTree(line);
+      } catch (Exception e) {
+        acc = line;
+      }
 
       if (currentNode != null) {
         String currentNodeString = currentNode.toString();
         values.add(currentNodeString);
-      } }
+        acc = "";
+      }
+    }
   }
 }
 
