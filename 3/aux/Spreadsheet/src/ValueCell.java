@@ -1,3 +1,4 @@
+//represents a cell with a value in it in the form of an IFormula
 public class ValueCell implements ICell {
 
     //represents the row the cell is in
@@ -14,11 +15,12 @@ public class ValueCell implements ICell {
         this.formula = formula;
     }
 
-    public int evaluate() {
+    //evaluates the formula in this cell
+    public int evaluate() throws Exception{
         return this.formula.evaluate();
     }
 
-    @Override
+    //checks if this is an empty cell, returns false
     public boolean emptyCell() {
         return false;
     }

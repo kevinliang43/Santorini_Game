@@ -1,3 +1,4 @@
+//represents an empty cell
 public class EmptyCell implements ICell {
     //represents the row the cell is in
     int x;
@@ -10,7 +11,7 @@ public class EmptyCell implements ICell {
         this.y = y;
     }
 
-    @Override
+    //checks if this is an empty cell, returns true
     public boolean emptyCell() {
         return true;
     }

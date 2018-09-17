@@ -4,7 +4,7 @@ public interface ISpreadsheet {
 
     //locates the information of a cell in the given position
     //returns the evaluation of the formula in the Cell
-    int evaluate(int row, int col);
+    int evaluate(int row, int col) throws Exception;
 
     //applying a function to a row
     //func: function being applied

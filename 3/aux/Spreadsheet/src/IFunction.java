@@ -1,3 +1,4 @@
+//represents an IFormula function
 public interface IFunction extends IFormula{
 
     // used to apply a function onto two cells

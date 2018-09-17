@@ -1,3 +1,4 @@
+//represents and IFormula constant number
 public class Constant implements IFormula {
     int constant;
 
@@ -5,8 +6,13 @@ public class Constant implements IFormula {
         this.constant = constant;
     }
 
-    @Override
-    public int evaluate() {
+    //returns the constant value when evaluated
+    public int evaluate() throws Exception {
         return constant;
+    }
+
+    //checks if the formula is a cell reference, returns false
+    public boolean cellReference() {
+        return false;
     }
 }

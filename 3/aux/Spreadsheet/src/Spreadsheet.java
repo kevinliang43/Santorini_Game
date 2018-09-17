@@ -1,3 +1,4 @@
+import javafx.scene.control.Cell;
 import sun.awt.SunHints;
 
 import java.util.ArrayList;
@@ -10,10 +11,28 @@ public class Spreadsheet implements ISpreadsheet {
     //arbitrary number of columns chosen to initialize the grid
     int numCols = 50;
 
+    //constructor for a spreadsheet that uses the default 50x50 grid
     Spreadsheet() {
         this.sheet = new ArrayList<>();
         //initializing the grid with empty cells without formula values
         //for loop iterating through rows
+        this.initialize();
+    }
+
+    //constructor
+    Spreadsheet(int numRows, int numCols) {
+        this.numRows = numRows;
+        this.numCols = numCols;
+        this.initialize();
+    }
+
+    // initializes the spreadsheet to be filled with empty cells
+    void initialize() {
+        this.sheet = new ArrayList<>(numRows);
+        for (int col = 0; col < numCols; col++) {
+            ArrayList<ICell> initList = new ArrayList<>(numCols);
+            this.sheet.add(initList);
+        }
         for (int r = 0; r < numRows; r++){
             //for loop iterating through columns
             for(int c = 0; c < numCols; c++) {
@@ -23,7 +42,7 @@ public class Spreadsheet implements ISpreadsheet {
     }
 
     // evaluates the cell in the given position
-    public int evaluate(int row, int col) {
+    public int evaluate(int row, int col) throws Exception {
         //if the sheet doesn't have a cell in the given location, throw a null pointer exception
         if (sheet.get(row).get(col).emptyCell()) {
             throw new NullPointerException("This cell is empty, there is no formula.");
@@ -56,11 +75,11 @@ public class Spreadsheet implements ISpreadsheet {
         while (col >= numCols) {
             this.addCol();
         }
-        this.sheet.get(row).add(col, cell);
+        this.sheet.get(row).set(col, cell);
     }
 
-    //adds the given cell into the spreadsheet
-    public void addCell (ICell cell1, ICell cell2, IFunction function, int row, int col) {
+    //adds the given cell into the spreadsheet if given a function object
+    public void addCell (IFunction function, int row, int col) {
         //adds rows and columns to the sheet until there are enough represented to input this cell
         while (row >= numRows) {
             this.addRow();
@@ -68,7 +87,7 @@ public class Spreadsheet implements ISpreadsheet {
         while (col >= numCols) {
             this.addCol();
         }
-        this.sheet.get(row).add(col, new ValueCell(row, col));
+        this.sheet.get(row).set(col, new ValueCell(row, col, function));
     }
 
     //adds a row of empty cells to the bottom of the sheet
@@ -89,5 +108,26 @@ public class Spreadsheet implements ISpreadsheet {
         }
         numCols++;
 
+    }
+
+    //Prints the spreadsheet for testing purposes
+    String printSpreadsheet() throws Exception {
+        String s = "";
+        for (int r = 0; r < numRows; r++){
+            for (int c = 0; c < numCols; c++) {
+                ICell cell = this.sheet.get(r).get(c);
+                if (cell.emptyCell()) {
+                    s += "X \t ";
+                }
+                else {
+                    s += (evaluate(r, c) + " \t ");
+                }
+
+            }
+            s += "\n ";
+
+        }
+        System.out.println(s);
+        return s;
     }
 }
