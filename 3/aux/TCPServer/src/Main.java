@@ -45,11 +45,11 @@ public class Main {
       System.exit(1);
     }
 
-
     // Set up input Stream
     System.setIn(inputStream);
 
     // Set up output Stream
+    PrintStream stdout = System.out;
 
     ByteArrayOutputStream jsonParserByteOutStream = new ByteArrayOutputStream();
     PrintStream jsonParserPrintStream = new PrintStream(jsonParserByteOutStream);

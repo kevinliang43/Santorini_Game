@@ -2,13 +2,9 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 
 public class Main {
@@ -19,19 +15,12 @@ public class Main {
    * @throws IOException
    */
   public static void main(String[] args) throws IOException {
-    //Scanner scanner = new Scanner(System.in);
     InputStreamReader reader = new InputStreamReader(System.in);
-
-
-    StringBuilder jsonString = new StringBuilder();
     ArrayList<String> values = new ArrayList<>();
 
-    // Build JSON String
-    //while (scanner.hasNext()) {
-    //  jsonString.append(scanner.nextLine());
-    //}
-    // Parse JSON
+    // Parse Json
     parseJson(reader, values);
+
     // Print the values
     printValues(values);
   }
@@ -51,7 +40,7 @@ public class Main {
   /**
    * Parses a given string of JSON values, parses the string into individual values and updates a
    * given list with the individual JSON values
-   * @param reader String to be Parsed
+   * @param reader Provides the JSON to be parsed
    * @param values list where individual JSON Values will be added to
    * @throws IOException
    */

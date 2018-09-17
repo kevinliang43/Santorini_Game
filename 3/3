@@ -1,4 +1,4 @@
 #!/bin/sh
 
 cd "$(dirname "$0")"
-java -jar ./aux/out/artifacts/aux_jar/aux.jar
+java -jar ./aux/TCPServer/out/artifacts/TCPServer_jar/TCPServer.jar
