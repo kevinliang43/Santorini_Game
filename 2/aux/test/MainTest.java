@@ -86,29 +86,6 @@ public class MainTest {
   }
 
   @Test
-  public void testMultiLineStringJson() {
-    // Set up stdin and expected stdout
-    String inputString = "\"Fi\nsh\"";
-    String expectedOut = "[0, \"Fish\"]\n";
-
-    // Set up Streams
-    System.setIn(new ByteArrayInputStream(inputString.getBytes()));
-    ByteArrayOutputStream actualOut = new ByteArrayOutputStream();
-    PrintStream actualOutPrint = new PrintStream(actualOut);
-    System.setOut(actualOutPrint);
-
-    // Call Function
-    try {
-      Main.main(new String[0]);
-    } catch (IOException e){
-      // Do nothing
-    }
-
-    // Check validity
-    Assert.assertEquals(expectedOut, actualOut.toString());
-  }
-
-  @Test
   public void testSingleNumberJson() {
     // Set up stdin and expected stdout
     String inputString = "3";
@@ -158,7 +135,7 @@ public class MainTest {
   public void testMultiLineNumberJson() {
     // Set up stdin and expected stdout
     String inputString = "3\n4";
-    String expectedOut = "[0, 34]\n";
+    String expectedOut = "[1, 3]\n[0, 4]\n";
 
     // Set up Streams
     System.setIn(new ByteArrayInputStream(inputString.getBytes()));

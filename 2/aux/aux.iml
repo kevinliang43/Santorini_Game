@@ -8,8 +8,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="java-json" level="project" />
-    <orderEntry type="library" name="jackson" level="project" />
+    <orderEntry type="library" name="aux" level="project" />
+    <orderEntry type="library" name="aux1" level="project" />
+    <orderEntry type="library" name="src" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="JUnit4">
         <CLASSES>
