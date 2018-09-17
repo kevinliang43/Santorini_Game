@@ -25,6 +25,7 @@ public class Main {
     // Builds new Server Socket with given port number
     try {
       serverSocket = new ServerSocket(PORT_NUMBER);
+      System.out.println("Listening for client on port " + serverSocket.getLocalPort());
       serverSocket.setSoTimeout(10000);
     } catch (IOException e) {
       e.printStackTrace();
@@ -32,6 +33,8 @@ public class Main {
     }
 
     Socket server = connectServer(serverSocket);
+    System.out.println("Connection to Client at " + server.getRemoteSocketAddress() + " was successful.");
+
 
     // Get input and output streams
     try {
@@ -41,6 +44,7 @@ public class Main {
       e.printStackTrace();
       System.exit(1);
     }
+
 
     // Set up input Stream
     System.setIn(inputStream);
@@ -60,10 +64,6 @@ public class Main {
       System.exit(1);
     }
 
-    // Retrieve JSON Parser output
-    String outString = new String(jsonParserByteOutStream.toByteArray());
-
-
     // Send the JSON Parser output to client
     try {
       outputStream.write(jsonParserByteOutStream.toByteArray());
@@ -79,20 +79,18 @@ public class Main {
 
     }
 
+
   }
-
-
 
   private static Socket connectServer(ServerSocket serverSocket) {
     Socket server = null;
-    while(true) {
+    while(server == null) {
       try {
         server = serverSocket.accept();
       } catch (IOException e) {
         System.err.println("IO Exception when trying to connect to Client.\n");
         break;
       }
-
     }
     return server;
   }
