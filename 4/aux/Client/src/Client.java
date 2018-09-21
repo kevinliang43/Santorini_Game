@@ -1,7 +1,6 @@
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -108,7 +107,11 @@ public class Client implements IClient {
 
   }
 
-
+  /**
+   * Takes JSON Input from Command Line. Generates a List of well formed JSON Requests and returns it
+   * @return List of well-formed JSON Request Strings
+   * @throws IOException Error in taking in STDIN
+   */
   @Override
   public ArrayList<String> takeInput() throws IOException{
 
