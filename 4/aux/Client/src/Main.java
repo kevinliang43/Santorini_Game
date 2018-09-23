@@ -7,7 +7,7 @@ import java.util.Scanner;
  */
 public class Main {
 
-  static final int PORT_NUMBER = 8000;
+  static final int PORT_NUMBER = 8003;
 
   public static void main(String[] args) {
 
@@ -26,7 +26,6 @@ public class Main {
         System.out.println("Successful Connection to: " + args[0]);
         System.out.println("Connection at port: " + PORT_NUMBER);
       } catch (IOException e) {
-
       }
     }
 
