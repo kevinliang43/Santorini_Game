@@ -1,6 +1,7 @@
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -16,7 +17,7 @@ public class Interpreter {
    * @param board The Board that the list of Request is acting on.
    * @param requests The list of requests to be executed.
    */
-  public void executeInitialRequests(Board board, ArrayList<ArrayNode> requests) {
+  public static void executeInitialRequests(Board board, ArrayList<ArrayNode> requests) {
     if (requests.size() == 0) {
       throw new IllegalArgumentException("Cannot execute an empty list of requests on the given board.");
     }
@@ -33,25 +34,134 @@ public class Interpreter {
    * @param board Board to be updated with the given requests.
    * @param requests List of requests to be executed on the given Board.
    */
-  public void executeRequests(Board board, ArrayList<ArrayNode> requests) {
+  public static void executeRequests(Board board, ArrayList<ArrayNode> requests) {
     for (ArrayNode request : requests) {
+      System.out.println(request.toString());
       execute(board, request);
+      board.printBoard();
+
     }
+    board.printBoard();
 
   }
 
-  public void execute(Board board, ArrayNode request) {
+  public static void execute(Board board, ArrayNode request) {
 
     if (isBoardRequest(request)) {
       executeBoardRequest(board, request);
     }
 
     else {
+      //assuming all requests are valid, we know the first index in the request is the string
+      //representing which request is being called
+      String type = request.get(0).toString();
+      switch(type) {
+        case "\"move\"":
+          executeMoveRequest(board, request);
+          break;
+        case "\"build\"":
+          executeBuildRequest(board, request);
+          break;
+        case "\"neighbors\"":
+          executeNeighborsRequest(board, request);
+          break;
+        case "\"height\"":
+          executeHeightRequest(board, request);
+          break;
+        case "\"occupied?\"":
+          executeOccupiedRequest(board, request);
+          break;
+      }
 
     }
 
   }
 
+  /**
+   * Executes the given move request on the given board.
+   * @param board the Board to be modified.
+   * @param moveRequest the move request to be executed.
+   */
+  private static void executeMoveRequest(Board board, ArrayNode moveRequest) {
+    String workerName = moveRequest.get(1).asText();
+    ArrayNode direction = (ArrayNode)moveRequest.get(2);
+    int rDir = parseDirection(direction.get(0).asText());
+    int cDir = parseDirection(direction.get(1).asText());
+    board.move(workerName, rDir, cDir);
+  }
+
+  /**
+   * Executes the given build request on the given board
+   * @param board the Board to be modified.
+   * @param buildRequest the build request to be executed
+   */
+  private static void executeBuildRequest(Board board, ArrayNode buildRequest) {
+    String workerName = buildRequest.get(1).asText();
+    ArrayNode direction = (ArrayNode)buildRequest.get(2);
+    int rDir = parseDirection(direction.get(0).asText());
+    int cDir = parseDirection(direction.get(1).asText());
+    board.build(workerName, rDir, cDir);
+  }
+
+  /**
+   * Executes the given neighbor query on the given board, prints the outcome of the query to the console
+   * @param board the Board to check.
+   * @param neighborsRequest the neighbors query to execute.
+   */
+  private static void executeNeighborsRequest(Board board, ArrayNode neighborsRequest) {
+    String workerName = neighborsRequest.get(1).asText();
+    ArrayNode direction = (ArrayNode)neighborsRequest.get(2);
+    int rDir = parseDirection(direction.get(0).asText());
+    int cDir = parseDirection(direction.get(1).asText());
+    System.out.println(board.neighborQuery(workerName, rDir, cDir));
+  }
+
+  /**
+   * Executes the given height query request on the given board, prints the outcome of the query to the console.
+   * @param board the Board the check.
+   * @param heightRequest the height query to execute.
+   */
+  private static void executeHeightRequest(Board board, ArrayNode heightRequest) {
+    String workerName = heightRequest.get(1).asText();
+    ArrayNode direction = (ArrayNode)heightRequest.get(2);
+    int rDir = parseDirection(direction.get(0).asText());
+    int cDir = parseDirection(direction.get(1).asText());
+    System.out.println(board.heightQuery(workerName, rDir, cDir));
+  }
+
+  /**
+   * Executes the given occupied query request on the given board, prints the outcome of the query to the console.
+   * @param board the Board to check.
+   * @param occupiedRequst the occupied query to execute.
+   */
+  private static void executeOccupiedRequest(Board board, ArrayNode occupiedRequst) {
+    String workerName = occupiedRequst.get(1).asText();
+    ArrayNode direction = (ArrayNode)occupiedRequst.get(2);
+    int rDir = parseDirection(direction.get(0).asText());
+    int cDir = parseDirection(direction.get(1).asText());
+    System.out.println(board.occupyQuery(workerName, rDir, cDir));
+
+  }
+
+  /**
+   * Determines how to handle the given string direction
+   * @param direction is one of EAST, SOUTH, PUT, NORTH, or WEST representing the direction we're moving in
+   * @return 1, 0, or -1 representing the direction to move in
+   */
+  private static int parseDirection(String direction) {
+    if(direction.equals("EAST") || direction.equals("SOUTH")) {
+      return 1;
+    }
+    else if(direction.equals("PUT")) {
+      return 0;
+    }
+    else if(direction.equals("WEST") || direction.equals("NORTH")) {
+      return -1;
+    }
+    else {
+      throw new IllegalArgumentException(direction + " is not a valid direction");
+    }
+  }
 
   /**
    * Executes a Board Request with a given Board Specifications. Modifies a given Board to match
@@ -59,7 +169,7 @@ public class Interpreter {
    * @param board The Board to be modified.
    * @param boardRequest the Board Specification
    */
-  private void executeBoardRequest(Board board, ArrayNode boardRequest) {
+  private static void executeBoardRequest(Board board, ArrayNode boardRequest) {
 
     // Iterate through the given Cell Specifications in the board Spec.
     for (int row = 0; row < boardRequest.size(); row++) {
@@ -88,8 +198,10 @@ public class Interpreter {
           // Set the height First
           currentCell.setHeight(Integer.parseInt(height));
           String name = buildingWorker.substring(indx);
-          Worker worker = new Worker(name, currentCell);
-          currentCell.addWorker(worker);
+          //creating a new worker with the given ID
+          board.addWorker(row, col, name);
+          /*Worker worker = new Worker(name, currentCell);
+          currentCell.addWorker(worker);*/
         }
       }
     }
@@ -103,7 +215,7 @@ public class Interpreter {
    * @param request the Request to be Checked
    * @return A boolean representing whether or not the given request is a Board Specification.
    */
-  private boolean isBoardRequest(ArrayNode request) {
+  private static boolean isBoardRequest(ArrayNode request) {
     return request.get(0).isArray();
   }
 

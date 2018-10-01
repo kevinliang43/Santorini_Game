@@ -79,6 +79,8 @@ public class Cell {
       throw new IllegalStateException("Cannot build a floor on a Cell with a Worker");
     }
 
+    this.height++;
+
 
   }
 
@@ -172,6 +174,17 @@ public class Cell {
 
 
 
+
+  }
+
+  //for testing purposes
+  public String getWorkerName() {
+    if (this.containsWorker()) {
+      return this.worker.getName();
+    }
+    else {
+      return "";
+    }
   }
 
 

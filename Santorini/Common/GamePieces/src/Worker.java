@@ -28,7 +28,7 @@ public class Worker {
    */
   public void move(Cell targetCell) throws IllegalStateException {
 
-    if (cell.containsWorker()) {
+    if (targetCell.containsWorker()) {
       throw new IllegalStateException("Cannot move a Worker to a Cell that contains a Worker");
     }
     if (this.moved) {
@@ -36,7 +36,7 @@ public class Worker {
     }
 
     this.cell.removeWorker();
-    cell.addWorker(this);
+    targetCell.addWorker(this);
     this.cell = targetCell;
     this.moved = true;
 
@@ -54,7 +54,6 @@ public class Worker {
     if (!this.moved) {
       throw new IllegalStateException("Cannot build before this Worker has moved.");
     }
-
     targetCell.addFloor();
 
   }
@@ -94,7 +93,9 @@ public class Worker {
   }
 
 
-
+  public String getName() {
+    return this.name;
+  }
 
 
 }
