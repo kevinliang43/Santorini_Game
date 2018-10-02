@@ -1,6 +1,7 @@
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -9,15 +10,13 @@ import java.util.ArrayList;
  */
 public class Interpreter {
 
-
-
   /**
    * Executes a List of Requests during the beginning of a Game. This Specification means that the
    * First request of the given list of requests must be a Board Request.
    * @param board The Board that the list of Request is acting on.
    * @param requests The list of requests to be executed.
    */
-  public static void executeInitialRequests(Board board, ArrayList<ArrayNode> requests) {
+  public static void executeInitialRequests(Board board, ArrayList<ArrayNode> requests, Appendable log) {
     if (requests.size() == 0) {
       throw new IllegalArgumentException("Cannot execute an empty list of requests on the given board.");
     }
@@ -25,7 +24,7 @@ public class Interpreter {
       throw new IllegalArgumentException("Initialization Requests must start with a Board Specification.");
     }
 
-    executeRequests(board, requests);
+    executeRequests(board, requests, log);
 
   }
 
@@ -34,18 +33,13 @@ public class Interpreter {
    * @param board Board to be updated with the given requests.
    * @param requests List of requests to be executed on the given Board.
    */
-  public static void executeRequests(Board board, ArrayList<ArrayNode> requests) {
+  public static void executeRequests(Board board, ArrayList<ArrayNode> requests, Appendable log) {
     for (ArrayNode request : requests) {
-      System.out.println(request.toString());
-      execute(board, request);
-      board.printBoard();
-
+      execute(board, request, log);
     }
-    board.printBoard();
-
   }
 
-  public static void execute(Board board, ArrayNode request) {
+  public static void execute(Board board, ArrayNode request, Appendable log) {
 
     if (isBoardRequest(request)) {
       executeBoardRequest(board, request);
@@ -57,19 +51,19 @@ public class Interpreter {
       String type = request.get(0).toString();
       switch(type) {
         case "\"move\"":
-          executeMoveRequest(board, request);
+          executeMoveRequest(board, request, log);
           break;
         case "\"build\"":
-          executeBuildRequest(board, request);
+          executeBuildRequest(board, request, log);
           break;
         case "\"neighbors\"":
-          executeNeighborsRequest(board, request);
+          executeNeighborsRequest(board, request, log);
           break;
         case "\"height\"":
-          executeHeightRequest(board, request);
+          executeHeightRequest(board, request, log);
           break;
         case "\"occupied?\"":
-          executeOccupiedRequest(board, request);
+          executeOccupiedRequest(board, request, log);
           break;
       }
 
@@ -82,12 +76,17 @@ public class Interpreter {
    * @param board the Board to be modified.
    * @param moveRequest the move request to be executed.
    */
-  private static void executeMoveRequest(Board board, ArrayNode moveRequest) {
+  private static void executeMoveRequest(Board board, ArrayNode moveRequest, Appendable log) {
     String workerName = moveRequest.get(1).asText();
     ArrayNode direction = (ArrayNode)moveRequest.get(2);
     int rDir = parseDirection(direction.get(0).asText());
     int cDir = parseDirection(direction.get(1).asText());
     board.move(workerName, rDir, cDir);
+    try {
+      log.append("[]\n");
+    } catch (IOException e) {
+
+    }
   }
 
   /**
@@ -95,12 +94,17 @@ public class Interpreter {
    * @param board the Board to be modified.
    * @param buildRequest the build request to be executed
    */
-  private static void executeBuildRequest(Board board, ArrayNode buildRequest) {
+  private static void executeBuildRequest(Board board, ArrayNode buildRequest, Appendable log) {
     String workerName = buildRequest.get(1).asText();
     ArrayNode direction = (ArrayNode)buildRequest.get(2);
     int rDir = parseDirection(direction.get(0).asText());
     int cDir = parseDirection(direction.get(1).asText());
     board.build(workerName, rDir, cDir);
+    try {
+      log.append("[]\n");
+    } catch (IOException e) {
+
+    }
   }
 
   /**
@@ -108,12 +112,25 @@ public class Interpreter {
    * @param board the Board to check.
    * @param neighborsRequest the neighbors query to execute.
    */
-  private static void executeNeighborsRequest(Board board, ArrayNode neighborsRequest) {
+  private static void executeNeighborsRequest(Board board, ArrayNode neighborsRequest, Appendable log) {
     String workerName = neighborsRequest.get(1).asText();
     ArrayNode direction = (ArrayNode)neighborsRequest.get(2);
     int rDir = parseDirection(direction.get(0).asText());
     int cDir = parseDirection(direction.get(1).asText());
-    System.out.println(board.neighborQuery(workerName, rDir, cDir));
+
+    boolean response = board.neighborQuery(workerName, rDir, cDir);
+
+    // Append log message
+    try {
+      if (response) {
+        log.append("\"yes\"\n");
+      }
+      else {
+        log.append("\"no\"\n");
+      }
+    } catch (IOException e){
+      e.printStackTrace();
+    }
   }
 
   /**
@@ -121,25 +138,43 @@ public class Interpreter {
    * @param board the Board the check.
    * @param heightRequest the height query to execute.
    */
-  private static void executeHeightRequest(Board board, ArrayNode heightRequest) {
+  private static void executeHeightRequest(Board board, ArrayNode heightRequest, Appendable log) {
     String workerName = heightRequest.get(1).asText();
     ArrayNode direction = (ArrayNode)heightRequest.get(2);
     int rDir = parseDirection(direction.get(0).asText());
     int cDir = parseDirection(direction.get(1).asText());
-    System.out.println(board.heightQuery(workerName, rDir, cDir));
+    int response = board.heightQuery(workerName, rDir, cDir);
+
+    // Append log message
+    try {
+      log.append(response + "\n");
+    } catch (IOException e) {
+
+    }
   }
 
   /**
    * Executes the given occupied query request on the given board, prints the outcome of the query to the console.
    * @param board the Board to check.
-   * @param occupiedRequst the occupied query to execute.
+   * @param occupiedRequest the occupied query to execute.
    */
-  private static void executeOccupiedRequest(Board board, ArrayNode occupiedRequst) {
-    String workerName = occupiedRequst.get(1).asText();
-    ArrayNode direction = (ArrayNode)occupiedRequst.get(2);
+  private static void executeOccupiedRequest(Board board, ArrayNode occupiedRequest, Appendable log) {
+    String workerName = occupiedRequest.get(1).asText();
+    ArrayNode direction = (ArrayNode)occupiedRequest.get(2);
     int rDir = parseDirection(direction.get(0).asText());
     int cDir = parseDirection(direction.get(1).asText());
-    System.out.println(board.occupyQuery(workerName, rDir, cDir));
+    boolean response = board.occupyQuery(workerName, rDir, cDir);
+    // Append log message
+    try {
+      if (response) {
+        log.append("\"yes\"\n");
+      }
+      else {
+        log.append("\"no\"\n");
+      }
+    } catch (IOException e){
+
+    }
 
   }
 
