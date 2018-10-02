@@ -1,0 +1,5 @@
+#!/bin/bash
+cd "$(dirname "$0")"
+cd ..
+FP="$PWD/6/board-tests"
+java -jar ./Santorini/Common/GamePieces/out/artifacts/GamePieces_jar/GamePieces.jar $FP $1
