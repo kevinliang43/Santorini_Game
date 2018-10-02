@@ -29,3 +29,7 @@
  
  ./xboard 1-in.json | diff - board-tests/1-out.json
  
+ To run all 3 tests, within the 6 directory you can also use the TESTME file. <br />
+ To do this run this command:   ./TESTME <br /> 
+The TESTME file will not produce any output if all tests pass.
+If there are discrepencies between the output of the xboard executable and the n-out.json, then an output will be created by the 'diff' command that will be displayed on the console.
