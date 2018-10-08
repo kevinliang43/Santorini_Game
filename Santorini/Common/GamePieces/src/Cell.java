@@ -39,10 +39,9 @@ public class Cell {
    * @param row
    * @param column
    * @param height
-   * @param worker
    * @throws IllegalArgumentException
    */
-  Cell(int row, int column, int height, Worker worker) throws IllegalArgumentException {
+  Cell(int row, int column, int height) throws IllegalArgumentException {
 
     if (row < 0) {
       throw new IllegalArgumentException("Not a Valid Row Index for a Cell");
@@ -56,7 +55,7 @@ public class Cell {
 
     this.row = row;
     this.column = column;
-    this.height = 0;
+    this.height = height;
     this.worker = null;
   }
 
@@ -93,7 +92,7 @@ public class Cell {
   }
 
   public void setHeight(int height) {
-    if (height < 0 || height >= MAX_HEIGHT) {
+    if (height < 0 || height > MAX_HEIGHT) {
       throw new IllegalArgumentException("Cannot set height that is out of bounds.");
     }
     this.height = height;
@@ -173,8 +172,6 @@ public class Cell {
     }
 
 
-
-
   }
 
   //for testing purposes
@@ -185,6 +182,21 @@ public class Cell {
     else {
       return "";
     }
+  }
+
+
+  public Cell getCopy() {
+    Cell newCell = new Cell(this.row, this.column, this.height);
+    return newCell;
+  }
+
+  /**
+   * Returns the Worker on this cell.
+   * If no Worker is on this cell, returns null;
+   * @return the Worker on this Cell, or Null if no Worker on this Cell.
+   */
+  public Worker getWorker() {
+    return this.worker;
   }
 
 
