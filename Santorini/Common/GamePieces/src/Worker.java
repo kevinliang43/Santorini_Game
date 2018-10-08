@@ -1,9 +1,9 @@
 
 public class Worker {
 
-  String name;
-  Cell cell;
-  boolean moved; // Represents whether this Worker has been moved during this turn
+  private String name;
+  private Cell cell;
+  private boolean moved; // Represents whether this Worker has been moved during this turn
 
 
   /**
@@ -83,6 +83,21 @@ public class Worker {
     return this.cell.getColumn();
   }
 
+  /**
+   * Returns the Cell that this Worker is on.
+   * @return
+   */
+  public Cell getCell() {
+    return this.cell;
+  }
+
+  /**
+   * Has this Worker moved?
+   * @return a Boolean representing whether or not this worker has moved.
+   */
+  public boolean hasMoved() {
+    return this.moved;
+  }
 
   /**
    * Refreshes this Worker's moved status to unmoved.
@@ -96,6 +111,8 @@ public class Worker {
   public String getName() {
     return this.name;
   }
+
+
 
 
 }

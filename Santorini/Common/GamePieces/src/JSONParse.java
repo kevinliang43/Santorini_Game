@@ -59,4 +59,24 @@ public class JSONParse {
     }
   }
 
+  /**
+   * Determines how to handle the given string direction
+   * @param direction is one of EAST, SOUTH, PUT, NORTH, or WEST representing the direction we're moving in
+   * @return 1, 0, or -1 representing the direction to move in
+   */
+  public static int parseDirection(String direction) {
+    if(direction.equals("EAST") || direction.equals("SOUTH")) {
+      return 1;
+    }
+    else if(direction.equals("PUT")) {
+      return 0;
+    }
+    else if(direction.equals("WEST") || direction.equals("NORTH")) {
+      return -1;
+    }
+    else {
+      throw new IllegalArgumentException(direction + " is not a valid direction");
+    }
+  }
+
 }

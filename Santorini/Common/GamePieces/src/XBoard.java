@@ -7,7 +7,7 @@ import java.io.InputStream;
 /**
  * Created by KevinLiang on 9/30/18.
  */
-public class Main {
+public class XBoard {
 
   public static void main(String[] args) {
 
