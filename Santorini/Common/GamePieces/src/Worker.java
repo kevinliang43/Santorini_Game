@@ -1,4 +1,6 @@
-
+/**
+ * Represents a Worker Game Piece in a Santorini Board
+ */
 public class Worker {
 
   private String name;
@@ -85,7 +87,7 @@ public class Worker {
 
   /**
    * Returns the Cell that this Worker is on.
-   * @return
+   * @return Cell the worker is on
    */
   public Cell getCell() {
     return this.cell;
@@ -107,7 +109,10 @@ public class Worker {
     this.moved = false;
   }
 
-
+  /**
+   * Gets the name of this Worker
+   * @return String of the Worker name
+   */
   public String getName() {
     return this.name;
   }

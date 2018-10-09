@@ -47,8 +47,13 @@ public class RuleChecker {
   }
 
   /**
+   * Iterates throguh the request list and checks each and executes them on the given board
+   * @param board Board that these requests should be checked on
    * @param requestingPlayer Player that is making the request
-   * @param playerTurn       Player who's turn it is
+   * @param playerTurn Player who's turn it is
+   * @param requests ArrayList of ArrayNodes of requests to be executed
+   * @param log Appendable to keep track of responses from checking each request
+   * @return Boolean representing if these requests follow the rules of the game
    */
   public boolean checkRequests(Board board, Player requestingPlayer, Player playerTurn,
                                ArrayList<ArrayNode> requests, Appendable log) {
@@ -87,6 +92,7 @@ public class RuleChecker {
    *
    * @param board   Game Board
    * @param request ArrayNode representation of a request
+   * @param lastWorker String representing the alst worker moved
    * @return Boolean representing whether or not a given request is valid.
    */
   public boolean checkRequest(Board board, ArrayNode request, String lastWorker) {
@@ -153,7 +159,6 @@ public class RuleChecker {
 
   /**
    * Appends resultant message from calling checking methods to a given log.
-   *
    * @param result Result of the check methods.
    * @param log    Log to append to.
    */
@@ -175,9 +180,7 @@ public class RuleChecker {
    * 3) the target Cell has a height less than the maximum height specified by this rule checker
    * 4) the target Cell is at most 1 height higher than the current Cell
    * 5) the given worker has not yet moved yet
-   * 6) the target Cell does not contain a worker
-   * 7) TODO the player has not moved yet
-   *
+   * 6) the target Cell does not contain a worker*
    * @param targetCell Cell that the Worker is being moved to.
    * @param worker     the Worker representing the worker being moved.
    * @param ewDir      Integer representing number of Horizontal steps in terms of Cells.
@@ -190,7 +193,6 @@ public class RuleChecker {
             checkTargetCellConditions(targetCell) &&
             worker.getCell().getHeight() >= targetCell.getHeight() - 1 && // height of building is atmost 1 more than current
             !worker.hasMoved(); // this worker has not yet moved.
-    //TODO : HAS THIS PLAYER MOVED?
   }
 
 
@@ -201,7 +203,6 @@ public class RuleChecker {
    * 2) the target Cell does not contain a worker
    * 3) the target Cell has a height less than the maximum height specified by this rule checker
    * 4) the worker performing the build has moved in this turn
-   * 5) TODO the player has not built yet
    *
    * @param targetCell Cell that is being built on by the Worker.
    * @param worker     the Worker representing the worker being moved.
@@ -213,8 +214,6 @@ public class RuleChecker {
     return checkBuildRange(ewDir, nsDir) && // Building less than or equal to the allowed amount and not stationary
             checkTargetCellConditions(targetCell) && // Check conditions of target Cell
             worker.hasMoved(); // this worker has moved.
-    //TODO : HAS THIS PLAYER MOVED?
-
   }
 
   /**

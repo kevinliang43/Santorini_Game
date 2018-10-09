@@ -12,6 +12,11 @@ public class Board {
   private Cell[][] gameBoard;
   private HashMap<String, Worker> workers;
 
+  /**
+   * Constructor for a new Board
+   * @param numRows Integer representing how many rows this Board has
+   * @param numColumns Integer representing how many columns this Board has
+   */
   Board(int numRows, int numColumns) {
     if (numRows <= 0 || numRows > MAX_ROWS) {
       throw new IllegalArgumentException("Cannot Create a Board with less than 1 row " +
@@ -28,6 +33,10 @@ public class Board {
     this.workers = new HashMap<>();
   }
 
+  /**
+   * Constructor to return a new Copy of the given Board
+   * @param gameBoard Board to be copied
+   */
   Board(Board gameBoard) {
     this.numRows = gameBoard.getNumRows();
     this.numColumns = gameBoard.getNumColumns();
@@ -181,10 +190,10 @@ public class Board {
   }
 
   /**
-   *
-   * @param row
-   * @param column
-   * @return
+   * Gets the Cell in the given location
+   * @param row Integer representing the row of the Cell we want
+   * @param column Integer representing the column of the Cell we want
+   * @return Cell at the location
    */
   public Cell getCell(int row, int column) {
     if (row < 0 || row >= MAX_ROWS || column < 0 || column >= MAX_COLUMNS) {
@@ -194,12 +203,12 @@ public class Board {
   }
 
   /**
-   *
-   * @param worker
-   * @param ewDir
-   * @param nsDir
-   * @return
-   * @throws IllegalStateException
+   * Gets the Cell from the given Worker in the given direction
+   * @param worker Worker we're getting the Cell from
+   * @param ewDir Integer representing horizontal movement on the Board
+   * @param nsDir Integer representing vertical movement on the Board
+   * @return Cell that the Worker is retrieving
+   * @throws IllegalStateException Thrown when trying to retrieve a non-adjacent or out-of-bounds Cell
    */
   public Cell getNextCell(Worker worker, int ewDir, int nsDir) throws IllegalStateException {
     try {
@@ -262,11 +271,18 @@ public class Board {
     }
   }
 
-
+  /**
+   * getter method for the number of rows
+   * @return Integer number of rows
+   */
   public int getNumRows() {
     return numRows;
   }
 
+  /**
+   * getter method for the number of columns
+   * @return Integer number of columns
+   */
   public int getNumColumns() {
     return numColumns;
   }

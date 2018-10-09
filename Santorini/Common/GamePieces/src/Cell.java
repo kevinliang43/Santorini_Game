@@ -16,8 +16,9 @@ public class Cell {
   /**
    * Constructor for Default Cell.
    * Default Cell will have a height of 0, and no worker on to it.
-   * @param row Integer representation of the row index of this Cell
-   * @param column Integer representation of the column index of this Cell
+   * @param row Integer representing the row index of this Cell
+   * @param column Integer representing the column index of this Cell
+   * @throws IllegalArgumentException Thrown when trying to pass in invalid row and column arguments
    */
   Cell(int row, int column) throws IllegalArgumentException{
 
@@ -35,11 +36,11 @@ public class Cell {
   }
 
   /**
-   *
-   * @param row
-   * @param column
-   * @param height
-   * @throws IllegalArgumentException
+   * Constructor for testing purposes that sets the height of this Cell
+   * @param row Integer representing the row index of this Cell
+   * @param column Integer representing of the column index of Cell
+   * @param height Integer representing the height of this Cell
+   * @throws IllegalArgumentException Thrown when trying to pass in invalid row, column, or height arguments
    */
   Cell(int row, int column, int height) throws IllegalArgumentException {
 
@@ -91,6 +92,10 @@ public class Cell {
     return this.height;
   }
 
+  /**
+   * Sets the height of this Cell to the given height
+   * @param height Integer representing the height that we want this Cell to be
+   */
   public void setHeight(int height) {
     if (height < 0 || height > MAX_HEIGHT) {
       throw new IllegalArgumentException("Cannot set height that is out of bounds.");
@@ -184,7 +189,10 @@ public class Cell {
     }
   }
 
-
+  /**
+   * Creates a copy of this Cell
+   * @return new Cell representing a Copy of this cell
+   */
   public Cell getCopy() {
     Cell newCell = new Cell(this.row, this.column, this.height);
     return newCell;
