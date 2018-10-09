@@ -1,0 +1,56 @@
+Kevin Liang
+Marina Karr
+
+TESTME Description
+
+1) HOW TO RUN A SINGLE TEST
+
+Within the 7/ Directory, run the following command, but replace the n character with a number:
+./xrules < rules-tests/n-in.json | diff - rules-tests/n-out.json 
+
+For example, to run the test on 5-in.json:
+./xrules < rules-tests/5-in.json | diff - rules-tests/5-out.json 
+
+
+2) HOW TO RUN ALL TESTS
+
+Within the 7/ Directory, run the following command:
+
+./TESTME
+
+
+The TESTME Executable will run ./xrules on all 5 prewritten n-in.json files as input, and compare the output
+to their respective n-out.json files
+
+
+
+3) HOW TO READ TEST RESULTS:
+
+Because we are using the diff command to locate differences between running ./xrules on various json inputs and the expected output json files, no text output to the terminal will signal that all tests have passed.
+
+
+4) TEST DESCRIPTIONS:
+
+1-in.json:
+	Tests regular move + build attempts.
+	Tests move and build on previous Cell.
+
+2-in.json:
+	Tests valid movements, and building off a grid.
+
+3-in.json:
+	Tests moving onto a Worker
+	Tests moving onto a Cell of a height greater than 1 from the original Cell
+	(Moving from 0 -> 2 is NOT OK)
+
+4-in.json:
+	Tests moving onto a Cell of a height 1 greater than the original cell will work
+	as long as you are not moving to a cell of max height.
+	(Moving from height 0 -> 1 is OK)
+	(Moving from height 3 -> 4 is NOT OK)
+
+5-in.json
+	Test move + build on top of Worker
+	Test move + build on height 4 (NOT OK)
+	Test move + build on height 3 (OK)
+	Test build on building of height > 1 compared to origin Cell (OK).
