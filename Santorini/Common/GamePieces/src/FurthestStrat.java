@@ -88,7 +88,8 @@ public class FurthestStrat implements IStrategy {
         if (rc.checkRequests(b, "player", "player", requests, log )) { //If this is a valid move
           Board copy = new Board(b);
           Interpreter.executeRequests(copy, requests, log);
-          if (rc.checkWin(copy, opposingPlayerWorkers)) {
+          if (currentDepth % 2 == 0) {
+            rc.checkWin(copy, opposingPlayerWorkers)
             nTurns[currentDepth].remove();
           }
           else {
