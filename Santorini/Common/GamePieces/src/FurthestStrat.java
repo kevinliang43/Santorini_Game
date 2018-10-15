@@ -1,12 +1,10 @@
 import com.fasterxml.jackson.databind.node.ArrayNode;
-
-import java.lang.reflect.Array;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import java.util.Stack;
 
 /**
  * IStrategy Implementation
@@ -24,7 +22,7 @@ public class FurthestStrat implements IStrategy {
   }
 
   @Override
-  public String nextMove(Board board, HashMap<String, List<String>> playerWorkerMap) {
+  public String nextMove(Board board, HashMap<String, List<String>> playerWorkerMap, RuleChecker rc) {
 
     // Get the current Player's Workers
     List<String> currentPlayerWorkers = playerWorkerMap.get(this.playerId);
@@ -42,16 +40,118 @@ public class FurthestStrat implements IStrategy {
     LinkedList<String> currentPlayerTurns = generatePossibleTurns(currentPlayerWorkers);
     LinkedList<String> opposingPlayerTurns = generatePossibleTurns(opposingPlayerWorkers);
 
-    // Set Up Array of
+    // Set Up Array of LinkedList of Possible Turns
+    LinkedList<String>[] nTurns = new LinkedList[this.numTurns];
+    for (int i = 0; i < this.numTurns; i++) {
+      if (i % 2 == 0) {
+        nTurns[i] = (LinkedList) currentPlayerTurns.clone();
+      }
+      else {
+        nTurns[i] = (LinkedList) opposingPlayerTurns.clone();
+      }
+    }
 
+    // Determine list of turns of size numTurns that is valid/will not cause opposing player to lose.
+    int currentDepth = 0;
+    Appendable log = new StringBuilder();
+    while(currentDepth < this.numTurns && currentDepth >= 0) {
+      //initializes a new copy of a board
+      Board b = new Board(board);
 
+      if(nTurns[currentDepth].isEmpty()) {
+        nTurns[currentDepth] = assignWorkers(currentDepth, playerWorkerMap);
+        currentDepth--;
+        nTurns[currentDepth].remove();
+        b = new Board(board); // Creates new Board and executes all requests currently leading to the step
+        for (int i = 0; i < currentDepth - 1; i++) {
+          ArrayList<ArrayNode> requests = null;
+          try {
+            requests = JSONParse.parse(nTurns[i].peek().toString());
+          }
+          catch (IOException e){
+            e.printStackTrace();
+          }
+          Interpreter.executeRequests(b, requests, log);
+        }
+        continue;
 
+      }
 
+      else {
+        ArrayList<ArrayNode> requests = null;
+        try {
+          requests = JSONParse.parse(nTurns[currentDepth].peek().toString());
+        }
+        catch (IOException e){
+          e.printStackTrace();
+        }
+        if (rc.checkRequests(b, "player", "player", requests, log )) { //If this is a valid move
+          Board copy = new Board(b);
+          Interpreter.executeRequests(copy, requests, log);
+          if (rc.checkWin(copy, opposingPlayerWorkers)) {
+            nTurns[currentDepth].remove();
+          }
+          else {
+            b = new Board(copy);
+            currentDepth++;
+          }
+        }
+        else {
+          nTurns[currentDepth].remove();
+        }
+      }
 
+    }
+    if (currentDepth < 0) {
+      return "";
+    }
+    else {
+      return nTurns[0].peek().toString();
+    }
 
+  }
 
-    return "";
+  /**
+   * assigns a linked list to the player's workers represented by this int, player % 2 = 0 is p1 and player % 2 = 1 is p2
+   * @param player integer representing what level of the tree we are at to know which player is needed
+   * @return creates a list of workers for this player and returns the LinkedList created in possibleTurns
+   */
+  LinkedList<String> assignWorkers(int player, HashMap<String,List<String>> playerWorkers) {
+    List<String> thisPlayerWorkers = playerWorkers.get(this.playerId);
+    List<String> opposingPlayerWorkers = new ArrayList<>();
+    for (String key : playerWorkers.keySet()) {
+      opposingPlayerWorkers.addAll(playerWorkers.get(key));
+    }
 
+    List<String> workers;
+    if (player % 2 == 0) {
+      workers = thisPlayerWorkers;
+    }
+    else {
+      workers = opposingPlayerWorkers;
+    }
+
+    return possibleTurns(workers);
+  }
+
+  /**
+   * Given the list of worker IDs, returns a list of possible requests made on these workers
+   * @param workers List of String worker Ids that represents the current player whose turn it is' workers.
+   * @return Linked List<String> representing the requests that can be made on these workers, does not check
+   *         if these requests are valid or not.
+   */
+  LinkedList<String> possibleTurns(List<String> workers) {
+    LinkedList<String> requests = new LinkedList<>();
+    for (String worker: workers) {
+      for (Direction moveDirections : Direction.values()) {
+        String move = "[\"move\",\"" + worker + "\"," + moveDirections.toString() + "] ";
+        for (Direction buildDirections : Direction.values()) {
+          String moveBuild = move + "[\"+build\"," + buildDirections.toString() + "]";
+          requests.add(moveBuild);
+        }
+      }
+    }
+    return requests;
   }
 
   @Override

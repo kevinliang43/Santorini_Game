@@ -73,7 +73,7 @@ public interface IStrategy {
    * @param board Copy of the Current State of the Board
    * @return String representation of a JSON request
    */
-  String nextMove(Board board, HashMap<String, List<String>> playerWorkerMap);
+  String nextMove(Board board, HashMap<String, List<String>> playerWorkerMap, RuleChecker rc);
 
   /**
    * Sends information to be handled by the "Actor" on the receiving end of this Strategy object.

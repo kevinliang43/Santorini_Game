@@ -15,7 +15,7 @@ public class DiagonalStrat implements IStrategy {
   }
 
   @Override
-  public String nextMove(Board board, HashMap<String, List<String>> playerWorkerMap) {
+  public String nextMove(Board board, HashMap<String, List<String>> playerWorkerMap, RuleChecker rc) {
     return null;
   }
 

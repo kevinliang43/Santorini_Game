@@ -2,6 +2,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Rule Checker Class is used to verify actions within a game.
@@ -76,6 +77,17 @@ public class RuleChecker {
     appendRuleCheckerLog(true, log);
     return true;
 
+
+  }
+
+  public boolean checkWin(Board board, List<String> workerIDs) {
+    for (String worker : workerIDs) {
+      Worker currentWorker = board.getWorker(worker);
+      if (currentWorker.getCell().getHeight() == MAX_HEIGHT - 1) {
+        return true;
+      }
+    }
+    return false;
 
   }
 
