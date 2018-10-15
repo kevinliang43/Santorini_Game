@@ -2,6 +2,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -31,7 +32,6 @@ public class Interpreter {
    * Executes all given requests, one by one, onto the given Board.
    * @param board Board to be updated with the given requests.
    * @param requests List of requests to be executed on the given Board.
-   * @param log Appendable to store responses from executions
    */
   public static String executeRequests(Board board, ArrayList<ArrayNode> requests, Appendable log) {
     String lastWorker = null;
@@ -42,14 +42,6 @@ public class Interpreter {
     return lastWorker;
   }
 
-  /**
-   * Executes the single request onto the given Board
-   * @param board Board to be updated with the given request
-   * @param request List of requests to be executed on the given Board
-   * @param log Apepndable to store responses from executions
-   * @param lastWorker String name of the last worker who acted
-   * @return String representing the Worker that executed the request
-   */
   public static String execute(Board board, ArrayNode request, Appendable log, String lastWorker) {
 
     if (isBoardRequest(request)) {
@@ -106,11 +98,6 @@ public class Interpreter {
 
   }
 
-  /**
-   * Checks if the request type is a + request, for now we only have +board
-   * @param request List of requests to be executed on the given Board
-   * @return boolean representing if this is a +request
-   */
   private static boolean isPlusRequest(ArrayNode request) {
     return request.get(0).asText().charAt(0) == '+';
   }

@@ -14,12 +14,6 @@ import java.util.ArrayList;
  */
 public class JSONParse {
 
-  /**
-   * Reads the input from the given input stream
-   * @param stream Input Stream that the requests are being sent in from
-   * @return String of the input
-   * @throws IOException thrown when Input Stream is invalid
-   */
   static String readInput(InputStream stream) throws IOException {
     // Read Input
     InputStreamReader reader = new InputStreamReader(stream);
@@ -33,11 +27,6 @@ public class JSONParse {
     return inputStringBuilder.toString();
   }
 
-  /**
-   * Parses the given String and turns it into a list of requests as an ArrayList of ArrayNodes
-   * @param jsonString String of the requests
-   * @return Arraylist of ArrayNodes representing the list of requests to be checked and executed
-   */
   static ArrayList<ArrayNode> parse(String jsonString) throws IOException{
 
     // Parse JSON string

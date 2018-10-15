@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Mock environment to test Board components
+ * Created by KevinLiang on 9/30/18.
  */
 public class XBoard {
 

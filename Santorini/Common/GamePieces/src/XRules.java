@@ -48,12 +48,6 @@ public class XRules {
     System.out.print(log.toString());
   }
 
-  /**
-   * Uses a rule checker to check this sequence of requests on the given board
-   * @param requests ArrayList of ArrayNodes representing requests to be checked
-   * @param board Board of the game to check requests on
-   * @param log Appendable to log responses from checking the requests
-   */
   public static void checkTurn(ArrayList<ArrayNode> requests, Board board, Appendable log) {
 
     // Check to see if first is BoardRequest. If so, execute.
@@ -65,11 +59,9 @@ public class XRules {
       Interpreter.execute(board, requests.get(0), log, "");
       requests.remove(0); // remove the board requests
 
-      Player currentPlayer = new Player("m");
-
       // Check All other requests.
       RuleChecker rc = new RuleChecker();
-      rc.checkRequests(board, currentPlayer, currentPlayer, requests, log);
+      rc.checkRequests(board, "m", "m", requests, log);
 
     }
 

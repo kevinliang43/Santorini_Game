@@ -29,20 +29,6 @@ public class Player {
 
   }
 
-  /**
-   * Constructor for the Player Class without Strategy
-   * A Player Class should be constructed with:
-   * @param id String representation of this Player's ID
-   */
-  Player(String id) {
-
-    if (id == null) {
-      throw new IllegalArgumentException("Player class must be instantiated with a valid ID.");
-    }
-
-    this.id = id;
-
-  }
 
   /**
    * Retrieves the next Move for this player, based on this Player's Strategy logic.
@@ -50,7 +36,8 @@ public class Player {
    * @return String representation of a JSON request
    */
   public String getRequest(Board board){
-    return this.strategy.nextMove(board);
+    //return this.strategy.nextMove(board);
+    return "";
   }
 
   /**
