@@ -16,6 +16,7 @@
  * <b> Worker.java </b> : Class representing a Worker in a Santorini Game
  * <b> XBoard.java </b> : Class containing main method used to run and test xboard
  * <b> XRules.java </b> : Class containing main method used to run and test xrules
+ * <b> XStrategy.java </b> : Class containing main method used to run and test xstrategy
 
 <h3> Design </h3>
 
@@ -24,10 +25,13 @@
  * <b> Player.java </b> : Interface specification for the player component of the Santorini Game.
  * <b> RuleChecker.java </b> : Interface specification for the rule checking component of the Santorini Game.
  * <b> IStrategy.java </b> : Interface specification for the Strategy components of the Santorini Game, describes interaction between Player and Strategy
+ * <b> Referee <b> : Interface specification for the Referee/Administrative component of a Santorini Game
  
 <h3> Player </h3> 
 
  * <b> Player.java </b> : Class representing a Player in a Santorini Game
+ * <b> DiagonalStrat.java </b> : Class representing a Strategy that places workers along the main diagonal and uses a "stay-alive" heuristic to determine next moves
+ * <b> FurthestStrat.java </b> : Class representing a Strategy that places workers furthest away from a player's opponent's workers and uses a "stay-alive" heuristic to determine next moves
  
  <h2> Testing </h2> 
  
