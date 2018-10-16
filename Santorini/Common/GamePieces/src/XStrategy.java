@@ -1,3 +1,6 @@
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,57 +15,59 @@ public class XStrategy {
 
   public static void main(String[] args) {
 
-    /*
-    // Get the input
+
+
     Scanner scanner = new Scanner(System.in);
     StringBuilder builder = new StringBuilder();
     while (scanner.hasNextLine()) {
       builder.append(scanner.nextLine());
     }
-
     String requestString = builder.toString();
 
-    ByteArrayInputStream testStream = new ByteArrayInputStream(requestString.getBytes());
-    Board board = new Board(6,6);
-    StringBuilder log = new StringBuilder();
+    // Parse input to ArrayNodes
+    ArrayList<JsonNode> requests = new ArrayList<>();
     try {
-      String parsedString = JSONParse.readInput(testStream);
-      Interpreter.executeInitialRequests(board, JSONParse.parse(parsedString), log);
+      requests = JSONParse.parseNonArrayNode(requestString);
     } catch (IOException e) {
       e.printStackTrace();
     }
-    */
 
-    /*
-    Board board = new Board(6,6);
-    HashMap<String, List<String>> map = new HashMap<>();
+    String player = requests.get(0).asText();
 
-    ArrayList<String> klist = new ArrayList<>();
-    klist.add("kevin1");
-    klist.add("kevin2");
-    ArrayList<String> mlist = new ArrayList<>();
-    mlist.add("marina1");
-    mlist.add("marina2");
+    int numTurns = requests.get(2).asInt();
 
-    map.put("k", klist);
-    map.put("m", mlist);
+    System.out.println(player);
+    System.out.println(numTurns);
 
-
-    FurthestStrat strat = new FurthestStrat("k", 3);
-
-    strat.nextMove(board, map);
-    */
     Board board = new Board(6, 6);
     RuleChecker ruleChecker = new RuleChecker();
+    StringBuilder log = new StringBuilder();
+    Interpreter.execute(board, (ArrayNode)requests.get(1), log, "");
+    Interpreter.execute(board, (ArrayNode) requests.get(3), log, "");
 
     board.printBoard();
 
-    FurthestStrat strat = new FurthestStrat("one", 2);
+
+
+
+    /*
+
+    Board board = new Board(6, 6);
+    RuleChecker ruleChecker = new RuleChecker();
+
+    FurthestStrat strat = new FurthestStrat("two", 1);
+    FurthestStrat strat2 = new FurthestStrat("two", 2);
+
     Appendable log = new StringBuilder();
 
     String request = "[[\"0one1\", \"1one2\", 3, \"2two1\"],\n" +
             "\n" +
             "     [0,       \"2two2\", 3]] [\"move\",\"one2\",[\"WEST\",\"SOUTH\"]] [\"+build\",[\"PUT\",\"SOUTH\"]]\n";
+
+
+    String request2 = "[[\"0one1\", \"0one2\"], [3,       0],\n" +
+            "\n" +
+            "     [\"0two1\", \"0two2\"]] [\"move\",\"one1\",[\"EAST\",\"SOUTH\"]] [\"+build\",[\"WEST\",\"PUT\"]]";
 
     try {
       Interpreter.executeInitialRequests(board, JSONParse.parse(request), log);
@@ -71,15 +76,6 @@ public class XStrategy {
     }
 
     board.printBoard();
-
-    /*
-    board.getWorker("one1");
-    board.getWorker("two1");
-    board.getWorker("one2");
-    board.getWorker("two2");
-    */
-
-
 
 
     ArrayList<String> p1Workers = new ArrayList<>();
@@ -94,10 +90,17 @@ public class XStrategy {
     playerWorkers.put("one", p1Workers);
     playerWorkers.put("two", p2Workers);
 
+    if (strat.canWinInNMoves(board, playerWorkers, ruleChecker, 1)) {
+      System.out.println("yes");
+    }
+    else {
+      System.out.println("no");
+    }
 
-    //TODO throws the io exception because of the .toString on linked list
-    System.out.println(strat.nextMove(board, playerWorkers, ruleChecker));
+    //System.out.println(strat.nextMove(board, playerWorkers, ruleChecker));
 
+
+*/
 
   }
 }
