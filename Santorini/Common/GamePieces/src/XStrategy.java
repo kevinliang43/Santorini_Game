@@ -36,47 +36,12 @@ public class XStrategy {
 
     int numTurns = requests.get(2).asInt();
 
-    System.out.println(player);
-    System.out.println(numTurns);
 
     Board board = new Board(6, 6);
     RuleChecker ruleChecker = new RuleChecker();
     StringBuilder log = new StringBuilder();
     Interpreter.execute(board, (ArrayNode)requests.get(1), log, "");
     Interpreter.execute(board, (ArrayNode) requests.get(3), log, "");
-
-    board.printBoard();
-
-
-
-
-    /*
-
-    Board board = new Board(6, 6);
-    RuleChecker ruleChecker = new RuleChecker();
-
-    FurthestStrat strat = new FurthestStrat("two", 1);
-    FurthestStrat strat2 = new FurthestStrat("two", 2);
-
-    Appendable log = new StringBuilder();
-
-    String request = "[[\"0one1\", \"1one2\", 3, \"2two1\"],\n" +
-            "\n" +
-            "     [0,       \"2two2\", 3]] [\"move\",\"one2\",[\"WEST\",\"SOUTH\"]] [\"+build\",[\"PUT\",\"SOUTH\"]]\n";
-
-
-    String request2 = "[[\"0one1\", \"0one2\"], [3,       0],\n" +
-            "\n" +
-            "     [\"0two1\", \"0two2\"]] [\"move\",\"one1\",[\"EAST\",\"SOUTH\"]] [\"+build\",[\"WEST\",\"PUT\"]]";
-
-    try {
-      Interpreter.executeInitialRequests(board, JSONParse.parse(request), log);
-    } catch (IOException e) {
-
-    }
-
-    board.printBoard();
-
 
     ArrayList<String> p1Workers = new ArrayList<>();
     ArrayList<String> p2Workers = new ArrayList<>();
@@ -90,17 +55,14 @@ public class XStrategy {
     playerWorkers.put("one", p1Workers);
     playerWorkers.put("two", p2Workers);
 
-    if (strat.canWinInNMoves(board, playerWorkers, ruleChecker, 1)) {
-      System.out.println("yes");
+    FurthestStrat strat = new FurthestStrat(player, numTurns);
+
+    if (strat.nextMove(board, playerWorkers, ruleChecker) == "") {
+      System.out.println("\"no\"");
     }
     else {
-      System.out.println("no");
+      System.out.println("\"yes\"");
     }
-
-    //System.out.println(strat.nextMove(board, playerWorkers, ruleChecker));
-
-
-*/
 
   }
 }

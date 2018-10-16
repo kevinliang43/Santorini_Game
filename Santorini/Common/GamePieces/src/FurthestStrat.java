@@ -18,7 +18,7 @@ public class FurthestStrat implements IStrategy {
 
   FurthestStrat(String playerId, int numTurns) {
     this.playerId = playerId;
-    this.numTurns = 4;
+    this.numTurns = numTurns;
   }
 
   @Override
@@ -61,6 +61,11 @@ public class FurthestStrat implements IStrategy {
           currentPlayerTurns.remove();
         }
       }
+
+      else {
+        currentPlayerTurns.remove();
+      }
+
     }
 
     return "";
@@ -118,8 +123,6 @@ public class FurthestStrat implements IStrategy {
 
       else {
         ArrayList<ArrayNode> requests = null;
-
-        System.out.println(nTurns[currentDepth].peek().toString());
         try {
           requests = JSONParse.parse(nTurns[currentDepth].peek().toString());
         } catch (IOException e) {
