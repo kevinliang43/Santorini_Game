@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * Interface for Strategy Objects.
  * Strategy Objects are capable of somehow determining a next move for the Player class.
@@ -70,7 +73,7 @@ public interface IStrategy {
    * @param board Copy of the Current State of the Board
    * @return String representation of a JSON request
    */
-  String nextMove(Board board);
+  String nextMove(Board board, HashMap<String, List<String>> playerWorkerMap, RuleChecker rc);
 
   /**
    * Sends information to be handled by the "Actor" on the receiving end of this Strategy object.
@@ -78,4 +81,14 @@ public interface IStrategy {
    */
   void sendInformation(String message);
 
+  /**
+   * Determines the placement of a new Worker and sends placement information in the form of a JSON
+   * String
+   * @param board Copy of the Current State of the Board
+   * @param playerWorkerMap View Copy of the Player Worker Map
+   * @return String representation of a JSON request
+   */
+  String placeWorker(Board board, HashMap<String, List<String>> playerWorkerMap);
+
+  void setNumTurns(int numTurns);
 }

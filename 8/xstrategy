@@ -1,0 +1,5 @@
+#!/bin/sh
+
+cd "$(dirname "$0")"
+cd ..
+java -jar ./Santorini/Common/GamePieces/out/artifacts/xStrategy/GamePieces.jar
