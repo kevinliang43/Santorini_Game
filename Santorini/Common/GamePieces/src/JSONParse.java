@@ -53,6 +53,38 @@ public class JSONParse {
     return requestList;
   }
 
+  static ArrayList<JsonNode> parseNonArrayNode(String jsonString) throws IOException{
+
+    // Parse JSON string
+    ArrayList<JsonNode> requestList = new ArrayList<>();
+    ObjectMapper objectMapper = new ObjectMapper();
+    JsonParser parser = objectMapper.getFactory().createParser(jsonString);
+
+
+    //while the parser has more JSONNodes,
+    //check if each node is valid and add it to the list of requests
+    while (!parser.isClosed()) {
+      JsonNode currentNode = null;
+
+      try {
+        currentNode = objectMapper.readTree(parser);
+      } catch (Exception e) {
+        break;
+      }
+
+      if (currentNode != null && currentNode.isArray()) {
+        requestList.add((ArrayNode)currentNode);
+      }
+      else if (currentNode != null && currentNode.isTextual()) {
+        requestList.add(currentNode);
+      }
+      else if (currentNode != null && currentNode.isInt()) {
+        requestList.add(currentNode);
+      }
+    }
+    return requestList;
+  }
+
   static void printRequests(ArrayList<ArrayNode> requests) {
     for (ArrayNode node : requests) {
       System.out.println(node.toString());

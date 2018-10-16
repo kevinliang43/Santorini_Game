@@ -28,38 +28,78 @@ public class FurthestStrat implements IStrategy {
     List<String> currentPlayerWorkers = playerWorkerMap.get(this.playerId);
 
     // Get Opposing Player's Workers
-    List<String> opposingPlayerWorkers = new ArrayList<>();
+    List<String> opposingPlayers = new ArrayList<>();
 
     for (String key : playerWorkerMap.keySet()) {
       if (!key.equals(this.playerId)) {
-        opposingPlayerWorkers.addAll(playerWorkerMap.get(key));
+        opposingPlayers.add(key);
       }
     }
 
     // Get All possible turns for this player and opposing player
     LinkedList<String> currentPlayerTurns = generatePossibleTurns(currentPlayerWorkers);
-    LinkedList<String> opposingPlayerTurns = generatePossibleTurns(opposingPlayerWorkers);
+
+
+    Appendable log = new StringBuilder();
+
+    while (!currentPlayerTurns.isEmpty()) {
+      Board copy = new Board(board);
+
+      ArrayList<ArrayNode> requests = null;
+      try {
+        requests = JSONParse.parse(currentPlayerTurns.peek().toString());
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+
+      if (rc.checkRequests(copy, "player", "player",  requests, log)) {
+        Interpreter.executeRequests(copy, requests, log);
+        if (!canWinInNMoves(copy, playerWorkerMap, rc, this.numTurns/2, opposingPlayers.get(0))) {
+          return currentPlayerTurns.pop();
+        }
+        else {
+          currentPlayerTurns.remove();
+        }
+      }
+    }
+
+    return "";
+
+
+  }
+
+  /**
+   * Determines if there exists a move that wins in n moves
+   * @param board
+   * @param playerWorkerMap
+   * @param rc
+   * @return
+   */
+  boolean canWinInNMoves(Board board, HashMap<String, List<String>> playerWorkerMap, RuleChecker rc, int n, String player) {
+
+    // Get the current Player's Workers
+    List<String> currentPlayerWorkers = playerWorkerMap.get(player);
+
+    // Get All possible turns for this player and opposing player
+    LinkedList<String> currentPlayerTurns = generatePossibleTurns(currentPlayerWorkers);
 
     // Set Up Array of LinkedList of Possible Turns
-    LinkedList<String>[] nTurns = new LinkedList[this.numTurns];
-    for (int i = 0; i < this.numTurns; i++) {
-      if (i % 2 == 0) {
-        nTurns[i] = (LinkedList) currentPlayerTurns.clone();
-      }
-      else {
-        nTurns[i] = (LinkedList) opposingPlayerTurns.clone();
-      }
+    LinkedList<String>[] nTurns = new LinkedList[n];
+    for (int i = 0; i < n; i++) {
+      nTurns[i] = (LinkedList) currentPlayerTurns.clone();
     }
 
     // Determine list of turns of size numTurns that is valid/will not cause opposing player to lose.
     int currentDepth = 0;
     Appendable log = new StringBuilder();
-    while(currentDepth < this.numTurns && currentDepth >= 0) {
+    boolean moveFound = false;
+
+    while(!nTurns[0].isEmpty() && !moveFound) {
       //initializes a new copy of a board
       Board b = new Board(board);
 
-      if(nTurns[currentDepth].isEmpty()) {
-        nTurns[currentDepth] = assignWorkers(currentDepth, playerWorkerMap);
+      if (nTurns[currentDepth].isEmpty()) {
+        nTurns[currentDepth] = possibleTurns(currentPlayerWorkers);
         currentDepth--;
         nTurns[currentDepth].remove();
         b = new Board(board); // Creates new Board and executes all requests currently leading to the step
@@ -67,8 +107,7 @@ public class FurthestStrat implements IStrategy {
           ArrayList<ArrayNode> requests = null;
           try {
             requests = JSONParse.parse(nTurns[i].peek().toString());
-          }
-          catch (IOException e){
+          } catch (IOException e) {
             e.printStackTrace();
           }
           Interpreter.executeRequests(b, requests, log);
@@ -79,36 +118,39 @@ public class FurthestStrat implements IStrategy {
 
       else {
         ArrayList<ArrayNode> requests = null;
+
+        System.out.println(nTurns[currentDepth].peek().toString());
         try {
           requests = JSONParse.parse(nTurns[currentDepth].peek().toString());
-        }
-        catch (IOException e){
+        } catch (IOException e) {
           e.printStackTrace();
         }
-        if (rc.checkRequests(b, "player", "player", requests, log )) { //If this is a valid move
+
+        if (rc.checkRequests(b, "player", "player", requests, log)) { //If this is a valid move
           Board copy = new Board(b);
           Interpreter.executeRequests(copy, requests, log);
-          if (currentDepth % 2 == 0) {
-            rc.checkWin(copy, opposingPlayerWorkers)
-            nTurns[currentDepth].remove();
+          if (rc.checkWin(copy, currentPlayerWorkers)) {
+            moveFound = true;
           }
-          else {
+          else if (currentDepth != n - 1) {
+
             b = new Board(copy);
             currentDepth++;
           }
+          else {
+            nTurns[currentDepth].remove();
+          }
         }
+
         else {
           nTurns[currentDepth].remove();
         }
-      }
 
+
+      }
     }
-    if (currentDepth < 0) {
-      return "";
-    }
-    else {
-      return nTurns[0].peek().toString();
-    }
+
+    return moveFound;
 
   }
 
