@@ -1,9 +1,0 @@
-"one"
-
-[["2one2", 3, "0two1"],[2], ["0one1", 0, 0, 0, 0, "2two2"]]
-
-2
-
-["move", "one1", ["EAST","SOUTH"]]
-
-["+build", ["WEST", "NORTH"]]
