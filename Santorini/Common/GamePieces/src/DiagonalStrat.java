@@ -76,10 +76,10 @@ public class DiagonalStrat implements IStrategy {
 
   /**
    * Determines if there exists a move that wins in n moves
-   * @param board
-   * @param playerWorkerMap
-   * @param rc
-   * @return
+   * @param board Board being played on
+   * @param playerWorkerMap HAshmap of player Id to list of worker id
+   * @param rc rule checker
+   * @return boolean representing if this player can win with thise many moves
    */
   boolean canWinInNMoves(Board board, HashMap<String, List<String>> playerWorkerMap, RuleChecker rc, int n, String player) {
 
