@@ -1,0 +1,3 @@
+REALPATH=`realpath $0`
+DIRNAME=`dirname $REALPATH`
+java -jar $DIRNAME/Aux/out/artifacts/xboard.jar

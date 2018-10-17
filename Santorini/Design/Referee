@@ -1,0 +1,19 @@
+
+A Referee has
+    a list of players
+    The Official board
+
+
+A Referee can
+    add a player
+    get worker IDs per player
+    check if an action is valid
+    inform a player of the boardstate/ask a player for its move
+    alter the boardstate
+        place a worker
+        move a worker
+        build a floor
+        restart the board
+    determine who wins
+    kick a player for any reason
+

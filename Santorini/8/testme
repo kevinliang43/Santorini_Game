@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+for i in {1..5}
+do
+    ./xstrategy < strategy-tests/$i-in.json | diff - strategy-tests/$i-out.json
+    if [ $? -ne 0 ]; then
+        echo "Test failed: $i"
+    fi
+done

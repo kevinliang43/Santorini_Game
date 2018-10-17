@@ -1,0 +1,9 @@
+REALPATH=`realpath $0`
+DIRNAME=`dirname $REALPATH`
+for i in {1..5}
+do
+  $DIRNAME/../xboard < $DIRNAME/$i-in.json | diff - $DIRNAME/$i-out.json
+  if [ $? -ne 0 ]; then
+    echo "Test failed: $i"
+  fi
+done
