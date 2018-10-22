@@ -57,4 +57,11 @@ public class Player {
   public String getName() {
     return this.name;
   }
+
+  /**
+   * Resets this Player's workers
+   */
+  public void resetWorkers() {
+    this.workerIDs = new ArrayList<>();
+  }
 }

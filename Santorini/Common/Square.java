@@ -124,4 +124,12 @@ public class Square {
     this.occupied = occupied;
     this.workerID = workerID;
   }
+
+  String asString() {
+    if (this.getWorkerID() == -1) {
+      return " " + Integer.toString(this.getHeight());
+    } else {
+      return Integer.toString(this.getWorkerID()) + Integer.toString(this.getHeight());
+    }
+  }
 }

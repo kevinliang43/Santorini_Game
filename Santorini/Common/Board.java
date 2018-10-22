@@ -273,4 +273,15 @@ public class Board {
       throw new IllegalArgumentException("Invalid (x,y) position");
     }
   }
+
+  public String asString() {
+    String board = "";
+    for (int row = 0; row < this.BOARD_X; row++) {
+      for (int col = 0; col < this.BOARD_Y; col++) {
+        board += this.cells[row][col].asString() + "\t";
+      }
+      board += "\n";
+    }
+    return board;
+  }
 }
