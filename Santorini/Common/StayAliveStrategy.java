@@ -58,7 +58,6 @@ public class StayAliveStrategy implements Strategy {
    * @return Action representing a worker placement on the board
    */
   private Action placeHere(Board board, ArrayList<Integer> opponentWorkers, boolean strat1) {
-
     //placement strat 1 (diagonal)
     if(strat1) {
       for(int i = 0; i < Board.BOARD_X; i++) {

@@ -60,4 +60,6 @@ public class Worker {
   public int getID() {
     return this.id;
   }
+
+  public static void resetCount() {workerCount = 0;}
 }
