@@ -207,18 +207,6 @@ public class Board {
   }
 
 
-//  //todo
-//  Board executeActions(ArrayList<Action> actions){
-//
-//    for(Action a : actions) {
-//
-//
-//
-//    }
-//  }
-
-
-
 
   /**
    * Determines if (x,y) is a valid Square
@@ -274,6 +262,10 @@ public class Board {
     }
   }
 
+    /**
+     * Generates a string visualization of the board
+     * @return String representation of the board
+     */
   public String asString() {
     String board = "";
     for (int row = 0; row < this.BOARD_X; row++) {

@@ -151,6 +151,9 @@ public class RefereeTest {
 //
 //  }
 
+    /**
+     * Tests placing a worker when the game is not in the place phase, player should get kicked out and the game is over
+     */
 //  @Test
 //  public void testPlacePhaseNotPlaceStatus() {
 //    setupGame();
@@ -165,6 +168,9 @@ public class RefereeTest {
 //    assertEquals(ref.getCurrentStatus(), Status.GAMEOVER);
 //  }
 //
+    /**
+     * checks a moveBuild and if it properly executes when the player is requested to move
+     */
 //  @Test
 //  public void testTurnPhase() {
 //    setupGame();
@@ -216,6 +222,31 @@ public class RefereeTest {
 //
 //  }
 
+    /**
+     * Tests that running a game will have the status GAMEOVER at the end and the proper winner is selected
+     */
+    @Test
+    public void testRunFullGame() {
+        setupGame();
+        Player p1 = ref.getPlayers().get(0);
+        Player p2 = ref.getPlayers().get(1);
+        Player winner = this.ref.runGame();
+        assertEquals(this.ref.getCurrentStatus(), Status.GAMEOVER);
+        assertEquals(winner, p1);
+    }
+
+    /**
+     * Tests that running a game will have the status GAMEOVER at the end and the proper winner is selected
+     */
+    @Test
+    public void testRunFullGameOfN() {
+        setupGame();
+        Player p1 = ref.getPlayers().get(0);
+        Player p2 = ref.getPlayers().get(1);
+        Player winner = this.ref.runGame(3);
+        assertEquals(this.ref.getCurrentStatus(), Status.GAMEOVER);
+        assertEquals(winner, p1);
+    }
 
 
 }

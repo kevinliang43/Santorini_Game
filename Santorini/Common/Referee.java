@@ -30,6 +30,13 @@ public class Referee {
   }
 
 
+    /**
+     * Runs a game between this classes two players n amount of times and determines the winner based off of which
+     * player won the most games out of n
+     * @param numGames odd number of games to play
+     * @return Player that won the most games within this set of n games
+     * @throws IllegalArgumentException when the given n is even, must be odd to guarantee a winner
+     */
   public Player runGame(int numGames) throws IllegalArgumentException {
     if (numGames < 1 || numGames % 2 == 0) {
       throw new IllegalArgumentException("Cannot run a Best of N games, where N is less than 1 or even.");
@@ -151,6 +158,11 @@ public class Referee {
   }
 
 
+    /**
+     * Tries to get the next move of the player, if a move is found, an IAction is returned. If it times out, null is returned
+     * @param player Player taking the next action
+     * @return an IAction or null based on whether or not a move was found
+     */
   private IAction tryGetMove(Player player) {
 
     // Initialize Runnables

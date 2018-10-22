@@ -61,5 +61,9 @@ public class Worker {
     return this.id;
   }
 
+  /**
+   *  resets the static worker count variable to 0 for reinitialization
+   *  TODO when we start the tournament we need to keep this variable somewhere else
+   */
   public static void resetCount() {workerCount = 0;}
 }

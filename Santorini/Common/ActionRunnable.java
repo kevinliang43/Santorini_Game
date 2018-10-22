@@ -1,5 +1,5 @@
 /**
- * Created by KevinLiang on 10/22/18.
+ * Action Runnable created to run on separate threads to check for time outs
  */
 public class ActionRunnable implements Runnable {
 
@@ -20,12 +20,19 @@ public class ActionRunnable implements Runnable {
 
   }
 
+  /**
+   * Runs the getNextAction function in the player class
+   */
   @Override
   public void run() {
     IAction nextAction = p.getNextAction(this.board, this.status);
     this.action = nextAction;
   }
 
+  /**
+   * gets the action gotten by the getNextAction call within the run function
+   * @return Action next move
+   */
   public IAction getAction() {
     return this.action;
   }
