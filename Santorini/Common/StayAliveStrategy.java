@@ -1,11 +1,17 @@
 import java.util.ArrayList;
+import java.util.List;
 
+/** strategy class that decides on next turns based on whether or not the player calling it can
+ * stay alive with this strategy's number of turns to look ahead.
+**/
 public class StayAliveStrategy implements Strategy {
   private static final boolean DEBUG = false;
   private boolean useStrat1;
+  private int numTurns;
 
-  public StayAliveStrategy(boolean useStrat1) {
+  public StayAliveStrategy(boolean useStrat1, int numTurns) {
     this.useStrat1 = useStrat1;
+    this.numTurns = numTurns;
   }
 
   /**
@@ -31,14 +37,26 @@ public class StayAliveStrategy implements Strategy {
    * @return The next Action to perform.
    */
   @Override
-  public Action getNextAction(BoardStatus b, ArrayList<Integer> workerIDs) {
+  public IAction getNextAction(BoardStatus b, ArrayList<Integer> workerIDs) {
     if (b.getStatus() == Status.PLACE) {
       return placeHere(b.getBoard(), b.filterWorkers(workerIDs), this.useStrat1);
     }
-    return null;
+    //(b.getStatus() == Status.MOVEBUILD)
+    else {
+      return canStayAlive(b.getBoard(), workerIDs, b.filterWorkers(workerIDs), this.numTurns);
+    }
   }
 
   //strat1
+
+  /**
+   * Determines the next placement of a worker for the player that calls this strategy
+   * @param board copy of the official game board representing the current game state
+   * @param opponentWorkers list of workerID integers that represents the workers of the opposing player
+   * @param strat1 boolean representing if we are using diagonal placement strategy (true) or
+   *               furthest placement strategy (false)
+   * @return Action representing a worker placement on the board
+   */
   private Action placeHere(Board board, ArrayList<Integer> opponentWorkers, boolean strat1) {
 
     //placement strat 1 (diagonal)
@@ -76,32 +94,44 @@ public class StayAliveStrategy implements Strategy {
   }
 
   //can the player calling this method stay alive
-  public boolean canStayAlive(Board board, ArrayList<Integer> myWorkers, ArrayList<Integer> opponentWorkers,
+
+  /**
+   * Decides on a next move for the current player that keeps them alive for numTurns moves
+   * @param board copy of the official game board, representing current game state
+   * @param myWorkers list of worker IDs for the player calling this strategy
+   * @param opponentWorkers list of worker IDs for the opposing player
+   * @param acc numTurns to look ahead for
+   * @return if there is a valid MoveBuild that keeps this player alive in acc turns, returns the first MoveBuild seen that
+   *         keeps it alive. else, returns null for the player to check.
+   */
+  public MoveBuild canStayAlive(Board board, ArrayList<Integer> myWorkers, ArrayList<Integer> opponentWorkers,
                               int acc) {
     //If the game is over because the player can't move, they lose, return false
     if (RuleChecker.isGameOver(board, myWorkers) == GameOverStatus.NO_MOVE_BUILD) {
       if(DEBUG) System.err.println("You lose, can't move or build");
-      return false;
+      return null;
     }
     //If the game is over because the opponent has a worker on the winning floor, lose, return false
     if (RuleChecker.isGameOver(board, opponentWorkers) == GameOverStatus.WINNING_FLOOR) {
       if(DEBUG) System.err.println("You lose, Opponent is on third floor");
-      return false;
+      return null;
     }
 
+    List<MoveBuild> legalMoves = RuleChecker.listOfLegalMoves(board, myWorkers);
+
     //If we've reached the depth without the game being over, the player stayed alive, return true
-    if(acc == 0) {
+    if(acc == 0 && legalMoves.size() > 0) {
       if(DEBUG) System.err.print("Pd");
-      return true;
+      return legalMoves.get(0);
     } else {  //acc =/= 0
       //for every legal move,
-      for (MoveBuild mb : RuleChecker.listOfLegalMoves(board, myWorkers)) {
+      for (MoveBuild mb : legalMoves) {
         //go to the hypothetical board performed by that move,
         Board newBoard = RuleChecker.performAction(board, mb);
         //and see if that game is over with the player winning. If so, return true
         if(RuleChecker.isGameOver(newBoard, myWorkers) == GameOverStatus.WINNING_FLOOR) {
           if(DEBUG) System.err.println("You win, reached third floor with " + mb);
-          return true;
+          return mb;
         }// else, see if the opponent can win from that position. If they can, continue to search
         if(canOpWin(newBoard, opponentWorkers, myWorkers, acc - 1)) {
           if(DEBUG) System.err.println("You lose, opponent can win after your " + mb);
@@ -109,17 +139,26 @@ public class StayAliveStrategy implements Strategy {
         }// else, the opponent can't win from that position, so the player has a valid move.
         // The player can stay alive if they play mb, return true
         if(DEBUG) System.err.println("You win, opponent can't win after your " + mb);
-        return true;
+        return mb;
       }
 
       // The opponent has a winning move for every legal move the player can make.
       // The player loses, return false
       if(DEBUG) System.err.println("You lose, no winning moves");
-      return false;
+      return null;
     }
   }
 
   //can the opponent of the player calling this method win from this board state
+
+  /**
+   * determines if the opposing player is able to win with the given number of turns
+   * @param board copy of the official game board representing the current game state
+   * @param myWorkers list of integer worker IDs of the player calling this strategy
+   * @param opponentWorkers list of integer worker IDs of the opponent player
+   * @param acc int representing number of turns to look ahead into
+   * @return boolean representing whether or not the opponent can win or not
+   */
   public boolean canOpWin(Board board, ArrayList<Integer> myWorkers, ArrayList<Integer> opponentWorkers, int acc) {
     //if the game is over because the opponent can't move, they lose, return false
     if(RuleChecker.isGameOver(board, myWorkers) == GameOverStatus.NO_MOVE_BUILD) {
@@ -147,7 +186,7 @@ public class StayAliveStrategy implements Strategy {
           return true;
         }
         //else, see if the player can stay alive from that position. If they can, continue to search
-        if(canStayAlive(newBoard, opponentWorkers, myWorkers, acc - 1)) {
+        if(canStayAlive(newBoard, opponentWorkers, myWorkers, acc - 1) != null) {
           if(DEBUG) System.err.println("Opponent loses, player can stay alive");
           continue;
         } // else, the player can't stay alive from that position, so the opponent has a valid move.

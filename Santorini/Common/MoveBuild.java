@@ -1,7 +1,7 @@
 /**
  * class contiaining 2 acitons
  */
-public class MoveBuild {
+public class MoveBuild implements IAction{
 
   public final Action move;
   public final Action build;
@@ -26,6 +26,10 @@ public class MoveBuild {
 
   }
 
+  /**
+   * converts this moveBuild into an easy to read string format
+   * @return String representation of this moveBuild
+   */
   public String toString() {
     return this.move.toString() + " " + this.build.toString();
   }

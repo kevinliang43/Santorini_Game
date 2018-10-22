@@ -185,6 +185,12 @@ public class RuleChecker {
   }
 
 
+  /**
+   * returns a list of legal MoveBuild actions to take from the current workers in the current game state
+   * @param board copy of the official game board to represent the current game state
+   * @param workerIDs list of int worker IDs of all workers on the board
+   * @return list of possible moves
+   */
   public static ArrayList<MoveBuild> listOfLegalMoves(Board board, ArrayList<Integer> workerIDs) {
     ArrayList<MoveBuild> result = new ArrayList<>();
 
@@ -218,7 +224,12 @@ public class RuleChecker {
     return result;
   }
 
-
+  /**
+   * returns a new board based after the given action has been executed
+   * @param board board to perform action on
+   * @param action action to perform on board
+   * @return new Board with the given action taken on it
+   */
   public static Board performAction(Board board, Action action) {
     Board result = new Board(board);
 
@@ -235,6 +246,12 @@ public class RuleChecker {
     return result;
   }
 
+  /**
+   * returns a new board based after the given moveBuild has been executed
+   * @param board board to perform moveBuild on
+   * @param moveBuild action to perform on board
+   * @return new Board with the given moveBuild taken on it
+   */
   public static Board performAction(Board board, MoveBuild moveBuild) {
     Board result = new Board(board);
 

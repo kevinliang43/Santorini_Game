@@ -81,10 +81,19 @@ public final class BoardStatus {
     return this.status;
   }
 
+  /**
+   * Gets a copy of the current board
+   * @return a new board that is a copy of current board
+   */
   public Board getBoard() {
     return new Board(this.board);
   }
 
+  /**
+   * gets the workers that aren't in the given list from this boards workers
+   * @param workersToFilter list of workers that we don't want
+   * @return list of workers where workersToFilter have been filtered out
+   */
   public ArrayList<Integer> filterWorkers(ArrayList<Integer> workersToFilter) {
     ArrayList<Integer> filteredList = new ArrayList<>();
     for (int id : this.board.getWorkerIDs()) {

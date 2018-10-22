@@ -13,7 +13,7 @@
  * Any Action should adhere to rules defined in RuleChecker (ex Worker can only build
  * on a neighboring building).
  */
-public class Action {
+public class Action implements IAction{
   public final Status actionType;
   public final int x, y;
   public final int workerID;
@@ -45,6 +45,10 @@ public class Action {
   }
 
 
+  /**
+   * conerts this action into an easy to read string
+   * @return String format of this action
+   */
   public String toString() {
     String action = "";
     if(actionType == Status.MOVE) {

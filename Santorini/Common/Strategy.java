@@ -17,5 +17,5 @@ public interface Strategy {
    *                  the Player it will be interpreted as an invalid Action.
    * @return The next Action to perform.
    */
-  Action getNextAction(BoardStatus b, ArrayList<Integer> workerIDs);
+  IAction getNextAction(BoardStatus b, ArrayList<Integer> workerIDs);
 }

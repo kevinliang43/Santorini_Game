@@ -37,7 +37,7 @@ public class StrategyTest {
     p2Workers.add(worker21);
     p2Workers.add(worker22);
 
-    strat = new StayAliveStrategy(true);
+    strat = new StayAliveStrategy(true, 1);
   }
 
 
@@ -51,23 +51,23 @@ public class StrategyTest {
     MoveBuild moveBuild = new MoveBuild(move, build);
     Board actB = RuleChecker.performAction(board, moveBuild);
 
-    assertTrue(strat.canStayAlive(actB, p1Workers, p2Workers, 0));
-    assertTrue(strat.canStayAlive(actB, p1Workers, p2Workers, 1));
-    assertTrue(strat.canStayAlive(actB, p1Workers, p2Workers, 2));
-    assertTrue(strat.canStayAlive(actB, p1Workers, p2Workers, 3));
+    assertTrue(strat.canStayAlive(actB, p1Workers, p2Workers, 0) != null);
+    assertTrue(strat.canStayAlive(actB, p1Workers, p2Workers, 1) != null);
+    assertTrue(strat.canStayAlive(actB, p1Workers, p2Workers, 2) != null);
+    assertTrue(strat.canStayAlive(actB, p1Workers, p2Workers, 3) != null);
 
   }
 
   // Test case where we cannot stay alive
   @Test
   public void testFailure() {
-    assertTrue(strat.canStayAlive(board, p1Workers, p2Workers, 2));
+    assertTrue(strat.canStayAlive(board, p1Workers, p2Workers, 2) == null);
 
     board.setFloor(5, 0, 2);
     board.setFloor(5, 1, 3);
 
     assertTrue(strat.canOpWin(board, p2Workers, p1Workers, 1));
-    assertFalse(strat.canStayAlive(board, p1Workers, p2Workers, 2));
+    assertFalse(strat.canStayAlive(board, p1Workers, p2Workers, 2) == null);
 
   }
 
@@ -77,7 +77,7 @@ public class StrategyTest {
     Board newBoard = new Board();
     Strategy diag = new StayAliveStrategy(true);
     for (int i = 0; i < 4; i++) {
-      Action place = diag.getNextAction(new BoardStatus(newBoard, Status.PLACE), new ArrayList<>());
+      IAction place = diag.getNextAction(new BoardStatus(newBoard, Status.PLACE), new ArrayList<>());
       assertEquals(i, place.x);
       assertEquals(i, place.y);
       newBoard.placeWorker(place.x, place.y);

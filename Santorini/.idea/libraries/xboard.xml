@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="xboard">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/7/out/artifacts/xboard_jar/xboard.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
