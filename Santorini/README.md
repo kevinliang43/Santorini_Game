@@ -46,6 +46,11 @@
  
  <h2> Testing </h2> 
  
+ To Run TESTME testing suite:
+ 1. Go into the Santorini Directory.
+ 2. Run the following commmand:
+  ./TESTME
+ 
  Unit tests can be found at Santorini/tests. </br>
  Unit Tests Created for Week 9: </br>
   * <b> RefereeTest.java </b> : tests the functions within the Referee class, includes commented-out tests for private methods
