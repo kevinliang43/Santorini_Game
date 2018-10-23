@@ -13,6 +13,10 @@ public class testWorker {
   ArrayList<Integer> workerIDs = new ArrayList<>();
   Random r = new Random();
 
+  public testWorker() {
+
+  }
+
   @Test   // Test the creation of a Worker
   public void testWorkerConstructor() {
 

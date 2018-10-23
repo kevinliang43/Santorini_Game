@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 
 public class BoardStatusTest {
+
+  public BoardStatusTest() {
+
+  }
+
   @Test
   public void filterWorkerTest() {
     Board b = new Board();

@@ -16,6 +16,11 @@ public class PlayerTest {
   Player p2;
   Board board;
 
+
+  public PlayerTest() {
+
+  }
+
   public void init() {
     Worker.resetCount();
     //player that uses strat1 (diagonal)

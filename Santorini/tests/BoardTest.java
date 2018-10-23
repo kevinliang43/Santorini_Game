@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 
 public class BoardTest {
+
   private class Posn {
     public int x, y;
     public Posn(int x, int y) {
@@ -15,6 +16,10 @@ public class BoardTest {
 
   Board b;
   ArrayList<Posn> ignoreSquare;
+
+  public BoardTest() {
+
+  }
 
   @Before
   public void setupTest() {

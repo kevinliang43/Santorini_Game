@@ -20,6 +20,10 @@ public class StrategyTest {
 
   StayAliveStrategy strat;
 
+  public StrategyTest() {
+
+  }
+
   @Before
   public void setup() {
     board = new Board();

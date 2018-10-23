@@ -1,16 +1,21 @@
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runners.model.TestClass;
 
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
-public class RefereeTest {
+public class RefereeTest{
 
   Referee ref;
   Board board;
   Strategy diag;
   Strategy furthest;
+
+  public RefereeTest() {
+
+  }
 
 
   /**
@@ -92,13 +97,6 @@ public class RefereeTest {
     assertEquals(ref.getPlayers().size(), 1);
   }
 
-
-
-  @Test
-  public void testRunGame() {
-    setupGame();
-    this.ref.runGame(3);
-  }
 
   /**
    * Tests the following components of Place Phase:

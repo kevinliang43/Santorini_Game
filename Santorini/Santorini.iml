@@ -6,6 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/7" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Common" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/Admin" />
       <excludeFolder url="file://$MODULE_DIR$/Design" />
       <excludeFolder url="file://$MODULE_DIR$/Player" />
     </content>

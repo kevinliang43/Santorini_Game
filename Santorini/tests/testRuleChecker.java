@@ -11,6 +11,10 @@ public class testRuleChecker {
 
 //  RuleChecker r = new RuleChecker();
 
+  public testRuleChecker() {
+
+  }
+
   @Test //test that a worker can be placed on an empty board,
         // that a worker can't be placed on top of another worker,
         // and that there can only be 4 workers on a board at a time
