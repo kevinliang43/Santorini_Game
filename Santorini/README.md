@@ -15,7 +15,6 @@
  * <b> GameOverStatus.java </b> : Enumeration representing the possible Game Over states/possibilities
  * <b> IAction.java </b> : IAction interface to encapsulate Actions and MoveBuilds
  * <b> MoveBuild.java </b> : Class representing an IAction that contains both a move and build request
- * <b> Referee.java </b> : Class representing the administrative component of a game of Santorini, runs the game and manages interaction between Players and Board
  * <b> RuleChecker.java </b> : Class representing the rules the Santorini Game abides by, used to check validity of moves
  * <b> Square.java </b> : Class representing a cell on the board in a game of Santorini
  * <b> Status.java </b> : Enumeration representing the status of the game and what kind of action the game needs
@@ -24,7 +23,16 @@
  * <b> Turn.java </b> : Enumeration that represents whose turn in the game it is
  * <b> Worker.java </b> : Class representing a Worker in a game of Santorini
  
+<h3> Admin </h3> 
 
+ * <b> Referee.java </b> : Class representing the administrative component of a game of Santorini, runs the game and manages interaction between Players and Board
+ 
+ 
+<h3> Player </h3> 
+
+ * <b> Player.java </b> : Class representing a Player in a Santorini Game
+ 
+ 
 <h3> Design </h3>
 
  * <b> board.java </b> : Interface specification for the Santorini Game Board and relevant classes, Worker and Square
@@ -35,12 +43,14 @@
  * <b> RuleChecker.java </b> : Interface specification for the rule checking component of the Santorini Game
  
  
-<h3> Player </h3> 
-
- * <b> Player.java </b> : Class representing a Player in a Santorini Game
  
  <h2> Testing </h2> 
  
- Unit tests can be found at Santorini/tests.
+ Unit tests can be found at Santorini/tests. </br>
+ Unit Tests Created for Week 9: </br>
+  * <b> RefereeTest.java </b> : tests the functions within the Referee class, includes commented-out tests for private methods
+  * <b> Player.java </b> : tests the functions within the Player class
+  
+ 
  
 Each test suite is found within the folder corresponding to that week. For example, xboard tests are found in the 6 folder. For instructions on how to run the tests, see the TestMe file within each weeks folder.
