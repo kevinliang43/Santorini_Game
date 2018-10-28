@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 
+//Marina Karr: karr.m@husky.neu.edu
+//Kevin Liang: liang.ke@husky.neu.edu
 /**
  * A Referee oversees and performs actions for a game of Santorini.
  * It accepts players until MAX_PLAYERS is reached. Then waits until
@@ -160,8 +162,6 @@ public class Referee {
   private IAction tryGetMove(Player player) {
 
     // Initialize Runnables
-    IAction nextAction = null;
-    Action nextPlace = null;
     ActionRunnable ActionRunnable = new ActionRunnable(player, this.officialBoard, this.currentStatus);
 
     //Initialize Thread
