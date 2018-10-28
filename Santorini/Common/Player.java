@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -8,6 +9,7 @@ public class Player {
   private int id;
   private ArrayList<Integer> workerIDs;
   private Strategy bestStrategy;
+  private ArrayList<String> workerNames;
 
   // Note: Strategy could be TCPStrategy
 
@@ -22,6 +24,7 @@ public class Player {
     this.id = id;
     this.bestStrategy = strat;
     this.workerIDs = new ArrayList<>();
+    this.workerNames = new ArrayList<>();
   }
 
   /**
@@ -33,11 +36,23 @@ public class Player {
   }
 
   /**
+   * Adds A Worker to this Player's list of workers
+   * @param name Name of new Worker
+   */
+  public void addWorkerName(String name) {
+    this.workerNames.add(name);
+  }
+
+  /**
    * Gets all Worker IDs of workers this player owns
    * @return List of Worker IDs
    */
   public ArrayList<Integer> getWorkerIDs() {
     return workerIDs;
+  }
+
+  public ArrayList<String> getWorkerNames() {
+    return workerNames;
   }
 
   /**
@@ -63,5 +78,6 @@ public class Player {
    */
   public void resetWorkers() {
     this.workerIDs = new ArrayList<>();
+    this.workerNames = new ArrayList<>();
   }
 }

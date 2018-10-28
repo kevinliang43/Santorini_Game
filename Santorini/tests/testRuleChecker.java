@@ -28,15 +28,15 @@ public class testRuleChecker {
 
     Board b = new Board();
     assertTrue(RuleChecker.isPlaceLegal(b, 0, 0));
-    b.placeWorker(0, 0);
+    b.placeWorker(0, 0, "one1");
     assertFalse(RuleChecker.isPlaceLegal(b, 0, 0));
     assertTrue(RuleChecker.isPlaceLegal(b, 1, 1));
-    b.placeWorker(1, 1);
+    b.placeWorker(1, 1, "two1");
     assertTrue(RuleChecker.isPlaceLegal(b, 2, 2));
-    b.placeWorker(2, 2);
+    b.placeWorker(2, 2, "one2");
     assertFalse(RuleChecker.isPlaceLegal(b, -1, -1));
     assertTrue(RuleChecker.isPlaceLegal(b, 3, 3));
-    b.placeWorker(3, 3);
+    b.placeWorker(3, 3, "two2");
     assertFalse(RuleChecker.isPlaceLegal(b, 3, 3));
     assertTrue(RuleChecker.isPlaceLegal(b, 4, 4));
 
@@ -56,7 +56,7 @@ public class testRuleChecker {
         // and a worker never moves up more than one floor
   public void testMoveLegal() {
     Board b = new Board();
-    int id = b.placeWorker(0, 1);
+    int id = b.placeWorker(0, 1, "one");
                   // Board, workerID, x, y
     assertTrue(RuleChecker.isMoveLegal(b, id, 0, 0));
     //can't move to its own square
@@ -69,7 +69,7 @@ public class testRuleChecker {
     assertFalse(RuleChecker.isMoveLegal(b, id, 5, 5));
 
     assertTrue(RuleChecker.isMoveLegal(b, id, 1, 2));
-    int id2 = b.placeWorker(1, 2);
+    int id2 = b.placeWorker(1, 2, "two");
     //can't move to occupied square
     assertFalse(RuleChecker.isMoveLegal(b, id, 1, 2));
 
@@ -106,7 +106,7 @@ public class testRuleChecker {
   public void testLegalMoves() {
 
     Board board = new Board();
-    int worker11 = board.placeWorker(3, 3);
+    int worker11 = board.placeWorker(3, 3, "one");
     ArrayList<Integer> workers = new ArrayList<>();
     workers.add(worker11);
 
@@ -131,8 +131,8 @@ public class testRuleChecker {
   public void testLegalMoves2Workers() {
 
     Board board = new Board();
-    int worker11 = board.placeWorker(2, 2);
-    int worker12 = board.placeWorker(3, 3);
+    int worker11 = board.placeWorker(2, 2, "one1");
+    int worker12 = board.placeWorker(3, 3, "one2");
     ArrayList<Integer> workers = new ArrayList<>();
     workers.add(worker11);
     workers.add(worker12);
@@ -165,10 +165,10 @@ public class testRuleChecker {
     //win case
     Board board = new Board();
 
-    int worker11 = board.placeWorker(2, 3);
-    int worker21 = board.placeWorker(4, 5);
-    int worker12 = board.placeWorker(0,5);
-    int worker22 = board.placeWorker(5,0);
+    int worker11 = board.placeWorker(2, 3, "one1");
+    int worker21 = board.placeWorker(4, 5, "two1");
+    int worker12 = board.placeWorker(0,5, "one2");
+    int worker22 = board.placeWorker(5,0, "two2");
 
     ArrayList<Integer> p1Workers = new ArrayList<>();
     p1Workers.add(worker11);

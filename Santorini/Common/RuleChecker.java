@@ -202,16 +202,17 @@ public class RuleChecker {
           }
           int x = board.getWorkerSquare(w).getX();
           int y = board.getWorkerSquare(w).getY();
+          String name = board.getWorkerSquare(w).getWorkerName();
 
           if(isMoveLegal(board, w,   x + iMove,y + jMove)) {
 
-            Action moveAction = new Action(Status.MOVE, w, x + iMove, y + jMove);
+            Action moveAction = new Action(Status.MOVE, w, x + iMove, y + jMove, name);
 
             for(int iBuild = -1; iBuild <= 1; iBuild++) {
               for (int jBuild = -1; jBuild <= 1; jBuild++) {
 
                 if(isBuildLegal(performAction(board, moveAction), w, x + iMove + iBuild, y + jMove + jBuild)) {
-                  Action buildAction = new Action(Status.BUILD, w, x + iMove + iBuild, y + jMove + jBuild);
+                  Action buildAction = new Action(Status.BUILD, w, x + iMove + iBuild, y + jMove + jBuild, name);
                   result.add(new MoveBuild(moveAction, buildAction));
 
                 }
@@ -239,9 +240,6 @@ public class RuleChecker {
     if(action.actionType == Status.BUILD) {
       result.buildFloor(action.x, action.y);
     }
-//    if(action.actionType == Status.PLACE) {
-//      result.placeWorker(action.x, action.y);
-//    }
 
     return result;
   }
@@ -258,9 +256,6 @@ public class RuleChecker {
     result.moveWorker(moveBuild.workerID, moveBuild.xMove, moveBuild.yMove);
 
     result.buildFloor(moveBuild.xBuild, moveBuild.yBuild);
-//    if(action.actionType == Status.PLACE) {
-//      result.placeWorker(action.x, action.y);
-//    }
 
     return result;
   }

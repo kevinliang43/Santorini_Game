@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+//Marina Karr: karr.m@husky.neu.edu
+//Kevin Liang: liang.ke@husky.neu.edu
 /**
  * A Referee oversees and performs actions for a game of Santorini.
  * It accepts players until MAX_PLAYERS is reached. Then waits until
@@ -20,6 +23,7 @@ public class Referee {
   private Turn currentTurn;
   private Player winningPlayer;
   private HashMap<Player, Integer> playerWins;
+  private ArrayList<Observer> observers;
 
   public Referee() {
     this.players = new ArrayList<>();
@@ -27,16 +31,17 @@ public class Referee {
     this.currentStatus = Status.PLACE;
     this.currentTurn = Turn.PLAYER1;
     this.playerWins = new HashMap<>();
+    this.observers = new ArrayList<>();
   }
 
 
-    /**
-     * Runs a game between this classes two players n amount of times and determines the winner based off of which
-     * player won the most games out of n
-     * @param numGames odd number of games to play
-     * @return Player that won the most games within this set of n games
-     * @throws IllegalArgumentException when the given n is even, must be odd to guarantee a winner
-     */
+  /**
+   * Runs a game between this classes two players n amount of times and determines the winner based off of which
+   * player won the most games out of n
+   * @param numGames odd number of games to play
+   * @return Player that won the most games within this set of n games
+   * @throws IllegalArgumentException when the given n is even, must be odd to guarantee a winner
+   */
   public Player runGame(int numGames) throws IllegalArgumentException {
     if (numGames < 1 || numGames % 2 == 0) {
       throw new IllegalArgumentException("Cannot run a Best of N games, where N is less than 1 or even.");
@@ -101,6 +106,9 @@ public class Referee {
       throw new IllegalStateException("Cannot Start a game without max number of players.");
     }
 
+    // Send initial board State to observers
+    this.updateObserver(this.officialBoard.asJSONArray() + "\n");
+
     // Place phase
     for (int i = 0; i < WORKERS_PER_PLAYER; i++) {
       for (Player player : this.players) {
@@ -138,7 +146,6 @@ public class Referee {
         return this.winningPlayer;
       }
     }
-    // TODO: Update gameover status
 
     // Determine Winner
     if (this.currentTurn == Turn.PLAYER1) {
@@ -152,16 +159,14 @@ public class Referee {
   }
 
 
-    /**
-     * Tries to get the next move of the player, if a move is found, an IAction is returned. If it times out, null is returned
-     * @param player Player taking the next action
-     * @return an IAction or null based on whether or not a move was found
-     */
+  /**
+   * Tries to get the next move of the player, if a move is found, an IAction is returned. If it times out, null is returned
+   * @param player Player taking the next action
+   * @return an IAction or null based on whether or not a move was found
+   */
   private IAction tryGetMove(Player player) {
 
     // Initialize Runnables
-    IAction nextAction = null;
-    Action nextPlace = null;
     ActionRunnable ActionRunnable = new ActionRunnable(player, this.officialBoard, this.currentStatus);
 
     //Initialize Thread
@@ -185,19 +190,23 @@ public class Referee {
    */
   private void placePhase(Player p, Action nextPlace) {
 
-    //Action nextAction = (Action)p.getNextAction(this.officialBoard, this.currentStatus);
-    // Check if the move is a Place
-    // Or if the place is not legal,
-    // If not, the player loses. and the player gets kicked
     if (nextPlace.actionType != Status.PLACE || !RuleChecker.isPlaceLegal(this.officialBoard, nextPlace.x, nextPlace.y)) {
+      this.updateObserver(p.getName() + " Has made an illegal place action.");
       this.gameOver(p);
       return;
+
     }
     // Else, the place is valid
     else {
-      int workerID = this.officialBoard.placeWorker(nextPlace.x, nextPlace.y);
+      String workerName = p.getName() + (p.getWorkerIDs().size() + 1);
+      int workerID = this.officialBoard.placeWorker(nextPlace.x, nextPlace.y, workerName);
       p.addWorkerID(workerID);
+      p.addWorkerName(workerName);
     }
+
+    // Send new updates to observers
+    updateObserver(this.officialBoard.asJSONArray()+"\n");
+
     // Update turn
     if (this.currentTurn == Turn.PLAYER1) {
       this.currentTurn = Turn.PLAYER2;
@@ -215,6 +224,7 @@ public class Referee {
    * @param p The Player to get the next Move and Build Actions from.
    */
   private void turnPhase(Player p, MoveBuild nextMoveBuild) {
+    Board initBoard = this.getOfficialBoard();
 
     // Check if the move is a MoveBuild
     // Or if the place is not legal,
@@ -227,8 +237,16 @@ public class Referee {
       if (RuleChecker.isGameOver(this.officialBoard, p.getWorkerIDs())  == GameOverStatus.WINNING_FLOOR) {
         this.winningPlayer = p;
         this.currentStatus = Status.GAMEOVER;
+        // Update Observer
+        updateObserver(Translator.moveBuildAsJSON(initBoard, new MoveBuild(nextMoveBuild.move, null)));
+        updateObserver(this.officialBoard.asJSONArray()+"\n");
+        updateObserver(p.getName() + " has made a winning Move!");
         return;
       }
+
+      // Update Observer with BuildMove
+      updateObserver(Translator.moveBuildAsJSON(initBoard, nextMoveBuild));
+
       // Check if the Build is legal
       if (RuleChecker.isBuildLegal(this.officialBoard, nextMoveBuild.build.workerID, nextMoveBuild.build.x, nextMoveBuild.build.y)) {
         // execute the build
@@ -238,17 +256,25 @@ public class Referee {
         if (RuleChecker.isGameOver(this.officialBoard, bs.filterWorkers(p.getWorkerIDs())) == GameOverStatus.NO_MOVE_BUILD) {
           this.winningPlayer = p;
           this.currentStatus = Status.GAMEOVER;
+          // Update Observer
+          updateObserver(this.officialBoard.asJSONArray()+"\n");
+          updateObserver(p.getName() + " has made a winning Build! The other player is unable to move.");
           return;
         }
       }
       else {
+        this.updateObserver(p.getName() + " Has made an illegal build action.");
         this.gameOver(p);
       }
 
     }
     else {
+      this.updateObserver(p.getName() + " Has made an illegal move action.");
       this.gameOver(p);
     }
+
+    // Send new updates to observers
+    updateObserver(this.officialBoard.asJSONArray()+"\n");
 
     // Update turn
     if (this.currentTurn == Turn.PLAYER1) {
@@ -340,15 +366,35 @@ public class Referee {
     removePlayer(p.getName());
     this.winningPlayer = this.players.get(0); // Works for a game of 2 players
     this.currentStatus = Status.GAMEOVER;
+    updateObserver(this.winningPlayer.getName() +" has won.");
   }
-//
-//  /**
-//   * Sets the current Status.
-//   * TESTING ONLY
-//   * @param s
-//   */
-//  public void setCurrentStatus(Status s) {
-//    this.currentStatus = s;
-//  }
+
+  /**
+   * Adds a new Observer to this Referee
+   */
+  public void addObserver() {
+    this.observers.add(new Observer());
+  }
+
+  /**
+   * Updates all Observers with either :
+   * 1. new Updates to the board
+   * 2. new Board Requests
+   * 3. End of Game messages
+   * @param jsonString Updates to be sent to observers
+   */
+  public void updateObserver(String jsonString) {
+    for (Observer observer : this.observers) {
+      observer.append(jsonString);
+    }
+  }
+
+  /**
+   * Get the Observers of this Referee
+   * @return List of Observers
+   */
+  public List<Observer> getObservers() {
+    return this.observers;
+  }
 
 }

@@ -17,6 +17,7 @@ public class Action implements IAction{
   public final Status actionType;
   public final int x, y;
   public final int workerID;
+  public final String workerName;
 
   /**
    * Construct an Action for one of the three action types defined in Status:
@@ -32,12 +33,13 @@ public class Action implements IAction{
    *                 description for details.
    * @throws IllegalArgumentException if passed Status is GAMEOVER.
    */
-  public Action(Status actionType, int workerID, int x, int y) {
+  public Action(Status actionType, int workerID, int x, int y, String workerName) {
     if (actionType == Status.GAMEOVER) {
       throw new IllegalArgumentException("GAMEOVER is not a valid Action Type");
     } else if (actionType == null) {
       throw new IllegalArgumentException("actionType cannot be null");
     }
+    this.workerName = workerName;
     this.actionType = actionType;
     this.workerID = workerID;
     this.x = x;
@@ -60,7 +62,6 @@ public class Action implements IAction{
     if(actionType == Status.PLACE) {
       action = "place ";
     }
-
 
     return action + workerID + " to " + x + "," + y;
   }

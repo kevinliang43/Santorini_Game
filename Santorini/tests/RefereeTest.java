@@ -247,4 +247,15 @@ public class RefereeTest{
     }
 
 
+    @Test
+  public void testObserver() {
+      setupGame();
+      ref.addObserver();
+      Player p1 = ref.getPlayers().get(0);
+      Player p2 = ref.getPlayers().get(1);
+      Player winner = this.ref.runGame();
+      System.out.println(ref.getObservers().get(0).getHistory());
+
+    }
+
 }

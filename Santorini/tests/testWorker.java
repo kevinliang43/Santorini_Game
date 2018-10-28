@@ -20,16 +20,16 @@ public class testWorker {
   @Test   // Test the creation of a Worker
   public void testWorkerConstructor() {
 
-    Worker w1 = new Worker(1,2);
+    Worker w1 = new Worker(1,2, "one");
     assertEquals(w1.getX(), 1);
     assertEquals(w1.getY(), 2);
+    assertEquals(w1.getName(), "one");
     workerIDs.add(w1.getID());
 
-    Worker w2 = new Worker(3,4);
+    Worker w2 = new Worker(3,4, "two");
     assertEquals(w2.getX(), 3);
     assertEquals(w2.getY(), 4);
 
-    //assertNotEquals(w1.getID(), w2.getID());
     workerIDs.add(w2.getID());
 
   }
@@ -38,7 +38,7 @@ public class testWorker {
   public void testGetXandY() {
     int x = r.nextInt(6);
     int y = r.nextInt(6);
-    Worker wxy = new Worker(x, y);
+    Worker wxy = new Worker(x, y, "one");
     workerIDs.add(wxy.getID());
     assertEquals(x, wxy.getX());
     assertEquals(y, wxy.getY());
@@ -50,7 +50,7 @@ public class testWorker {
 
     int x = 3;
     int y = 4;
-    Worker wxy = new Worker(x, y);
+    Worker wxy = new Worker(x, y, "one");
     workerIDs.add(wxy.getID());
     assertEquals(wxy.getX(), 3);
     assertEquals(wxy.getY(), 4);
@@ -67,7 +67,7 @@ public class testWorker {
     Worker wid;
 
     for(int i = 0; i < 1000; i++) {
-      wid = new Worker(r.nextInt(6), r.nextInt(6));
+      wid = new Worker(r.nextInt(6), r.nextInt(6), "one");
       assertFalse(workerIDs.contains(wid.getID()));
       workerIDs.add(wid.getID());
     }

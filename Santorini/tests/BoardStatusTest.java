@@ -15,9 +15,9 @@ public class BoardStatusTest {
     Board b = new Board();
     ArrayList<Integer> toFilter = new ArrayList<>();
     ArrayList<Integer> expectedFilter = new ArrayList<>();
-    toFilter.add(b.placeWorker(0, 0));
-    toFilter.add(b.placeWorker(0, 1));
-    expectedFilter.add(b.placeWorker(1, 0));
+    toFilter.add(b.placeWorker(0, 0, "one"));
+    toFilter.add(b.placeWorker(0, 1, "two"));
+    expectedFilter.add(b.placeWorker(1, 0, "three"));
 
     BoardStatus boardStatus = new BoardStatus(b, Status.PLACE);
     ArrayList<Integer> actualFilter = boardStatus.filterWorkers(toFilter);

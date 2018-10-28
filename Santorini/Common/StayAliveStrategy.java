@@ -62,7 +62,7 @@ public class StayAliveStrategy implements Strategy {
     if(strat1) {
       for(int i = 0; i < Board.BOARD_X; i++) {
         if(!board.isOccupied(i, i)) {
-          return new Action(Status.PLACE, Board.INVALID_WORKER_ID, i, i);
+          return new Action(Status.PLACE, Board.INVALID_WORKER_ID, i, i, null);
         }
       }
     }
@@ -85,11 +85,11 @@ public class StayAliveStrategy implements Strategy {
           }
         }
       }
-      return new Action(Status.PLACE, Board.INVALID_WORKER_ID, furthestX, furthestY);
+      return new Action(Status.PLACE, Board.INVALID_WORKER_ID, furthestX, furthestY, null);
     }
 
     // Return an invalid placement
-    return new Action(Status.PLACE, Board.INVALID_WORKER_ID, -1, -1);
+    return new Action(Status.PLACE, Board.INVALID_WORKER_ID, -1, -1, null);
   }
 
   //can the player calling this method stay alive

@@ -8,14 +8,16 @@ public class Worker {
 
   private int x, y;
   private int id;
+  private String name;
 
   /**
    * creates a new worker with the ID of the current worker count, then increments the count
    */
-  public Worker(int x, int y) {
+  public Worker(int x, int y, String name) {
     this.setPosition(x, y);
     this.id = workerCount;
     workerCount++;
+    this.name = name;
   }
 
   /**
@@ -26,6 +28,7 @@ public class Worker {
     this.x = workerToCopy.x;
     this.y = workerToCopy.y;
     this.id = workerToCopy.id;
+    this.name = workerToCopy.name;
   }
 
   /**
@@ -52,6 +55,10 @@ public class Worker {
   public void setPosition(int x, int y) {
     this.x = x;
     this.y = y;
+  }
+
+  public String getName() {
+    return this.name;
   }
 
   /**

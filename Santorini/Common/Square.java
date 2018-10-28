@@ -22,6 +22,8 @@ public class Square {
   protected boolean occupied;
   // ID of worker if it is occupied. If not occupied, value is -1
   protected int workerID;
+  // Name of worker if it is occupied. If not occupied, value is null;
+  protected String workerName;
 
   /**
    * Initial Constructor for an Square
@@ -34,6 +36,7 @@ public class Square {
     this.height = 0;
     this.occupied = false;
     this.workerID = Board.INVALID_WORKER_ID;
+    this.workerName = null;
   }
 
   /**
@@ -46,6 +49,7 @@ public class Square {
     this.height = squareToCopy.height;
     this.occupied = squareToCopy.occupied;
     this.workerID = squareToCopy.workerID;
+    this.workerName = squareToCopy.workerName;
   }
 
   /**
@@ -55,12 +59,13 @@ public class Square {
    * @param height    height of the Building of the Square
    * @param occupied  True if there's a Worker on the Square, false if there isn't
    */
-  Square(int x, int y, int height, boolean occupied, int workerID) {
+  Square(int x, int y, int height, boolean occupied, int workerID, String workerName) {
     this.x = x;
     this.y = y;
     this.height = height;
     this.occupied = occupied;
     this.workerID = workerID;
+    this.workerName = workerName;
   }
 
   /**
@@ -105,6 +110,15 @@ public class Square {
   }
 
   /**
+   * Getter for the String name of the worker occupying this square. If the square is not occupied
+   * null is returned.
+   * @return String representing the Worker name. If no worker is present, null is returned.
+   */
+  public String getWorkerName() {
+    return this.workerName;
+  }
+
+  /**
    * Set the height of the Building on this Square to a given height
    * @param height  new height of the Building
    * @throws IllegalStateException  if the new height isn't between 0 and MAX_BUILDING_HEIGHT
@@ -120,16 +134,20 @@ public class Square {
    * Setter the status of a Worker occupying this Square
    * @param occupied    True if there is a Worker is now on the Square, false if there is not
    */
-  void setOccupied(boolean occupied, int workerID) {
+  void setOccupied(boolean occupied, int workerID, String workerName) {
     this.occupied = occupied;
     this.workerID = workerID;
+    this.workerName = workerName;
   }
 
-  String asString() {
+  public String asString() {
     if (this.getWorkerID() == -1) {
-      return " " + Integer.toString(this.getHeight());
+      return Integer.toString(this.getHeight());
     } else {
-      return Integer.toString(this.getWorkerID()) + Integer.toString(this.getHeight());
+      return Integer.toString(this.getHeight()) + this.workerName;
     }
   }
+
+
+
 }

@@ -70,11 +70,6 @@ public class Board {
     for (Worker w : boardToCopy.workerList) {
       this.workerList.add(new Worker(w));
     }
-
-    //test
-//    for (Action a : actionStack) {
-//      this.actionStack.push(a);
-//    }
   }
 
   /**
@@ -131,15 +126,15 @@ public class Board {
    * @return    the workerID of the new Worker
    * @throws IllegalArgumentException   if the Square is already occupied
    */
-  public int placeWorker(int x, int y) throws IllegalArgumentException {
+  public int placeWorker(int x, int y, String name) throws IllegalArgumentException {
     validateOnBoard(x, y);
     if (cells[x][y].isOccupied()) {
       throw new IllegalArgumentException("Square is already occupied");
     }
 
-    Worker newW = new Worker(x, y);
+    Worker newW = new Worker(x, y, name);
     this.workerList.add(newW);
-    this.cells[x][y].setOccupied(true, newW.getID());
+    this.cells[x][y].setOccupied(true, newW.getID(), newW.getName());
     return newW.getID();
   }
 
@@ -168,16 +163,14 @@ public class Board {
    */
   public void moveWorker(int workerID, int x, int y) throws IllegalArgumentException {
     validateOnBoard(x, y);
-
     for (Worker w : this.workerList) {
       if (w.getID() == workerID) {
-        cells[w.getX()][w.getY()].setOccupied(false, INVALID_WORKER_ID);
+        cells[w.getX()][w.getY()].setOccupied(false, INVALID_WORKER_ID, null);
         w.setPosition(x, y);
-        cells[x][y].setOccupied(true, w.getID());
+        cells[x][y].setOccupied(true, w.getID(), w.getName());
         return;
       }
     }
-
     throw new IllegalArgumentException("Invalid worker ID");
   }
 
@@ -275,5 +268,33 @@ public class Board {
       board += "\n";
     }
     return board;
+  }
+
+  public String asJSONArray() {
+    String board = "[";
+    for (int row = 0; row < this.BOARD_X; row++) {
+      board += "[";
+      for (int col = 0; col < this.BOARD_Y; col++) {
+        Square currentCell = this.cells[row][col];
+
+        if (currentCell.isOccupied()) {
+          board += "\"" + currentCell.asString() + "\"";
+        }
+        else {
+          board += currentCell.asString();
+        }
+
+        if (col != this.BOARD_Y - 1) {
+          board += ", ";
+        }
+      }
+      board += "]";
+      if (row != this.BOARD_X - 1) {
+        board += ",\n ";
+      }
+    }
+    board += "]";
+    return board;
+
   }
 }

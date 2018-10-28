@@ -28,10 +28,10 @@ public class StrategyTest {
   public void setup() {
     board = new Board();
 
-    worker11 = board.placeWorker(2, 3);
-    worker21 = board.placeWorker(4, 5);
-    worker12 = board.placeWorker(0,5);
-    worker22 = board.placeWorker(5,0);
+    worker11 = board.placeWorker(2, 3, "one1");
+    worker21 = board.placeWorker(4, 5, "two1");
+    worker12 = board.placeWorker(0,5, "one2");
+    worker22 = board.placeWorker(5,0, "two2");
 
     p1Workers = new ArrayList<>();
     p1Workers.add(worker11);
@@ -49,8 +49,8 @@ public class StrategyTest {
   @Test
   public void testStrategyStayAliveUpToThree(){
 
-    Action move = new Action(Status.MOVE, worker11, 3,3);
-    Action build = new Action(Status.BUILD, worker11, 4, 4);
+    Action move = new Action(Status.MOVE, worker11, 3,3, "one1");
+    Action build = new Action(Status.BUILD, worker11, 4, 4, "one1");
 
     MoveBuild moveBuild = new MoveBuild(move, build);
     Board actB = RuleChecker.performAction(board, moveBuild);

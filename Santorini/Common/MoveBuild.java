@@ -9,20 +9,28 @@ public class MoveBuild implements IAction{
   public final Status actionType = Status.MOVEBUILD;
   public final int xMove, yMove, xBuild, yBuild;
   public final int workerID;
+  public final String workerName;
 
   MoveBuild(Action move, Action build) {
 
     this.move = move;
     this.build = build;
 
-    if(move.workerID != build.workerID) {
-      throw new IllegalStateException("Move and Build must be performed on the same Worker.");
-    }
+//    if(move.workerID != build.workerID) {
+//      throw new IllegalStateException("Move and Build must be performed on the same Worker.");
+//    }
     workerID = move.workerID;
+    workerName = move.workerName;
     xMove = move.x;
     yMove = move.y;
-    xBuild = build.x;
-    yBuild = build.y;
+    if (build != null) {
+      xBuild = build.x;
+      yBuild = build.y;
+    }
+    else {
+      xBuild = -1;
+      yBuild = -1;
+    }
 
   }
 

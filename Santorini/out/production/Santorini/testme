@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-for i in {1..5}
-do
-    ./xrules < xrules-tests/$i-in.json | diff - xrules-tests/$i-out.json
-    if [ $? -ne 0 ]; then
-      echo "Test failed: $i"
-    fi
-done

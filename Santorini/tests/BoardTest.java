@@ -40,18 +40,18 @@ public class BoardTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void getWorkerSquareWithWorkerInvalidID() {
-    b.placeWorker(0, 0);
+    b.placeWorker(0, 0, "one");
     b.getWorkerSquare(Board.INVALID_WORKER_ID);
   }
 
   // Placing worker basic tests
   @Test
   public void placeWorkerTest() {
-    int workerID1 = b.placeWorker(0, 0);
+    int workerID1 = b.placeWorker(0, 0, "one");
     checkWorkerPosition(workerID1, 0, 0);
     heightsEqualZero();
 
-    int workerID2 = b.placeWorker(2, 4);
+    int workerID2 = b.placeWorker(2, 4, "two");
     checkWorkerPosition(workerID2, 2, 4);
     checkWorkerPosition(workerID1, 0, 0);
     heightsEqualZero();
@@ -59,28 +59,28 @@ public class BoardTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void placeWorkerNegX() {
-    b.placeWorker(-1, 0);
+    b.placeWorker(-1, 0, "one");
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void placeWorkerNegY() {
-    b.placeWorker(0, -1);
+    b.placeWorker(0, -1, "two");
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void placeWorkerBigX() {
-    b.placeWorker(Board.BOARD_X, 0);
+    b.placeWorker(Board.BOARD_X, 0, "one");
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void placeWorkerBigY() {
-    b.placeWorker(0, Board.BOARD_Y);
+    b.placeWorker(0, Board.BOARD_Y, "one");
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void placeWorkerSameSquare() {
-    b.placeWorker(0, 0);
-    b.placeWorker(0, 0);
+    b.placeWorker(0, 0, "one");
+    b.placeWorker(0, 0, "two");
   }
 
   // Verify the board IDs and returned IDs from placing workers match-up
@@ -88,7 +88,8 @@ public class BoardTest {
   public void getWorkerIDs() {
     ArrayList<Integer> workerIDs = new ArrayList<>();
     for (int i = 0; i < 4; i++) {
-      int id = b.placeWorker(i, 0);
+      String name = "one" + i;
+      int id = b.placeWorker(i, 0, name);
       assertEquals(false, workerIDs.contains(id));
       workerIDs.add(id);
     }
@@ -104,10 +105,10 @@ public class BoardTest {
   // Moving worker basic tests
   @Test
   public void moveWorkerTest() {
-    int workerID1 = b.placeWorker(1, 3);
+    int workerID1 = b.placeWorker(1, 3, "one");
     checkWorkerPosition(workerID1, 1, 3);
 
-    int workerID2 = b.placeWorker(5, 2);
+    int workerID2 = b.placeWorker(5, 2, "two");
     checkWorkerPosition(workerID2, 5, 2);
 
     b.moveWorker(workerID1, 4, 3);
@@ -119,7 +120,7 @@ public class BoardTest {
   // Test Square worker came from is no longer occupied
   @Test
   public void moveWorkerOccupiedTest() {
-    int workerID1 = b.placeWorker(1, 3);
+    int workerID1 = b.placeWorker(1, 3, "one");
     checkWorkerPosition(workerID1, 1, 3);
     b.moveWorker(workerID1, 1, 4);
     assertEquals(false, b.isOccupied(1, 3));
@@ -131,25 +132,25 @@ public class BoardTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void moveWorkerNegX() {
-    int workerID = b.placeWorker(0, 0);
+    int workerID = b.placeWorker(0, 0, "one");
     b.moveWorker(workerID, -1, 0);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void moveWorkerNegY() {
-    int workerID = b.placeWorker(0, 0);
+    int workerID = b.placeWorker(0, 0, "one");
     b.moveWorker(workerID, 0, -1);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void moveWorkerBigX() {
-    int workerID = b.placeWorker(0, 0);
+    int workerID = b.placeWorker(0, 0, "one");
     b.moveWorker(workerID, Board.BOARD_X, 0);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void moveWorkerBigY() {
-    int workerID = b.placeWorker(0, 0);
+    int workerID = b.placeWorker(0, 0, "two");
     b.moveWorker(workerID, 0, Board.BOARD_Y);
   }
 
@@ -160,7 +161,7 @@ public class BoardTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void moveWorkerConstInvalidID() {
-    b.placeWorker(0, 0);
+    b.placeWorker(0, 0, "two");
     b.moveWorker(Board.INVALID_WORKER_ID, 0, 0);
   }
 
@@ -268,7 +269,7 @@ public class BoardTest {
   @Test
   public void isOccupiedTest() {
     assertEquals(false, b.isOccupied(2, 3));
-    b.placeWorker(2, 3);
+    b.placeWorker(2, 3, "two");
     assertEquals(true, b.isOccupied(2, 3));
     assertEquals(false, b.isOccupied(2, 2));
   }
@@ -349,6 +350,17 @@ public class BoardTest {
     b.neighboring(0, 0, 0, Board.BOARD_Y);
   }
 
+  @Test
+  public void testAsJSONArray() {
+    Board b = new Board();
+    b.placeWorker(2, 3, "two1");
+    b.placeWorker(0, 0, "one1");
+    String expected = "[[\"0one1\", 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, \"0two1\", 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]";
+    assertEquals(b.asJSONArray(), expected);
+  }
+
+
+
   // Verifies the Board has only heights of 0. Ignores positions in ignoreSquare.
   private void heightsEqualZero() {
     for (int x = 0; x < Board.BOARD_X; x++) {
@@ -374,4 +386,8 @@ public class BoardTest {
     assertEquals(expX, s.getX());
     assertEquals(expY, s.getY());
   }
+
+
+
+
 }
