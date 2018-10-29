@@ -116,7 +116,9 @@ public class RefereeTest{
 //    Player p2 = ref.getPlayers().get(1);
 //    assertEquals(p1.getWorkerIDs().size(), 0);
 //    assertEquals(p2.getWorkerIDs().size(), 0);
-//    this.ref.placePhase(p1);
+//    IAction place = p1.getNextAction(this.board, Status.PLACE);
+//    Action placeAction = (Action) place;
+//    this.ref.placePhase(p1, placeAction);
 //
 //    //Check status of board after player 1 places.
 //    assertEquals(this.ref.getOfficialBoard().getWorkerIDs().size(), 1);
@@ -133,7 +135,9 @@ public class RefereeTest{
 //    assertEquals(player1WorkerSquare.getY(), 0);
 //
 //    //Player 2 Places
-//    this.ref.placePhase(p2);
+//    IAction place2 = p2.getNextAction(this.board, Status.PLACE);
+//    Action placeAction2 = (Action) place2;
+//    this.ref.placePhase(p2, placeAction);
 //    assertEquals(this.ref.getOfficialBoard().getWorkerIDs().size(), 2);
 //    assertEquals(this.ref.getCurrentTurn(), Turn.PLAYER1);
 //    assertEquals(this.ref.getCurrentStatus(), Status.PLACE);
@@ -165,7 +169,7 @@ public class RefereeTest{
 //    assertEquals(ref.getPlayers().size(), 1);
 //    assertEquals(ref.getCurrentStatus(), Status.GAMEOVER);
 //  }
-//
+
     /**
      * checks a moveBuild and if it properly executes when the player is requested to move
      */
@@ -246,16 +250,143 @@ public class RefereeTest{
         assertEquals(winner, p1);
     }
 
+  /**
+   * Test to check that a valid winner is returned and the expected output is returned.
+   */
+  @Test
+  public void testObserver() {
+      setupGame();
+      ref.addObserver();
+      Player p1 = ref.getPlayers().get(0);
+      Player p2 = ref.getPlayers().get(1);
+      Player winner = this.ref.runGame();
+      String resultGame = ref.getObservers().get(0).getHistory();
+      String lastLine = resultGame.substring(resultGame.indexOf("one has"));
+      String expected = "one has made a winning Move!\n";
+      assertEquals(expected, lastLine);
 
-//    @Test
-//  public void testObserver() {
-//      setupGame();
-//      ref.addObserver();
-//      Player p1 = ref.getPlayers().get(0);
-//      Player p2 = ref.getPlayers().get(1);
-//      Player winner = this.ref.runGame();
-//      System.out.println(ref.getObservers().get(0).getHistory());
-//
-//    }
+    }
+
+  /**
+   * Test that observers are notified when a player makes an invalid placement
+   */
+  @Test
+  public void testObserverGameInvalid() {
+    setupGame();
+    ref.addObserver();
+    Player p1 = ref.getPlayers().get(0);
+    Player p2 = ref.getPlayers().get(1);
+
+    IAction place1 = p1.getNextAction(this.ref.getOfficialBoard(), Status.PLACE);
+    Action placement1 = (Action)place1;
+    this.ref.placePhase(p1, placement1);
+
+    IAction place2 = p2.getNextAction(this.ref.getOfficialBoard(), Status.PLACE);
+    Action placement2 = (Action)place2;
+    this.ref.placePhase(p2, placement2);
+
+    IAction place3 = p1.getNextAction(this.ref.getOfficialBoard(), Status.PLACE);
+    Action placement3 = (Action)place3;
+    this.ref.placePhase(p1, placement3);
+
+
+    IAction place4 = p2.getNextAction(this.ref.getOfficialBoard(), Status.PLACE);
+    Action placement4 = (Action)place4;
+    this.ref.placePhase(p2, placement4);
+
+
+    Action move = new Action(Status.BUILD, 0, 3, 3, "one1");
+    this.ref.placePhase(p1, move);
+
+
+    String resultGame = this.ref.getObservers().get(0).getHistory();
+    String lastLine = resultGame.substring(resultGame.indexOf("one has"));
+    String expected = "one has made an illegal place action.\ntwo has won.\n";
+    assertEquals(expected, lastLine);
+  }
+
+  /**
+   * Test that observers are notified when a player makes an invalid move
+   */
+  @Test
+  public void testObserverGameInvalid1() {
+    setupGame();
+    ref.addObserver();
+    Player p1 = ref.getPlayers().get(0);
+    Player p2 = ref.getPlayers().get(1);
+
+    IAction place1 = p1.getNextAction(this.ref.getOfficialBoard(), Status.PLACE);
+    Action placement1 = (Action)place1;
+    this.ref.placePhase(p1, placement1);
+
+    IAction place2 = p2.getNextAction(this.ref.getOfficialBoard(), Status.PLACE);
+    Action placement2 = (Action)place2;
+    this.ref.placePhase(p2, placement2);
+
+    IAction place3 = p1.getNextAction(this.ref.getOfficialBoard(), Status.PLACE);
+    Action placement3 = (Action)place3;
+    this.ref.placePhase(p1, placement3);
+
+
+    IAction place4 = p2.getNextAction(this.ref.getOfficialBoard(), Status.PLACE);
+    Action placement4 = (Action)place4;
+    this.ref.placePhase(p2, placement4);
+
+
+    Action move = new Action(Status.MOVE, 0, 1, 1, "one1");
+    Action build = new Action(Status.BUILD, 0, 3, 2, "one1");
+    MoveBuild movebuild = new MoveBuild(move, build);
+
+    this.ref.turnPhase(p1, movebuild);
+
+    String resultGame = this.ref.getObservers().get(0).getHistory();
+    //System.out.println(resultGame);
+    //String lastLine = resultGame.substring(resultGame.indexOf("one has"));
+    //String expected = "one has made an illegal place action.\ntwo has won.\n";
+    //assertEquals(expected, lastLine);
+  }
+
+  /**
+   * Test that observers are notified when a player makes an invalid build
+   */
+  @Test
+  public void testObserverGameInvalid2() {
+    setupGame();
+    ref.addObserver();
+    Player p1 = ref.getPlayers().get(0);
+    Player p2 = ref.getPlayers().get(1);
+
+    IAction place1 = p1.getNextAction(this.ref.getOfficialBoard(), Status.PLACE);
+    Action placement1 = (Action)place1;
+    this.ref.placePhase(p1, placement1);
+
+    IAction place2 = p2.getNextAction(this.ref.getOfficialBoard(), Status.PLACE);
+    Action placement2 = (Action)place2;
+    this.ref.placePhase(p2, placement2);
+
+    IAction place3 = p1.getNextAction(this.ref.getOfficialBoard(), Status.PLACE);
+    Action placement3 = (Action)place3;
+    this.ref.placePhase(p1, placement3);
+
+
+    IAction place4 = p2.getNextAction(this.ref.getOfficialBoard(), Status.PLACE);
+    Action placement4 = (Action)place4;
+    this.ref.placePhase(p2, placement4);
+
+
+    Action move = new Action(Status.MOVE, 0, 0, 1, "one1");
+    Action build = new Action(Status.BUILD, 0, 1, 1, "one1");
+    MoveBuild movebuild = new MoveBuild(move, build);
+
+    this.ref.turnPhase(p1, movebuild);
+
+    String resultGame = this.ref.getObservers().get(0).getHistory();
+    System.out.println(resultGame);
+    //String lastLine = resultGame.substring(resultGame.indexOf("one has"));
+    //String expected = "one has made an illegal place action.\ntwo has won.\n";
+    //assertEquals(expected, lastLine);
+  }
+
+
 
 }

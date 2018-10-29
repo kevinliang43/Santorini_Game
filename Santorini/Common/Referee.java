@@ -44,7 +44,7 @@ public class Referee {
      */
   public Player runGame(int numGames) throws IllegalArgumentException {
     if (numGames < 1 || numGames % 2 == 0) {
-      throw new IllegalArgumentException("Cannot run a Best of N games, where N is less than 1 or even.");
+      throw new IllegalArgumentException("Cannot run a best of N games, where N is less than 1 or even.");
     }
 
     if (this.players.size() != MAX_PLAYERS) {
@@ -103,7 +103,7 @@ public class Referee {
   public Player runGame() throws IllegalStateException {
     // Check that there are MAX_PLAYERS contained
     if (this.players.size() != MAX_PLAYERS) {
-      throw new IllegalStateException("Cannot Start a game without max number of players.");
+      throw new IllegalStateException("Cannot start a game without max number of players.");
     }
 
     // Send initial board State to observers
@@ -188,10 +188,10 @@ public class Referee {
    * An invalid place will result in the Player being kicked.
    * @param p The Player to get the next Place action from.
    */
-  private void placePhase(Player p, Action nextPlace) {
+  public void placePhase(Player p, Action nextPlace) {
 
     if (nextPlace.actionType != Status.PLACE || !RuleChecker.isPlaceLegal(this.officialBoard, nextPlace.x, nextPlace.y)) {
-      this.updateObserver(p.getName() + " Has made an illegal place action.");
+      this.updateObserver(p.getName() + " has made an illegal place action.");
       this.gameOver(p);
       return;
 
@@ -223,16 +223,18 @@ public class Referee {
    * An invalid Move or Build will result in the Player being kicked.
    * @param p The Player to get the next Move and Build Actions from.
    */
-  private void turnPhase(Player p, MoveBuild nextMoveBuild) {
+  public void turnPhase(Player p, MoveBuild nextMoveBuild) {
     Board initBoard = this.getOfficialBoard();
 
     // Check if the move is a MoveBuild
     // Or if the place is not legal,
     // If not, the player loses. and the player gets kicked
-    if (nextMoveBuild.actionType == Status.MOVEBUILD ||
+    if (nextMoveBuild.actionType == Status.MOVEBUILD &&
             RuleChecker.isMoveLegal(this.officialBoard, nextMoveBuild.move.workerID, nextMoveBuild.move.x, nextMoveBuild.move.y)) {
       // Execute the Move
       this.officialBoard.moveWorker(nextMoveBuild.move.workerID, nextMoveBuild.move.x, nextMoveBuild.move.y);
+      // Send new updates to observers
+      updateObserver(this.officialBoard.asJSONArray());
       // Check if the move results in a win
       if (RuleChecker.isGameOver(this.officialBoard, p.getWorkerIDs())  == GameOverStatus.WINNING_FLOOR) {
         this.winningPlayer = p;
@@ -273,8 +275,6 @@ public class Referee {
       this.gameOver(p);
     }
 
-    // Send new updates to observers
-    updateObserver(this.officialBoard.asJSONArray()+"\n");
 
     // Update turn
     if (this.currentTurn == Turn.PLAYER1) {
@@ -396,14 +396,14 @@ public class Referee {
   public List<Observer> getObservers() {
     return this.observers;
   }
-//
-//  /**
-//   * Sets the current Status.
-//   * TESTING ONLY
-//   * @param s
-//   */
-//  public void setCurrentStatus(Status s) {
-//    this.currentStatus = s;
-//  }
+
+  /**
+   * Sets the current Status.
+   * TESTING ONLY
+   * @param s
+   */
+  public void setCurrentStatus(Status s) {
+    this.currentStatus = s;
+  }
 
 }
