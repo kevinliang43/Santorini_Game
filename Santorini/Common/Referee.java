@@ -188,7 +188,7 @@ public class Referee {
    * An invalid place will result in the Player being kicked.
    * @param p The Player to get the next Place action from.
    */
-  public void placePhase(Player p, Action nextPlace) {
+  private void placePhase(Player p, Action nextPlace) {
 
     if (nextPlace.actionType != Status.PLACE || !RuleChecker.isPlaceLegal(this.officialBoard, nextPlace.x, nextPlace.y)) {
       this.updateObserver(p.getName() + " has made an illegal place action.");
@@ -223,7 +223,7 @@ public class Referee {
    * An invalid Move or Build will result in the Player being kicked.
    * @param p The Player to get the next Move and Build Actions from.
    */
-  public void turnPhase(Player p, MoveBuild nextMoveBuild) {
+  private void turnPhase(Player p, MoveBuild nextMoveBuild) {
     Board initBoard = this.getOfficialBoard();
 
     // Check if the move is a MoveBuild
@@ -265,13 +265,13 @@ public class Referee {
         }
       }
       else {
-        this.updateObserver(p.getName() + " Has made an illegal build action.");
+        this.updateObserver(p.getName() + " has made an illegal build action.");
         this.gameOver(p);
       }
 
     }
     else {
-      this.updateObserver(p.getName() + " Has made an illegal move action.");
+      this.updateObserver(p.getName() + " has made an illegal move action.");
       this.gameOver(p);
     }
 
@@ -402,7 +402,7 @@ public class Referee {
    * TESTING ONLY
    * @param s
    */
-  public void setCurrentStatus(Status s) {
+  private void setCurrentStatus(Status s) {
     this.currentStatus = s;
   }
 
