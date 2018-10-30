@@ -5,6 +5,7 @@
 <b> Player </b> : Holds all player-specific code <br />
 <b> Lib </b> : Holds all library-like code needed for our implementations <br />
 <b> Design </b> : Holds all design specifications and plans <br />
+<b> Observer </b> : Holds all observer-specific code <br /> 
 
 <h3> Common/GamePieces/src </h3>
 
@@ -41,7 +42,12 @@
  * <b> IStrategy.java </b> : Interface specification for the Strategy components of the Santorini Game, describes interaction between Player and Strategy
  * <b> Player.java </b> : Interface specification for the player component of the Santorini Game
  * <b> RuleChecker.java </b> : Interface specification for the rule checking component of the Santorini Game
+ * <b> TournamentManager.java </b> : Interface specification for a tournament manager for a tournament of Santorini Games
  
+ 
+ <h3> Observer </h3>
+
+ * <b> Observer.java </b> : Class representing and observer object of a game of Santorini
  
  
  <h2> Testing </h2> 
@@ -55,6 +61,10 @@
  Unit Tests Created for Week 9: </br>
   * <b> RefereeTest.java </b> : tests the functions within the Referee class, includes commented-out tests for private methods
   * <b> Player.java </b> : tests the functions within the Player class
+ 
+ Unit Tests Created for Week 10: </br> 
+  * <b> ObserverTest.java </b> : tests the functions within the Observer class
+  * <b> RefereeTest.java </b> : tests added observer message sending, commented-out tests using private methods
   
  
  
