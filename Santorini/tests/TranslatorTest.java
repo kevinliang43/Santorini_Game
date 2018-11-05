@@ -24,10 +24,10 @@ public class TranslatorTest {
   public void setup() {
     board = new Board();
 
-    worker11 = board.placeWorker(2, 3, "one1");
-    worker21 = board.placeWorker(4, 5, "two1");
-    worker12 = board.placeWorker(0,5, "one2");
-    worker22 = board.placeWorker(5,0, "two2");
+    worker11 = board.placeWorker(2, 3, "one1", 0);
+    worker21 = board.placeWorker(4, 5, "two1", 1);
+    worker12 = board.placeWorker(0,5, "one2", 2);
+    worker22 = board.placeWorker(5,0, "two2", 3);
 
     p1Workers = new ArrayList<>();
     p1Workers.add(worker11);

@@ -3,12 +3,21 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Common" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/11" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/10" />
+      <excludeFolder url="file://$MODULE_DIR$/7" />
+      <excludeFolder url="file://$MODULE_DIR$/Admin" />
+      <excludeFolder url="file://$MODULE_DIR$/Design" />
+      <excludeFolder url="file://$MODULE_DIR$/Observer" />
+      <excludeFolder url="file://$MODULE_DIR$/Player" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="lib2" level="project" />
     <orderEntry type="library" name="lib1" level="project" />
+    <orderEntry type="library" name="junit-4.10" level="project" />
     <orderEntry type="library" name="Santorini2" level="project" />
     <orderEntry type="library" name="xboard1" level="project" />
     <orderEntry type="library" name="xboard" level="project" />
@@ -17,5 +26,8 @@
     <orderEntry type="library" name="Santorini1" level="project" />
     <orderEntry type="library" name="Santorini" level="project" />
     <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="jackson-annotations-2.9.6" level="project" />
+    <orderEntry type="library" name="jackson-core-2.9.6" level="project" />
+    <orderEntry type="library" name="jackson-databind-2.9.6" level="project" />
   </component>
 </module>

@@ -4,7 +4,6 @@
 public class Worker {
 
   // represents the number of workers that have been created in this game instance
-  private static int workerCount = 0;
 
   private int x, y;
   private int id;
@@ -13,10 +12,9 @@ public class Worker {
   /**
    * creates a new worker with the ID of the current worker count, then increments the count
    */
-  public Worker(int x, int y, String name) {
+  public Worker(int x, int y, String name, int workerID) {
     this.setPosition(x, y);
-    this.id = workerCount;
-    workerCount++;
+    this.id = workerID;
     this.name = name;
   }
 
@@ -68,9 +66,4 @@ public class Worker {
     return this.id;
   }
 
-  /**
-   *  resets the static worker count variable to 0 for reinitialization
-   *  TODO when we start the tournament we need to keep this variable somewhere else
-   */
-  public static void resetCount() {workerCount = 0;}
 }

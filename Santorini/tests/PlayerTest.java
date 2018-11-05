@@ -22,7 +22,6 @@ public class PlayerTest {
   }
 
   public void init() {
-    Worker.resetCount();
     //player that uses strat1 (diagonal)
     this.p1 = new Player("one", 0, new StayAliveStrategy(true, 2));
     //player that uses strat2 (furthest)
@@ -84,7 +83,7 @@ public class PlayerTest {
         // in the bottom right corner (5,5) if there is already a worker in the top (0,0)
   public void checkPlaceWorkerRequestFurthest2() {
     init();
-    board.placeWorker(0,0, "one");
+    board.placeWorker(0,0, "one", 0);
     IAction action = p2.getNextAction(board, Status.PLACE);
     assertEquals(action instanceof Action, true);
     if (action instanceof  Action) {
@@ -99,8 +98,8 @@ public class PlayerTest {
   // in (1,1) if there is already a worker in the top (0,0) and (5,5)
   public void checkPlaceWorkerRequestDiagonal3() {
     init();
-    board.placeWorker(0,0, "one");
-    board.placeWorker(5,5, "two");
+    board.placeWorker(0,0, "one", 0);
+    board.placeWorker(5,5, "two", 1);
     IAction action = p1.getNextAction(board, Status.PLACE);
     assertEquals(action instanceof Action, true);
     if (action instanceof  Action) {
@@ -115,9 +114,9 @@ public class PlayerTest {
   // in (4,5) if there is already a worker in the top (0,0), (1,1) and (5,5)
   public void checkPlaceWorkerRequestDiagonal34() {
     init();
-    board.placeWorker(0,0, "one");
-    board.placeWorker(5,5, "two");
-    board.placeWorker(1,1, "three");
+    board.placeWorker(0,0, "one", 0);
+    board.placeWorker(5,5, "two", 1);
+    board.placeWorker(1,1, "three", 2);
     IAction action = p2.getNextAction(board, Status.PLACE);
     assertEquals(action instanceof Action, true);
     if (action instanceof  Action) {

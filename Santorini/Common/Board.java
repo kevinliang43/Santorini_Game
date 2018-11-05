@@ -126,13 +126,13 @@ public class Board {
    * @return    the workerID of the new Worker
    * @throws IllegalArgumentException   if the Square is already occupied
    */
-  public int placeWorker(int x, int y, String name) throws IllegalArgumentException {
+  public int placeWorker(int x, int y, String name, int workerID) throws IllegalArgumentException {
     validateOnBoard(x, y);
     if (cells[x][y].isOccupied()) {
       throw new IllegalArgumentException("Square is already occupied");
     }
 
-    Worker newW = new Worker(x, y, name);
+    Worker newW = new Worker(x, y, name, workerID);
     this.workerList.add(newW);
     this.cells[x][y].setOccupied(true, newW.getID(), newW.getName());
     return newW.getID();

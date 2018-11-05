@@ -248,6 +248,10 @@ public class RefereeTest{
         Player winner = this.ref.runGame(3);
         assertEquals(this.ref.getCurrentStatus(), Status.GAMEOVER);
         assertEquals(winner, p1);
+        int numWins = ref.getPlayerWins().get(p1.getName());
+        assertEquals(numWins, 2);
+        int numWins2 = ref.getPlayerWins().get(p2.getName());
+        assertEquals(numWins2, 0);
     }
 
   /**

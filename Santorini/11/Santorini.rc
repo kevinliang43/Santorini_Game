@@ -1,0 +1,3 @@
+{ "players"   : [["good", "Kevin", "PathString"]],
+
+  "observers" : [["Observer1", "PathString2"], ["Observer2", "PathsString"]]}

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,13 +16,14 @@ import java.util.List;
 public class Referee {
   public final int MAX_PLAYERS = 2;
   public final int WORKERS_PER_PLAYER = 2;
-  public final long TIMEOUT = 2000; //in milliseconds. divide by 1000 for seconds
+  public final long TIMEOUT = 30000; //in milliseconds. divide by 1000 for seconds
 
   private ArrayList<Player> players;
   private Board officialBoard;
   private Status currentStatus;
   private Turn currentTurn;
   private Player winningPlayer;
+  private Player kickedPlayer;
   private HashMap<Player, Integer> playerWins;
   private ArrayList<Observer> observers;
 
@@ -32,6 +34,19 @@ public class Referee {
     this.currentTurn = Turn.PLAYER1;
     this.playerWins = new HashMap<>();
     this.observers = new ArrayList<>();
+  }
+  public Referee(Player p1, Player p2) {
+    this.officialBoard = new Board();
+    this.currentStatus = Status.PLACE;
+    this.currentTurn = Turn.PLAYER1;
+    this.playerWins = new HashMap<>();
+    this.observers = new ArrayList<>();
+    this.players = new ArrayList<>();
+    this.players.add(p1);
+    this.players.add(p2);
+    this.playerWins.put(p1, 0);
+    this.playerWins.put(p2, 0);
+
   }
 
 
@@ -59,11 +74,15 @@ public class Referee {
         return this.players.get(0);
       }
 
+      //TODO Break after n/2 wins
+      if (Collections.max(playerWins.values()) > numGames/2) {
+        break;
+      }
+
       // Reinitialize the GameBoard, the Players, Workers, Turn
       this.officialBoard = new Board();
       this.currentStatus = Status.PLACE;
       this.currentTurn = Turn.PLAYER1;
-      Worker.resetCount();
       for (Player player : this.players) {
         player.resetWorkers();
       }
@@ -109,6 +128,8 @@ public class Referee {
     // Send initial board State to observers
     this.updateObserver(this.officialBoard.asJSONArray() + "\n");
 
+    int workerNum = 0;
+
     // Place phase
     for (int i = 0; i < WORKERS_PER_PLAYER; i++) {
       for (Player player : this.players) {
@@ -117,7 +138,8 @@ public class Referee {
           IAction nextAction = this.tryGetMove(player);
           if (nextAction != null && nextAction instanceof Action) {
             // action was created in time
-            placePhase(player, (Action)nextAction);
+            placePhase(player, (Action)nextAction, workerNum);
+            workerNum++;
           }
           else {
             // Action was not created in time
@@ -188,7 +210,7 @@ public class Referee {
    * An invalid place will result in the Player being kicked.
    * @param p The Player to get the next Place action from.
    */
-  private void placePhase(Player p, Action nextPlace) {
+  private void placePhase(Player p, Action nextPlace, int workerID) {
 
     if (nextPlace.actionType != Status.PLACE || !RuleChecker.isPlaceLegal(this.officialBoard, nextPlace.x, nextPlace.y)) {
       this.updateObserver(p.getName() + " has made an illegal place action.");
@@ -199,7 +221,7 @@ public class Referee {
     // Else, the place is valid
     else {
       String workerName = p.getName() + (p.getWorkerIDs().size() + 1);
-      int workerID = this.officialBoard.placeWorker(nextPlace.x, nextPlace.y, workerName);
+      this.officialBoard.placeWorker(nextPlace.x, nextPlace.y, workerName, workerID);
       p.addWorkerID(workerID);
       p.addWorkerName(workerName);
     }
@@ -311,6 +333,7 @@ public class Referee {
   public void removePlayer(String name) {
     for (Player player: this.players) {
       if (player.getName().equals(name)) {
+        this.kickedPlayer = player;
         this.players.remove(player);
       }
     }
@@ -363,6 +386,7 @@ public class Referee {
    * @param p Player that lost the game.
    */
   private void gameOver(Player p) {
+    this.kickedPlayer = p;
     removePlayer(p.getName());
     this.winningPlayer = this.players.get(0); // Works for a game of 2 players
     this.currentStatus = Status.GAMEOVER;
@@ -406,4 +430,24 @@ public class Referee {
     this.currentStatus = s;
   }
 
+
+  /**
+   * Creates a ReadCopy of the PlayerWins map and returns it
+   * String -> Int, rather than Player-> Int
+   * @return ReadCopy of the PlayerWins map
+   */
+  public HashMap<String, Integer> getPlayerWins() {
+    HashMap<String, Integer> newmap = new HashMap<>();
+    for (Player player: this.playerWins.keySet()) {
+      newmap.put(player.getName(), this.playerWins.get(player));
+    }
+    return newmap;
+  }
+
+  public Player getKickedPlayer() {
+    return this.kickedPlayer;
+  }
+
 }
+
+
