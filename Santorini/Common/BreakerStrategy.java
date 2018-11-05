@@ -4,6 +4,9 @@ import java.util.ArrayList;
  * Strategy Class that breaks the rules on the movebuild.
  */
 public class BreakerStrategy implements Strategy {
+
+  //Constructor
+  BreakerStrategy() {}
   @Override
   public IAction getNextAction(BoardStatus b, ArrayList<Integer> workerIDs) {
 
@@ -13,6 +16,7 @@ public class BreakerStrategy implements Strategy {
       for(int i = 0; i < Board.BOARD_X; i++) {
         if(!b.getBoard().isOccupied(i, i)) {
           retAction = new Action(Status.PLACE, Board.INVALID_WORKER_ID, i, i, null);
+          break;
         }
       }
 

@@ -390,7 +390,17 @@ public class RefereeTest{
 //    String expected = "one has made an illegal move action.\ntwo has won.\n";
 //    assertEquals(expected, lastLine);
 //  }
-
-
+//
+//    @Test
+//    Tests that a game with a bad player will have a kicked player in the end
+//    public void testGameOver() {
+//      Player good = new Player("good", 0, this.diag);
+//      Player bad = new BreakerPlayer("bad", 1);
+//      this.ref = new Referee(good, bad);
+//      Player winner = this.ref.runGame(3);
+//      assertEquals(this.ref.getCurrentStatus(), Status.GAMEOVER);
+//      assertEquals(winner, good);
+//      assertEquals(this.ref.getKickedPlayer(), bad);
+//    }
 
 }
