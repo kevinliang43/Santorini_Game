@@ -1,4 +1,4 @@
-{ "players"   : [["good", "Kevin", "PathString"], ["breaker", "Marina", "Nothing"], ["infinite", "Bob", "LOL"],
-  ["infinite", "Bob2", "/Users/KevinLiang/Desktop/CodingStuff/CS4500/Part2/maka-keli/Santorini/out/production/Santorini/StayAlivePlayer.class"]],
+{ "players"   : [["good", "Kevin", "PathString"], ["breaker", "Marina", "Nothing"], ["infinite", "Bob",  "Santorini/out/production/Santorini/InfinitePlayer.class"],
+  ["infinite", "Bob2", "Santorini/out/production/Santorini/InfinitePlacePlayer.class"]],
 
     "observers" : []}

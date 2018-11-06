@@ -12,10 +12,23 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 /**
- * Class for Reading Tournament Config Files
+ * Class for Reading, Interpretting and Translating Tournament Config Files into actual Objects.
  */
 public class ConfigReader {
 
+  /**
+   * Creates a List of Observers, given a list of Observer Args
+   * Observer Args are in the form [Name, PathString]
+   *
+   * Name is the String representation of the new Player
+   *
+   * PathString is a Linux Path to a dynamically loadable component that
+   * implements the respective player or observer.
+   *
+   *
+   * @param observersArgs List of observer Args
+   * @return List of generated Observers
+   */
   public static ArrayList<Observer> buildObservers(ArrayList<ArrayList<String>> observersArgs) {
 
     ArrayList<Observer> observerObjs = new ArrayList<>();
@@ -135,6 +148,12 @@ public class ConfigReader {
     return (Player) obj;
   }
 
+  /**
+   * Builds a single observer given the name and PATH_STRING
+   * @param name name of the observer
+   * @param path Path of a new Observer Implementation.
+   * @return Observer constructed with given arguments
+   */
   public static Observer buildObserver(String name, String path) {
 
     // Parse the Path

@@ -1,7 +1,11 @@
+/**
+ * Class that contains information about a single Game.
+ * To be Used as a Container object for Game Result information.
+ */
 public class GameResult {
 
-  Player winner;
-  Player loser;
+  Player winner; // Loser of the game
+  Player loser; //
 
   GameResult(Player winner, Player loser) {
     this.winner = winner;
@@ -48,6 +52,10 @@ public class GameResult {
     return "Winner: " + winner.getName() + " Loser: " + loser.getName();
   }
 
+  /**
+   * Converts the Result Object into a readable JSON Format
+   * @return JSONFormat of this Result Object
+   */
   public String asJSONString() {
     return "[\"" + winner.getName() + ", \"" + loser.getName() + "\"]";
 

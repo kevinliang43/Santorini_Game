@@ -7,6 +7,17 @@ public class BreakerStrategy implements Strategy {
 
   //Constructor
   BreakerStrategy() {}
+
+  /**
+   * get Next action for a Breaker Strategy will move to an invalid location eventually.
+   * @param b The current state of the Board and the current turn Status.
+   * @param workerIDs The integer values corresponding to the Workers this
+   *                  strategy is allowed to manipulate. This should be the
+   *                  current Player's list of workerIDs. If a Strategy
+   *                  creates an Action using a Worker that is not owned by
+   *                  the Player it will be interpreted as an invalid Action.
+   * @return MoveBuild
+   */
   @Override
   public IAction getNextAction(BoardStatus b, ArrayList<Integer> workerIDs) {
 
