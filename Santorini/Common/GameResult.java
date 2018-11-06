@@ -39,4 +39,18 @@ public class GameResult {
   public Player getLoser() {
     return loser;
   }
+
+  /**
+   * Converts the Result Object into a readable String format
+   * @return String representation of this Result Object
+   */
+  public String toString() {
+    return "Winner: " + winner.getName() + " Loser: " + loser.getName();
+  }
+
+  public String asJSONString() {
+    return "[\"" + winner.getName() + ", \"" + loser.getName() + "\"]";
+
+  }
+
 }

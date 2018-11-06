@@ -24,8 +24,8 @@
       <file leaf-file-name="RefereeTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tests/RefereeTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="167">
-              <caret line="273" column="6" selection-start-line="273" selection-start-column="6" selection-end-line="273" selection-end-column="6" />
+            <state relative-caret-position="105">
+              <caret line="270" column="40" selection-start-line="270" selection-start-column="40" selection-end-line="270" selection-end-column="40" />
               <folding />
             </state>
           </provider>
@@ -35,20 +35,10 @@
         <entry file="file://$PROJECT_DIR$/11/xrun.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="150">
-              <caret line="10" column="64" selection-start-line="10" selection-start-column="64" selection-end-line="10" selection-end-column="81" />
+              <caret line="10" column="81" selection-start-line="10" selection-start-column="81" selection-end-line="10" selection-end-column="81" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StayAliveStrategy.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Common/StayAliveStrategy.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="72" column="25" selection-start-line="72" selection-start-column="25" selection-end-line="72" selection-end-column="25" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -57,54 +47,27 @@
         <entry file="file://$PROJECT_DIR$/Common/StayAlivePlayer.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="195">
-              <caret line="14" column="47" selection-start-line="14" selection-start-column="47" selection-end-line="14" selection-end-column="47" />
+              <caret line="14" column="50" selection-start-line="14" selection-start-column="50" selection-end-line="14" selection-end-column="50" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ConfigReader.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Common/ConfigReader.java">
+      <file leaf-file-name="testWorker.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/testWorker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3840">
-              <caret line="256" column="5" selection-start-line="256" selection-start-column="5" selection-end-line="256" selection-end-column="5" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="359">
+              <caret line="65" column="27" selection-start-line="65" selection-start-column="27" selection-end-line="65" selection-end-column="27" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TournamentManager.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Common/TournamentManager.java">
+      <file leaf-file-name="TournamentManagerTests.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/TournamentManagerTests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="97">
-              <caret line="177" column="105" selection-start-line="177" selection-start-column="105" selection-end-line="177" selection-end-column="105" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Observer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Common/Observer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="261">
-              <caret line="34" column="9" selection-start-line="34" selection-start-column="9" selection-end-line="34" selection-end-column="9" />
-              <folding>
-                <element signature="e#2272#2273#0" expanded="true" />
-                <element signature="e#2298#2299#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Player.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Common/Player.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-474">
-              <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
+            <state relative-caret-position="30">
+              <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -113,22 +76,57 @@
       <file leaf-file-name="Referee.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Common/Referee.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="100" column="28" selection-start-line="100" selection-start-column="28" selection-end-line="100" selection-end-column="28" />
+            <state relative-caret-position="2550">
+              <caret line="183" column="5" selection-start-line="183" selection-start-column="5" selection-end-line="183" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#13585#13586#0" expanded="true" />
-                <element signature="e#13633#13634#0" expanded="true" />
+                <element signature="e#13655#13656#0" expanded="true" />
+                <element signature="e#13703#13704#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Santorini.rc" pinned="false" current-in-tab="false">
+      <file leaf-file-name="TournamentManager.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Common/TournamentManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="108" column="93" selection-start-line="108" selection-start-column="93" selection-end-line="108" selection-end-column="93" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GameResult.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Common/GameResult.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="336">
+              <caret line="51" column="71" selection-start-line="51" selection-start-column="71" selection-end-line="51" selection-end-column="71" />
+              <folding>
+                <element signature="e#789#790#0" expanded="true" />
+                <element signature="e#866#867#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GameOverStatus.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Common/GameOverStatus.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="4" column="55" selection-start-line="4" selection-start-column="55" selection-end-line="4" selection-end-column="55" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Santorini.rc" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/11/Santorini.rc">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="45">
-              <caret line="3" column="40" selection-start-line="0" selection-start-column="0" selection-end-line="3" selection-end-column="77" />
+              <caret line="3" column="47" selection-start-line="3" selection-start-column="47" selection-end-line="3" selection-end-column="47" />
               <folding />
             </state>
           </provider>
@@ -163,17 +161,18 @@
         <option value="$PROJECT_DIR$/tests/StrategyTest.java" />
         <option value="$PROJECT_DIR$/tests/TranslatorTest.java" />
         <option value="$PROJECT_DIR$/tests/testWorker.java" />
-        <option value="$PROJECT_DIR$/Common/GameResult.java" />
         <option value="$PROJECT_DIR$/Common/BreakerStrategy.java" />
         <option value="$PROJECT_DIR$/tests/ObserverTest.java" />
-        <option value="$PROJECT_DIR$/11/Santorini.rc" />
         <option value="$PROJECT_DIR$/Common/Observer.java" />
         <option value="$PROJECT_DIR$/Common/ConfigReader.java" />
-        <option value="$PROJECT_DIR$/11/xrun.java" />
         <option value="$PROJECT_DIR$/Common/StayAlivePlayer.java" />
-        <option value="$PROJECT_DIR$/Common/Referee.java" />
         <option value="$PROJECT_DIR$/tests/RefereeTest.java" />
+        <option value="$PROJECT_DIR$/Common/GameOverStatus.java" />
+        <option value="$PROJECT_DIR$/Common/Referee.java" />
+        <option value="$PROJECT_DIR$/Common/GameResult.java" />
+        <option value="$PROJECT_DIR$/11/xrun.java" />
         <option value="$PROJECT_DIR$/Common/TournamentManager.java" />
+        <option value="$PROJECT_DIR$/11/Santorini.rc" />
       </list>
     </option>
   </component>
@@ -672,9 +671,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="BreakerStrategyTest_testPlacement - 2018.11.05 at 15h 37m 00s.xml">
-      <configuration name="BreakerStrategyTest.testPlacement" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="BreakerStrategyTest_testPlacement - 2018.11.05 at 15h 41m 14s.xml">
       <configuration name="BreakerStrategyTest.testPlacement" configurationId="JUnit" />
     </history-entry>
@@ -690,16 +686,19 @@
     <history-entry file="RefereeTest_testRunFullGameOf1 - 2018.11.05 at 19h 16m 40s.xml">
       <configuration name="RefereeTest.testRunFullGameOf1" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="RefereeTest_testRunFullGameOfN - 2018.11.04 at 17h 52m 32s.xml">
-      <configuration name="RefereeTest.testRunFullGameOfN" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="RefereeTest_testRunFullGameOfN - 2018.11.04 at 17h 53m 36s.xml">
-      <configuration name="RefereeTest.testRunFullGameOfN" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="RefereeTest_testRunFullGameOfN - 2018.11.04 at 17h 57m 01s.xml">
-      <configuration name="RefereeTest.testRunFullGameOfN" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="RefereeTest_testTournamentBeginGame - 2018.11.05 at 19h 47m 24s.xml">
+      <configuration name="RefereeTest.testTournamentBeginGame" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="RefereeTest_testTournamentBeginGame - 2018.11.05 at 20h 14m 11s.xml">
+      <configuration name="RefereeTest.testTournamentBeginGame" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="RefereeTest_testTournamentBeginGame - 2018.11.05 at 20h 14m 48s.xml">
+      <configuration name="RefereeTest.testTournamentBeginGame" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="RefereeTest_testTournamentBeginGame - 2018.11.05 at 20h 15m 22s.xml">
+      <configuration name="RefereeTest.testTournamentBeginGame" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="RefereeTest_testTournamentBeginGame - 2018.11.05 at 20h 16m 38s.xml">
       <configuration name="RefereeTest.testTournamentBeginGame" configurationId="JUnit" />
     </history-entry>
   </component>
@@ -843,14 +842,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/testWorker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="359">
-          <caret line="65" column="27" selection-start-line="65" selection-start-column="27" selection-end-line="65" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/StrategyTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
@@ -880,23 +871,6 @@
         <state relative-caret-position="119">
           <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Common/GameResult.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="36" column="18" selection-start-line="36" selection-start-column="18" selection-end-line="36" selection-end-column="18" />
-          <folding>
-            <element signature="e#264#265#0" expanded="true" />
-            <element signature="e#294#295#0" expanded="true" />
-            <element signature="e#396#397#0" expanded="true" />
-            <element signature="e#424#425#0" expanded="true" />
-            <element signature="e#507#508#0" expanded="true" />
-            <element signature="e#530#531#0" expanded="true" />
-            <element signature="e#606#607#0" expanded="true" />
-            <element signature="e#628#629#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1003,14 +977,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Common/StayAlivePlayer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="14" column="47" selection-start-line="14" selection-start-column="47" selection-end-line="14" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Common/Player.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-474">
@@ -1019,38 +985,73 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Common/Referee.java">
+    <entry file="file://$PROJECT_DIR$/tests/TournamentManagerTests.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="100" column="28" selection-start-line="100" selection-start-column="28" selection-end-line="100" selection-end-column="28" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#13585#13586#0" expanded="true" />
-            <element signature="e#13633#13634#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="30">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Common/StayAlivePlayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="14" column="50" selection-start-line="14" selection-start-column="50" selection-end-line="14" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/testWorker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="359">
+          <caret line="65" column="27" selection-start-line="65" selection-start-column="27" selection-end-line="65" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/RefereeTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="273" column="6" selection-start-line="273" selection-start-column="6" selection-end-line="273" selection-end-column="6" />
+        <state relative-caret-position="105">
+          <caret line="270" column="40" selection-start-line="270" selection-start-column="40" selection-end-line="270" selection-end-column="40" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/11/Santorini.rc">
+    <entry file="file://$PROJECT_DIR$/Common/GameOverStatus.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="40" selection-start-line="0" selection-start-column="0" selection-end-line="3" selection-end-column="77" />
+        <state relative-caret-position="60">
+          <caret line="4" column="55" selection-start-line="4" selection-start-column="55" selection-end-line="4" selection-end-column="55" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Common/Referee.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2550">
+          <caret line="183" column="5" selection-start-line="183" selection-start-column="5" selection-end-line="183" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#13655#13656#0" expanded="true" />
+            <element signature="e#13703#13704#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Common/GameResult.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="51" column="71" selection-start-line="51" selection-start-column="71" selection-end-line="51" selection-end-column="71" />
+          <folding>
+            <element signature="e#789#790#0" expanded="true" />
+            <element signature="e#866#867#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/11/xrun.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
-          <caret line="10" column="64" selection-start-line="10" selection-start-column="64" selection-end-line="10" selection-end-column="81" />
+          <caret line="10" column="81" selection-start-line="10" selection-start-column="81" selection-end-line="10" selection-end-column="81" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1059,11 +1060,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Common/TournamentManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="97">
-          <caret line="177" column="105" selection-start-line="177" selection-start-column="105" selection-end-line="177" selection-end-column="105" />
+        <state relative-caret-position="135">
+          <caret line="108" column="93" selection-start-line="108" selection-start-column="93" selection-end-line="108" selection-end-column="93" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/11/Santorini.rc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="47" selection-start-line="3" selection-start-column="47" selection-end-line="3" selection-end-column="47" />
+          <folding />
         </state>
       </provider>
     </entry>

@@ -23,16 +23,18 @@ public class TournamentManager {
   // Number of games per round between two individual players in a single game
   private static int NUM_GAMES_PER_ROUND;
 
+  // List of all Players
+  private List<Player> allPlayers;
   //list of all Players active
-  List<Player> players;
+  private List<Player> players;
   //list of removed Players
-  List<Player> removedPlayers;
+  private List<Player> removedPlayers;
   //list of all Referee games active
-  List<Referee> allGames;
+  private List<Referee> allGames;
   //list of all Observers
-  List<Observer> observers;
+  private List<Observer> observers;
   //map of players Names to number of games won so far
-  HashMap<String, Integer> scoreMap;
+  private HashMap<String, Integer> scoreMap;
 
   /**
    * Constructor for a tournamentManager
@@ -53,6 +55,9 @@ public class TournamentManager {
     this.TIMEOUT = timeout;
     this.NUM_ROUND_ROBINS = numRoundRobins;
     this.NUM_GAMES_PER_ROUND = gamesPerRound;
+    // List of All players
+    this.players = new ArrayList<>();
+    // List of active Players
     this.players = new ArrayList<>();
     //list of removed Players
     this.removedPlayers = new ArrayList<>();
@@ -104,6 +109,7 @@ public class TournamentManager {
     ArrayList<ArrayList<String>> observersArgs = ConfigReader.getFields("observers", config);
     // Add AI Players and Observers to this Tournament from Config File
     this.players = ConfigReader.buildPlayers(playersArgs);
+    this.allPlayers = new ArrayList<>(this.players);
     this.observers = ConfigReader.buildObservers(observersArgs);
     if (this.players.size() > this.MAX_PLAYERS || this.players.size() < this.MIN_PLAYERS) {
       throw new IllegalStateException("Cannot Start a Tournament with the current number of Players.");
@@ -115,12 +121,9 @@ public class TournamentManager {
     this.runTournament();
 
     // End Tournament
-    // Print Removed Players
-    System.out.println(this.removedPlayers);
+    // Print [[Removed Players], [[Game1Result], [Game2Result] ...]
 
-
-    // TODO: Inform Players and Observers of names
-
+    System.out.println(this.tournamentResultAsJSON());
 
   }
 
@@ -146,18 +149,15 @@ public class TournamentManager {
         playersCopy.add(null);
       }
 
-      for (int game = 0; game < playersCopy.size(); game++) {
+      for (int game = 0; game < playersCopy.size() - 1; game++) {
         for (int j = 0; j < playersCopy.size()/2; j++) {
-          System.out.println("Starting Game between: " + playersCopy.get(j).getName() + " and " + playersCopy.get(playersCopy.size()/2 + j).getName());
           Referee currentGame = this.beginGame(playersCopy.get(j), playersCopy.get(playersCopy.size()/2 + j));
-          //FIXME: TEST
-
-
           if (currentGame != null) {
             this.allGames.add(currentGame);
             //If there is a kicked player, add it to the kicked players.
             if (currentGame.getKickedPlayer() != null) {
               this.removedPlayers.add(currentGame.getKickedPlayer());
+              this.players.remove(currentGame.getKickedPlayer());
             }
           }
         }
@@ -213,11 +213,7 @@ public class TournamentManager {
     if (player1 != null && player2 != null &&
             !this.removedPlayers.contains(player1) && !this.removedPlayers.contains(player2)) {
       Referee ref = new Referee(player1, player2);
-      //FIXME TEST
-      ref.addObserver("TEST");
       ref.runGame(this.NUM_GAMES_PER_ROUND);
-      System.out.println(ref.getObservers().get(0).getHistory());
-      System.out.println(ref.getPlayers().size());
       return ref;
     }
     else {
@@ -225,6 +221,120 @@ public class TournamentManager {
     }
 
   }
+
+  /**
+   * Get List of GameResults from this Tournament.
+   * Game Results store the winner and loser of a game.
+   * Alterations are made to GameResults as such:
+   * 1. If both players in a game were removed at any point, the result is thrown.
+   * 2. If a Winner of a game is removed in any game, the Loser of that game is made the winner
+   *    (Assuming the loser is not removed from any game)
+   *
+   * @return List of Game Results
+   */
+  private ArrayList<GameResult> getGameResults() {
+    ArrayList<GameResult> results = new ArrayList<>();
+
+    for(Referee game : this.allGames) {
+      // 1  person was removed
+      if (game.getKickedPlayer() != null) {
+        // If the other person has not been kicked in any other game, construct the game result object
+        if (!this.removedPlayers.contains(game.getWinner())) {
+          results.add(new GameResult(game.getWinner(), game.getKickedPlayer()));
+        }
+      }
+      // No people were removed
+      else {
+        Player winner = game.getWinner();
+        ArrayList<Player> currentPlayers = (ArrayList<Player>) game.getPlayers().clone();
+        currentPlayers.remove(winner);
+        Player loser = currentPlayers.get(0);
+
+        // Base Case, winner is not in removedPlayers
+        if (!this.removedPlayers.contains(winner)) {
+          results.add(new GameResult(winner, loser));
+        }
+        // Case: Winner is in  removed players, loser is not
+        else if (this.removedPlayers.contains(winner) && !this.removedPlayers.contains(loser)) {
+          results.add(new GameResult(loser, winner));
+        }
+        // Other wise, both players are in removedplayers, result of match is thrown away.
+      }
+    }
+    return results;
+
+  }
+
+  /**
+   * Returns the Tournament Results as an array of arrays
+   * First Array:
+   *      List of Kicked Players in the form of: ["NAME", "NAME2", ...]
+   *
+   * Second Array:
+   *      List of GameResult. Format: [["NAME1", "NAME2"], ["NAME1", "NAME3"], ...]
+   *      Sorted in order of First vs rest, second vs rest, etc...
+   *
+   * Full Format:
+   *      [[FirstArray], [[SECOND], [ARRAYS], ...]
+   *
+   *
+   * @return JSON String representing Tournament Results
+   */
+  private String tournamentResultAsJSON() {
+
+    String JSONString = "[";
+
+    //Removed Players
+    JSONString += this.removedPlayersAsJSON() + ", [";
+
+    //Add Game Results
+
+    List<GameResult> results = this.getGameResults();
+
+    // Sort game results by p1 v rest, p2 v rest ... etc
+    List<GameResult> sortedResults = new ArrayList<>();
+
+    for (int i = 0; i < this.allPlayers.size(); i++) {
+      Player currentPlayer = this.allPlayers.get(i);
+      for (GameResult result : results) {
+        if (result.getWinner().getName().equals(currentPlayer.getName()) || result.getLoser().getName().equals(currentPlayer)) {
+          sortedResults.add(result);
+        }
+      }
+      results.removeAll(sortedResults);
+    }
+
+    for (int i = 0; i < sortedResults.size(); i++) {
+      JSONString += sortedResults.get(i).asJSONString();
+      if (i < results.size() - 1) {
+        JSONString += ", ";
+      }
+    }
+
+    JSONString += "]]";
+    return JSONString;
+
+
+  }
+
+  /**
+   * Formats this Tournament's removed Player as JSON array of JSON Strings
+   * @return
+   */
+  private String removedPlayersAsJSON() {
+    String retString = "[";
+    for (int i = 0; i < this.removedPlayers.size(); i++) {
+      Player player = this.removedPlayers.get(i);
+      retString += "\"" + player.getName() + "\"";
+      if (i < this.removedPlayers.size() - 1) {
+        retString += ", ";
+      }
+    }
+    retString += "]";
+    return retString;
+  }
+
+
 
 
   //CLIENT

@@ -270,6 +270,14 @@ public class RefereeTest{
     setupGame();
     Player p1 = ref.getPlayers().get(0);
     Player p2 = ref.getPlayers().get(1);
+    Player player1 = new StayAlivePlayer("Kevin", 0);
+    Player player2 = new StayAlivePlayer("Marina", 1);
+    Referee ref = new Referee(player1, player2);
+    ref.addObserver("Kevin");
+    ref.runGame();
+    System.out.println(ref.getObservers().get(0).getHistory());
+
+
     TournamentManager tournamentManager = new TournamentManager(2, 32, 2000, 1, 3);
     //tournamentManager.beginGame(p1, p2);
 

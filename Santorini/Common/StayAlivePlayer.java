@@ -12,7 +12,7 @@ public class StayAlivePlayer extends Player{
    * @param id    ID of the player
    */
   public StayAlivePlayer(String name, int id) {
-    super(name, id, new StayAliveStrategy(false, 3));
+    super(name, id, new StayAliveStrategy(false, 1));
   }
 
 }

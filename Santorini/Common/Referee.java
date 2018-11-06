@@ -155,7 +155,7 @@ public class Referee {
     }
     this.currentStatus = Status.MOVEBUILD;
     // Move onto Turn Phase
-    while(RuleChecker.isGameOver(this.officialBoard, this.officialBoard.getWorkerIDs()) == GameOverStatus.NOT_OVER) {
+    while(RuleChecker.isGameOver(this.officialBoard, this.officialBoard.getWorkerIDs()) == GameOverStatus.NOT_OVER && this.currentStatus != Status.GAMEOVER) {
       Player currentPlayer = players.get(0); // Get current Player
       if (this.currentTurn == Turn.PLAYER2) {
         currentPlayer = players.get(1);
@@ -179,7 +179,7 @@ public class Referee {
     }
 
     // Determine Winner
-    if (this.currentTurn == Turn.PLAYER1) {
+    if (this.currentTurn == Turn.PLAYER1 || this.kickedPlayer != null) {
       this.winningPlayer = players.get(0);
     }
     else {
