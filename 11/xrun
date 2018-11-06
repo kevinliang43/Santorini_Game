@@ -1,0 +1,5 @@
+#!/bin/sh
+
+cd "$(dirname "$0")"
+cd ..
+java -jar ./Santorini/out/artifacts/XRun_jar/Santorini.jar
