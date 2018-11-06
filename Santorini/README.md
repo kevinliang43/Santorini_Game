@@ -11,10 +11,14 @@
 
  * <b> Action.java </b> : Class representing a single turn action, can be one of: PlaceWorker, Move, or Build
  * <b> ActionRunnable.java </b> : Runnable Action that enables us to request an Action on a seperate thread
+ * <b> BreakerStrategy.java </b> : Class representing a strategy that is intended to provide illegal moves
  * <b> Board.java </b> : Class representing a Game Board of a Santorini Game
  * <b> BoardStatus.java </b> : Class representing a Board with limited functionality combined with the current game Status
+ * <b> ConfigReader.java </b> : Class that parses a JSON Configuration file and creates Players and Observers from the file specifications
  * <b> GameOverStatus.java </b> : Enumeration representing the possible Game Over states/possibilities
+ * <b> GameResult.java </b> : Class that represents the end results of a game run by a Referee
  * <b> IAction.java </b> : IAction interface to encapsulate Actions and MoveBuilds
+ * <b> InfiniteStrategy.java </b> : Class representing a strategy that is intended to enter an infinite loop
  * <b> MoveBuild.java </b> : Class representing an IAction that contains both a move and build request
  * <b> RuleChecker.java </b> : Class representing the rules the Santorini Game abides by, used to check validity of moves
  * <b> Square.java </b> : Class representing a cell on the board in a game of Santorini
@@ -27,11 +31,15 @@
 <h3> Admin </h3> 
 
  * <b> Referee.java </b> : Class representing the administrative component of a game of Santorini, runs the game and manages interaction between Players and Board
+ * <b> TournamentManager.java </b> : Class representing an administrative component that supervises and facilitates a Round Robin Santorini Tournament
  
  
 <h3> Player </h3> 
 
- * <b> Player.java </b> : Class representing a Player in a Santorini Game
+ * <b> BreakerPlayer.java </b> : Class representing a Player that is intended to break a rule
+ * <b> InfinitePlayer.java </b> : Class representing a Player that is intended to enter an infinite loop
+ * <b> Player.java </b> : Class representing a Player in a Santorini Game that takes in a Strategy
+ * <b> StayAlivePlayer.java </b> : Class representing a Player that uses the Stay Alive Strategy
  
  
 <h3> Design </h3>
@@ -43,6 +51,7 @@
  * <b> Player.java </b> : Interface specification for the player component of the Santorini Game
  * <b> RuleChecker.java </b> : Interface specification for the rule checking component of the Santorini Game
  * <b> TournamentManager.java </b> : Interface specification for a tournament manager for a tournament of Santorini Games
+ * <b> TournamentProtocol.pdf </b> : Remote Protocol for Tournament Manager itneraction with Clients
  
  
  <h3> Observer </h3>
@@ -65,9 +74,15 @@
  Unit Tests Created for Week 10: </br> 
   * <b> ObserverTest.java </b> : tests the functions within the Observer class
   * <b> RefereeTest.java </b> : tests added observer message sending, commented-out tests using private methods
-  
- 
+
+Unit Tests Created for Week 11: </br> 
+  * <b> ConfigReaderTest.java </b> : tests the functions within the ConfigReader class
+  * <b> BreakerStrategyTest.java </b> : tests the functions within the BreakerStrategy class
+  * <b> InfiniteStrategyTest.java </b> : tests the functions within the InfiniteStrategy class
+  * <b> TournamentManagerTests.java </b> : tests the functions within the TournamentManager class
+
  
 Each test suite is found within the folder corresponding to that week. For example, xboard tests are found in the 6 folder. For instructions on how to run the tests, see the TestMe file within each weeks folder.
 
 10- Implementing an Observer: xObserve can be found within the 10 folder in the maka-keli directory and run using ./xObserve
+11- Implementing the Tournament Manager: xrun and santorini.rc can be found within the 11 folder. santorini.rc holds the system-level tests
