@@ -124,6 +124,20 @@ public class TournamentManager {
     System.exit(0);
   }
 
+//  //main method only for testing purposes that returns the removed players
+//  public String main(ArrayList<Player> players, ArrayList<Observer> obs) throws IllegalStateException{
+//    this.players = players;
+//    this.allPlayers = new ArrayList<>(this.players);
+//    this.observers = obs;
+//
+//    // Start Tournament
+//    this.runTournament();
+//
+//    // End Tournament
+//    // Print [[Removed Players], [[Game1Result], [Game2Result] ...]
+//    return this.removedPlayersAsJSON();
+//  }
+
 
   /**
    * Runs a tournament between this tournaments players in a Round Robin fashion
@@ -177,6 +191,8 @@ public class TournamentManager {
    * @param strat     - Strategy to be given to the new Player
    * @return String representation of the selected name for the new Player.
    */
+   //will be used and implemented later when we add clients connecting to the tournament via tcp server
+/*
   private String addPlayer(String name, Strategy strat) {
 
     // Get a unique name for the new player.
@@ -194,6 +210,7 @@ public class TournamentManager {
     return name;
 
   }
+*/
 
   /**
    * Creates a Referee between two Players, and begins the game.
@@ -202,7 +219,6 @@ public class TournamentManager {
    * @param player2 Player 2 to be added to the game.
    * @return Referee Object that is overseeing the game between the two given Players.
    */
-  //TODO MAKE PRIVATE
   private Referee beginGame(Player player1, Player player2) {
     // Begin game if:
     // Both Players are not null
@@ -259,7 +275,6 @@ public class TournamentManager {
       }
     }
     return results;
-
   }
 
   /**
