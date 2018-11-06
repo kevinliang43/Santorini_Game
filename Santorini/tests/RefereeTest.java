@@ -275,8 +275,6 @@ public class RefereeTest{
     Referee ref = new Referee(player1, player2);
     ref.addObserver("Kevin");
     ref.runGame();
-    System.out.println(ref.getObservers().get(0).getHistory());
-
 
     TournamentManager tournamentManager = new TournamentManager(2, 32, 2000, 1, 3);
     //tournamentManager.beginGame(p1, p2);

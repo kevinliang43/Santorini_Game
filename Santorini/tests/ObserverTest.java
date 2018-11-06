@@ -47,7 +47,7 @@ public class ObserverTest {
         assertEquals(o.readNewUpdates(), "");
         assertEquals(o.getHistory(), "test string\n");
         o.append("testing again");
-        assertEquals(o.readNewUpdates(), "testing again");
+        assertEquals(o.readNewUpdates(), "testing again\n");
         assertEquals(o.getHistory(), "test string\ntesting again\n");
     }
 
