@@ -16,7 +16,7 @@ import java.util.List;
 public class Referee {
   public final int MAX_PLAYERS = 2;
   public final int WORKERS_PER_PLAYER = 2;
-  public final long TIMEOUT = 30000; //in milliseconds. divide by 1000 for seconds
+  public final long TIMEOUT = 2000; //in milliseconds. divide by 1000 for seconds
 
   private ArrayList<Player> players;
   private Board officialBoard;
@@ -98,12 +98,15 @@ public class Referee {
     int numWins = -1;
 
     for (Player player : this.playerWins.keySet()) {
+      player.resetWorkers();
       int currentNumWins = this.playerWins.get(player);
       if (currentNumWins > numWins) {
         numWins = currentNumWins;
         winningPlayer = player;
       }
     }
+
+
     return winningPlayer;
   }
 
@@ -143,6 +146,7 @@ public class Referee {
           }
           else {
             // Action was not created in time
+
             this.gameOver(player);
             return this.winningPlayer;
           }
@@ -164,6 +168,11 @@ public class Referee {
       }
       else {
         // Action was not created in time
+
+
+        //FIXME TEST
+        this.updateObserver("\"Player Timed out\"");
+
         this.gameOver(currentPlayer);
         return this.winningPlayer;
       }
@@ -331,12 +340,15 @@ public class Referee {
    * @param name Name of the Player to remove.
    */
   public void removePlayer(String name) {
+
     for (Player player: this.players) {
       if (player.getName().equals(name)) {
         this.kickedPlayer = player;
-        this.players.remove(player);
       }
     }
+
+    this.players.remove(this.kickedPlayer);
+
   }
 
   /**
@@ -396,8 +408,8 @@ public class Referee {
   /**
    * Adds a new Observer to this Referee
    */
-  public void addObserver() {
-    this.observers.add(new Observer());
+  public void addObserver(String name) {
+    this.observers.add(new Observer(name));
   }
 
   /**

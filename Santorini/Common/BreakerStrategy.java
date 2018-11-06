@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 /**
- * Strategy Class that breaks the rules on the movebuild.
+ * Strategy Class that breaks the rules on the MoveBuild
  */
 public class BreakerStrategy implements Strategy {
 

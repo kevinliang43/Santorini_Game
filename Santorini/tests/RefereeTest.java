@@ -254,13 +254,34 @@ public class RefereeTest{
         assertEquals(numWins2, 0);
     }
 
+  @Test
+  public void testRunFullGameOf1() {
+    setupGame();
+    Player p1 = ref.getPlayers().get(0);
+    Player p2 = ref.getPlayers().get(1);
+    Player winner = this.ref.runGame(1);
+    assertEquals(winner, p1);
+    assertEquals(ref.getPlayers().size(), 2);
+    assertEquals(ref.getKickedPlayer(), null);
+  }
+
+  @Test
+  public void testTournamentBeginGame() {
+    setupGame();
+    Player p1 = ref.getPlayers().get(0);
+    Player p2 = ref.getPlayers().get(1);
+    TournamentManager tournamentManager = new TournamentManager(2, 32, 2000, 1, 3);
+    //tournamentManager.beginGame(p1, p2);
+
+  }
+
   /**
    * Test to check that a valid winner is returned and the expected output is returned.
    */
   @Test
   public void testObserver() {
       setupGame();
-      ref.addObserver();
+      ref.addObserver("Kevin");
       Player p1 = ref.getPlayers().get(0);
       Player p2 = ref.getPlayers().get(1);
       Player winner = this.ref.runGame();

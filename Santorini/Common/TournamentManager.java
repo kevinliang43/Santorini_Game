@@ -1,3 +1,5 @@
+import com.fasterxml.jackson.databind.JsonNode;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +29,8 @@ public class TournamentManager {
   List<Player> removedPlayers;
   //list of all Referee games active
   List<Referee> allGames;
+  //list of all Observers
+  List<Observer> observers;
   //map of players Names to number of games won so far
   HashMap<String, Integer> scoreMap;
 
@@ -44,7 +48,20 @@ public class TournamentManager {
    *                                            5) gamesPerRound < 1
    */
   public TournamentManager(int minPlayers, int maxPlayers, int timeout, int numRoundRobins, int gamesPerRound) throws IllegalStateException {
-
+    this.MIN_PLAYERS = minPlayers;
+    this.MAX_PLAYERS = maxPlayers;
+    this.TIMEOUT = timeout;
+    this.NUM_ROUND_ROBINS = numRoundRobins;
+    this.NUM_GAMES_PER_ROUND = gamesPerRound;
+    this.players = new ArrayList<>();
+    //list of removed Players
+    this.removedPlayers = new ArrayList<>();
+    //list of all Referee games active
+    this.allGames = new ArrayList<>();
+    //list of all Observers
+    this.observers = new ArrayList<>();
+    // score Map
+    this.scoreMap = new HashMap<>();
   }
 
 
@@ -77,13 +94,33 @@ public class TournamentManager {
    *
    *
    */
-  public void main() {
+  public void main() throws IllegalStateException{
 
+    //SETUP
     // Add Players
-    // TODO: Add a time out
-    while (this.players.size() < MAX_PLAYERS) {
-
+    // Read Config File to Get Players and Observers
+    JsonNode config = ConfigReader.readAndParse().get(0);
+    ArrayList<ArrayList<String>> playersArgs = ConfigReader.getFields("players", config);
+    ArrayList<ArrayList<String>> observersArgs = ConfigReader.getFields("observers", config);
+    // Add AI Players and Observers to this Tournament from Config File
+    this.players = ConfigReader.buildPlayers(playersArgs);
+    this.observers = ConfigReader.buildObservers(observersArgs);
+    if (this.players.size() > this.MAX_PLAYERS || this.players.size() < this.MIN_PLAYERS) {
+      throw new IllegalStateException("Cannot Start a Tournament with the current number of Players.");
     }
+
+    //TODO: KEEP TRACK OF NUMBER OF PLAYERS IF ADDING PLAYERS LATER.
+
+    // Start Tournament
+    this.runTournament();
+
+    // End Tournament
+    // Print Removed Players
+    System.out.println(this.removedPlayers);
+
+
+    // TODO: Inform Players and Observers of names
+
 
   }
 
@@ -109,9 +146,13 @@ public class TournamentManager {
         playersCopy.add(null);
       }
 
-      for (int game = 0; game < playersCopy.size() - 1; game++) {
+      for (int game = 0; game < playersCopy.size(); game++) {
         for (int j = 0; j < playersCopy.size()/2; j++) {
+          System.out.println("Starting Game between: " + playersCopy.get(j).getName() + " and " + playersCopy.get(playersCopy.size()/2 + j).getName());
           Referee currentGame = this.beginGame(playersCopy.get(j), playersCopy.get(playersCopy.size()/2 + j));
+          //FIXME: TEST
+
+
           if (currentGame != null) {
             this.allGames.add(currentGame);
             //If there is a kicked player, add it to the kicked players.
@@ -164,6 +205,7 @@ public class TournamentManager {
    * @param player2 Player 2 to be added to the game.
    * @return Referee Object that is overseeing the game between the two given Players.
    */
+  //TODO MAKE PRIVATE
   private Referee beginGame(Player player1, Player player2) {
     // Begin game if:
     // Both Players are not null
@@ -171,7 +213,11 @@ public class TournamentManager {
     if (player1 != null && player2 != null &&
             !this.removedPlayers.contains(player1) && !this.removedPlayers.contains(player2)) {
       Referee ref = new Referee(player1, player2);
+      //FIXME TEST
+      ref.addObserver("TEST");
       ref.runGame(this.NUM_GAMES_PER_ROUND);
+      System.out.println(ref.getObservers().get(0).getHistory());
+      System.out.println(ref.getPlayers().size());
       return ref;
     }
     else {

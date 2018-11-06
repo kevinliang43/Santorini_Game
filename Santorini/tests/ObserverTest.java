@@ -11,7 +11,7 @@ public class ObserverTest {
 
     //initializes the observer to test
     public void init() {
-        this.o = new Observer();
+        this.o = new Observer("Kevin");
     }
 
     //tests that appending a string adds to the newUpdates appendable
