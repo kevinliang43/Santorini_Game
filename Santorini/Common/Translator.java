@@ -1,8 +1,15 @@
 /**
- * Created by KevinLiang on 10/28/18.
+ * Translator Class to convert Board states into JSON.
+ * Utils Static Class
  */
 public class Translator {
 
+  /**
+   * Converts a Movebuild Action into its respective JSON String
+   * @param board Current Board State
+   * @param action action being made
+   * @return JSON String representing the corresponding moveBuild.
+   */
   public static String moveBuildAsJSON(Board board, MoveBuild action) {
     String result = "[\"";
     result += action.workerName + "\", ";
@@ -24,6 +31,12 @@ public class Translator {
 
   }
 
+  /**
+   * Convert a Direction into a JSON String direction
+   * @param x relative direction of x axis
+   * @param y relative direction of y axis
+   * @return
+   */
   private static String getDirection(int x, int y) {
     String retString = "";
     switch (y) {
