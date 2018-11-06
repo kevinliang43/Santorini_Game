@@ -395,7 +395,7 @@ public class xboard {
    */
   private ImmutableSquare getWorkerSquare(JsonArray command) {
     int boardID = getBoardWorkerID(command);
-
-    return b.getWorkerPosition(boardID);
+    return new ImmutableSquare(1, 1);
+    //return b.getWorkerPosition(boardID);
   }
 }

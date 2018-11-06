@@ -111,9 +111,6 @@ public class TournamentManager {
     this.players = ConfigReader.buildPlayers(playersArgs);
     this.allPlayers = new ArrayList<>(this.players);
     this.observers = ConfigReader.buildObservers(observersArgs);
-    if (this.players.size() > this.MAX_PLAYERS || this.players.size() < this.MIN_PLAYERS) {
-      throw new IllegalStateException("Cannot Start a Tournament with the current number of Players.");
-    }
 
     //TODO: KEEP TRACK OF NUMBER OF PLAYERS IF ADDING PLAYERS LATER.
 
@@ -124,7 +121,7 @@ public class TournamentManager {
     // Print [[Removed Players], [[Game1Result], [Game2Result] ...]
 
     System.out.println(this.tournamentResultAsJSON());
-
+    System.exit(0);
   }
 
 
@@ -306,7 +303,7 @@ public class TournamentManager {
 
     for (int i = 0; i < sortedResults.size(); i++) {
       JSONString += sortedResults.get(i).asJSONString();
-      if (i < results.size() - 1) {
+      if (i < sortedResults.size() - 1) {
         JSONString += ", ";
       }
     }
