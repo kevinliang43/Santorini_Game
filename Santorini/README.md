@@ -51,7 +51,7 @@
  * <b> Player.java </b> : Interface specification for the player component of the Santorini Game
  * <b> RuleChecker.java </b> : Interface specification for the rule checking component of the Santorini Game
  * <b> TournamentManager.java </b> : Interface specification for a tournament manager for a tournament of Santorini Games
- * <b> TournamentProtocol.java </b> : Remote Protocol for Tournament Manager itneraction with Clients
+ * <b> TournamentProtocol.pdf </b> : Remote Protocol for Tournament Manager itneraction with Clients
  
  
  <h3> Observer </h3>
