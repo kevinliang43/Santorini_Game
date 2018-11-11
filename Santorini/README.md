@@ -11,20 +11,16 @@
 
  * <b> Action.java </b> : Class representing a single turn action, can be one of: PlaceWorker, Move, or Build
  * <b> ActionRunnable.java </b> : Runnable Action that enables us to request an Action on a seperate thread
- * <b> BreakerStrategy.java </b> : Class representing a strategy that is intended to provide illegal moves
  * <b> Board.java </b> : Class representing a Game Board of a Santorini Game
  * <b> BoardStatus.java </b> : Class representing a Board with limited functionality combined with the current game Status
  * <b> ConfigReader.java </b> : Class that parses a JSON Configuration file and creates Players and Observers from the file specifications
  * <b> GameOverStatus.java </b> : Enumeration representing the possible Game Over states/possibilities
  * <b> GameResult.java </b> : Class that represents the end results of a game run by a Referee
  * <b> IAction.java </b> : IAction interface to encapsulate Actions and MoveBuilds
- * <b> InfiniteStrategy.java </b> : Class representing a strategy that is intended to enter an infinite loop
  * <b> MoveBuild.java </b> : Class representing an IAction that contains both a move and build request
  * <b> RuleChecker.java </b> : Class representing the rules the Santorini Game abides by, used to check validity of moves
  * <b> Square.java </b> : Class representing a cell on the board in a game of Santorini
  * <b> Status.java </b> : Enumeration representing the status of the game and what kind of action the game needs
- * <b> StayAliveStrategy.java </b> : Class representing a strategy that picks moves on the criteria that a player can stay alive for n rounds after the move is made
- * <b> Strategy.java </b> : Interface representing a Strategy in a game of Santorini that a Player can play by
  * <b> Turn.java </b> : Enumeration that represents whose turn in the game it is
  * <b> Worker.java </b> : Class representing a Worker in a game of Santorini
  
@@ -39,9 +35,13 @@
 <h3> Player </h3> 
 
  * <b> BreakerPlayer.java </b> : Class representing a Player that is intended to break a rule
+ * <b> BreakerStrategy.java </b> : Class representing a strategy that is intended to provide illegal moves
  * <b> InfinitePlayer.java </b> : Class representing a Player that is intended to enter an infinite loop
+ * <b> InfiniteStrategy.java </b> : Class representing a strategy that is intended to enter an infinite loop
  * <b> Player.java </b> : Class representing a Player in a Santorini Game that takes in a Strategy
  * <b> StayAlivePlayer.java </b> : Class representing a Player that uses the Stay Alive Strategy
+ * <b> StayAliveStrategy.java </b> : Class representing a strategy that picks moves on the criteria that a player can stay alive for n rounds after the move is made
+ * <b> Strategy.java </b> : Interface representing a Strategy in a game of Santorini that a Player can play by
  
  
 <h3> Design </h3>
