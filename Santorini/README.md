@@ -18,7 +18,6 @@
  * <b> GameResult.java </b> : Class that represents the end results of a game run by a Referee
  * <b> IAction.java </b> : IAction interface to encapsulate Actions and MoveBuilds
  * <b> MoveBuild.java </b> : Class representing an IAction that contains both a move and build request
- * <b> RuleChecker.java </b> : Class representing the rules the Santorini Game abides by, used to check validity of moves
  * <b> Square.java </b> : Class representing a cell on the board in a game of Santorini
  * <b> Status.java </b> : Enumeration representing the status of the game and what kind of action the game needs
  * <b> Turn.java </b> : Enumeration that represents whose turn in the game it is
@@ -27,6 +26,7 @@
 <h3> Admin </h3> 
 
  * <b> Referee.java </b> : Class representing the administrative component of a game of Santorini, runs the game and manages interaction between Players and Board
+ * <b> RuleChecker.java </b> : Class representing the rules the Santorini Game abides by, used to check validity of moves
  * <b> TournamentManager.java </b> : Class representing an administrative component that supervises and facilitates a Round Robin Santorini Tournament
  
  
@@ -34,8 +34,10 @@
 
  * <b> BreakerPlayer.java </b> : Class representing a Player that is intended to break a rule
  * <b> BreakerStrategy.java </b> : Class representing a strategy that is intended to provide illegal moves
- * <b> InfinitePlayer.java </b> : Class representing a Player that is intended to enter an infinite loop
- * <b> InfiniteStrategy.java </b> : Class representing a strategy that is intended to enter an infinite loop
+ * <b> InfinitePlacePlayer.java </b> : Class representing a Player that is intended to enter an infinite loop when placing workers
+ * <b> InfinitePlaceStrategy.java </b> : Class representing a strategy that is intended to enter an infinite loop when determining where to place workers
+ * <b> InfinitePlayer.java </b> : Class representing a Player that is intended to enter an infinite loop when performing a MoveBuild action
+ * <b> InfiniteStrategy.java </b> : Class representing a strategy that is intended to enter an infinite loop when performing a MoveBuild action
  * <b> Player.java </b> : Class representing a Player in a Santorini Game that takes in a Strategy
  * <b> StayAlivePlayer.java </b> : Class representing a Player that uses the Stay Alive Strategy
  * <b> StayAliveStrategy.java </b> : Class representing a strategy that picks moves on the criteria that a player can stay alive for n rounds after the move is made
@@ -44,13 +46,13 @@
  
 <h3> Design </h3>
 
- * <b> board.java </b> : Interface specification for the Santorini Game Board and relevant classes, Worker and Square
+ * <b> IBoard.java </b> : Interface specification for the Santorini Game Board and relevant classes, Worker and Square
  * <b> IObserver.java </b> : Plan for plugging in an Observer into the Referee
  * <b> plan.pdf </b> : Project analysis of the Santorini Game
  * <b> IStrategy.java </b> : Interface specification for the Strategy components of the Santorini Game, describes interaction between Player and Strategy
- * <b> Player.java </b> : Interface specification for the player component of the Santorini Game
- * <b> RuleChecker.java </b> : Interface specification for the rule checking component of the Santorini Game
- * <b> TournamentManager.java </b> : Interface specification for a tournament manager for a tournament of Santorini Games
+ * <b> IPlayer.java </b> : Interface specification for the player component of the Santorini Game
+ * <b> IRuleChecker.java </b> : Interface specification for the rule checking component of the Santorini Game
+ * <b> ITournamentManager.java </b> : Interface specification for a tournament manager for a tournament of Santorini Games
  * <b> TournamentProtocol.pdf </b> : Remote Protocol for Tournament Manager itneraction with Clients
  
  
