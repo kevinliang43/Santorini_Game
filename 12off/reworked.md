@@ -1,5 +1,6 @@
 <h2> Commit 6cfd4ce </h2>
 <h3> Project Restructuring </h3>
+
  * Removed immutable square, mutable square, abstract worker (classes that were never used)
  * Moved Observer.java to the Observer Directory
  * Change Board.java to implement the IBoard.java interface
