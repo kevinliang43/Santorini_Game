@@ -6,15 +6,15 @@
       <sourceFolder url="file://$MODULE_DIR$/Common" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/11" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Observer" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Design" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Player" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Admin" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/10" />
       <excludeFolder url="file://$MODULE_DIR$/6" />
       <excludeFolder url="file://$MODULE_DIR$/7" />
       <excludeFolder url="file://$MODULE_DIR$/8" />
       <excludeFolder url="file://$MODULE_DIR$/9" />
-      <excludeFolder url="file://$MODULE_DIR$/Admin" />
-      <excludeFolder url="file://$MODULE_DIR$/Design" />
-      <excludeFolder url="file://$MODULE_DIR$/Observer" />
-      <excludeFolder url="file://$MODULE_DIR$/Player" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

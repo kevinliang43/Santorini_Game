@@ -25,4 +25,28 @@ public interface IObserver {
    * wrapper class will have will be limited to READ-ONLY methods.
    */
 
+  /**
+   * Appends new updates to both the overall history builder, as well as the newUpdates builder.
+   * @param updates new Updates to add.
+   */
+  void append(String updates);
+
+  /**
+   * Returns all new updates since the last read, and clears the newUpdates Builder.
+   * @return String representation of new updates since last read.
+   */
+  String readNewUpdates();
+
+  /**
+   * Returns the overall history of the game.
+   * @return String representation of all game updates.
+   */
+  String getHistory();
+
+  /**
+   * Getter for this Observer's Name
+   * @return This Observer's Name
+   */
+  String getName();
+
 }

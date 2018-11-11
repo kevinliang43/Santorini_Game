@@ -3,7 +3,7 @@
  */
 public class BreakerPlayer extends Player{
     /**
-     * Constructor for the Player Class
+     * Constructor for the BreakerPlayer Class
      *
      * @param name  name of the player
      * @param id    ID of the player

@@ -5,7 +5,7 @@ import java.util.ArrayList;
  * the state of the Board, the list of Workers it can manipulate,
  * and the Status of the turn (PLACE, MOVE, or BUILD).
  */
-public interface Strategy {
+public interface IStrategy {
 
   /**
    * Create a new Action based on the current state of the Board.

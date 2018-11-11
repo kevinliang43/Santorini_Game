@@ -32,7 +32,7 @@ import java.util.Stack;
  *  - check if the Position (x,y) is a Square that exists
  *  - check if a Square is occupied by a Worker
  */
-public class Board {
+public class Board implements IBoard {
   // Board Size in the x and y dimensions
   public static final int BOARD_X = 6;
   public static final int BOARD_Y = 6;

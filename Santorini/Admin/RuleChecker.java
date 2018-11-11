@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * RuleChecker does not care specifically about whose turn it is or which part of the turn the game
  * is in; these are to be checked in the component calling the RuleChecker.
  */
-public class RuleChecker {
+public class RuleChecker{
 
   private static final int WINNING_HEIGHT = 3;
 

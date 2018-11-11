@@ -26,12 +26,14 @@
  * in a message that indicates who won the game.
  *
  */
-public class Observer {
+public class Observer implements IObserver{
 
   private StringBuilder history; // Holds the entire history of the current game
   private StringBuilder newUpdates; // Holds history between last read() and next read()
+  private String name;
 
-  Observer() {
+  public Observer(String name) {
+    this.name = name;
     this.history = new StringBuilder();
     this.newUpdates = new StringBuilder();
   }
@@ -62,6 +64,14 @@ public class Observer {
    */
   public String getHistory() {
     return this.history.toString();
+  }
+
+  /**
+   * Getter for this Observer's Name
+   * @return This Observer's Name
+   */
+  public String getName() {
+    return this.name;
   }
 
 
