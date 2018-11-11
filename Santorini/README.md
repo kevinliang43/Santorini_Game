@@ -27,8 +27,6 @@
 <h3> Admin </h3> 
 
  * <b> Referee.java </b> : Class representing the administrative component of a game of Santorini, runs the game and manages interaction between Players and Board
- 
- 
  * <b> TournamentManager.java </b> : Class representing an administrative component that supervises and facilitates a Round Robin Santorini Tournament
  
  
