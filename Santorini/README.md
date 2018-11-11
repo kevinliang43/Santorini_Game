@@ -51,6 +51,7 @@
  * <b> plan.pdf </b> : Project analysis of the Santorini Game
  * <b> IStrategy.java </b> : Interface specification for the Strategy components of the Santorini Game, describes interaction between Player and Strategy
  * <b> IPlayer.java </b> : Interface specification for the player component of the Santorini Game
+ * <b> IReferee.java </b> : Interface for a Referee component in a Santorini Game
  * <b> IRuleChecker.java </b> : Interface specification for the rule checking component of the Santorini Game
  * <b> ITournamentManager.java </b> : Interface specification for a tournament manager for a tournament of Santorini Games
  * <b> TournamentProtocol.pdf </b> : Remote Protocol for Tournament Manager itneraction with Clients
