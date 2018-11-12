@@ -14,10 +14,10 @@
  * on a neighboring building).
  */
 public class Action implements IAction{
-  public final Status actionType;
-  public final int x, y;
-  public final int workerID;
-  public final String workerName;
+  private final Status actionType;
+  private final int x, y;
+  private final int workerID;
+  private final String workerName;
 
   /**
    * Construct an Action for one of the three action types defined in Status:
@@ -64,5 +64,45 @@ public class Action implements IAction{
     }
 
     return action + workerID + " to " + x + "," + y;
+  }
+
+  /**
+   * Getter for ActionType
+   * @return Action Type
+   */
+  public Status getActionType() {
+    return actionType;
+  }
+
+  /**
+   * Getter for X value
+   * @return X value
+   */
+  public int getX() {
+    return x;
+  }
+
+  /**
+   * Getter for Y Value
+   * @return Y value
+   */
+  public int getY() {
+    return y;
+  }
+
+  /**
+   * Getter for the WorkerID
+   * @return workerID
+   */
+  public int getWorkerID() {
+    return workerID;
+  }
+
+  /**
+   * Getter for Worker Name
+   * @return WorkerName
+   */
+  public String getWorkerName() {
+    return workerName;
   }
 }

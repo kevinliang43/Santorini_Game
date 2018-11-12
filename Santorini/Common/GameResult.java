@@ -1,11 +1,14 @@
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+
 /**
  * Class that contains information about a single Game.
  * To be Used as a Container object for Game Result information.
  */
 public class GameResult {
 
-  Player winner; // Loser of the game
-  Player loser; //
+  private Player winner; // Loser of the game
+  private Player loser; //
 
   GameResult(Player winner, Player loser) {
     this.winner = winner;
@@ -57,8 +60,11 @@ public class GameResult {
    * @return JSONFormat of this Result Object
    */
   public String asJSONString() {
-    return "[\"" + winner.getName() + ", \"" + loser.getName() + "\"]";
-
+    ObjectMapper mapper = new ObjectMapper();
+    ArrayNode arrayNode = mapper.createArrayNode();
+    arrayNode.add(this.winner.getName());
+    arrayNode.add(this.loser.getName());
+    return arrayNode.toString();
   }
 
 }

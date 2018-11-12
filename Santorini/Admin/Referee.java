@@ -221,7 +221,7 @@ public class Referee implements IReferee{
    */
   private void placePhase(Player p, Action nextPlace, int workerID) {
 
-    if (nextPlace.actionType != Status.PLACE || !RuleChecker.isPlaceLegal(this.officialBoard, nextPlace.x, nextPlace.y)) {
+    if (nextPlace.getActionType() != Status.PLACE || !RuleChecker.isPlaceLegal(this.officialBoard, nextPlace.getX(), nextPlace.getY())) {
       this.updateObserver(p.getName() + " has made an illegal place action.");
       this.gameOver(p);
       return;
@@ -230,7 +230,7 @@ public class Referee implements IReferee{
     // Else, the place is valid
     else {
       String workerName = p.getName() + (p.getWorkerIDs().size() + 1);
-      this.officialBoard.placeWorker(nextPlace.x, nextPlace.y, workerName, workerID);
+      this.officialBoard.placeWorker(nextPlace.getX(), nextPlace.getY(), workerName, workerID);
       p.addWorkerID(workerID);
       p.addWorkerName(workerName);
     }
@@ -260,18 +260,19 @@ public class Referee implements IReferee{
     // Check if the move is a MoveBuild
     // Or if the place is not legal,
     // If not, the player loses. and the player gets kicked
-    if (nextMoveBuild.actionType == Status.MOVEBUILD &&
-            RuleChecker.isMoveLegal(this.officialBoard, nextMoveBuild.move.workerID, nextMoveBuild.move.x, nextMoveBuild.move.y)) {
+    if (nextMoveBuild.getActionType() == Status.MOVEBUILD &&
+            RuleChecker.isMoveLegal(this.officialBoard, nextMoveBuild.getMove().getWorkerID(), nextMoveBuild.getMove().getX(), nextMoveBuild.getMove().getY())) {
       // Execute the Move
-      this.officialBoard.moveWorker(nextMoveBuild.move.workerID, nextMoveBuild.move.x, nextMoveBuild.move.y);
-      // Send new updates to observers
-      updateObserver(this.officialBoard.asJSONArray());
+      this.officialBoard.moveWorker(nextMoveBuild.getMove().getWorkerID(), nextMoveBuild.getMove().getX(), nextMoveBuild.getMove().getY());
+      //FIXME UPDATE OBSERVER
+//      // Send new updates to observers
+//      updateObserver(this.officialBoard.asJSONArray());
       // Check if the move results in a win
       if (RuleChecker.isGameOver(this.officialBoard, p.getWorkerIDs())  == GameOverStatus.WINNING_FLOOR) {
         this.winningPlayer = p;
         this.currentStatus = Status.GAMEOVER;
         // Update Observer
-        updateObserver(Translator.moveBuildAsJSON(initBoard, new MoveBuild(nextMoveBuild.move, null)));
+        updateObserver(Translator.moveBuildAsJSON(initBoard, new MoveBuild(nextMoveBuild.getMove(), null)));
         updateObserver(this.officialBoard.asJSONArray()+"\n");
         updateObserver(p.getName() + " has made a winning Move!");
         return;
@@ -281,9 +282,9 @@ public class Referee implements IReferee{
       updateObserver(Translator.moveBuildAsJSON(initBoard, nextMoveBuild));
 
       // Check if the Build is legal
-      if (RuleChecker.isBuildLegal(this.officialBoard, nextMoveBuild.build.workerID, nextMoveBuild.build.x, nextMoveBuild.build.y)) {
+      if (RuleChecker.isBuildLegal(this.officialBoard, nextMoveBuild.getBuild().getWorkerID(), nextMoveBuild.getBuild().getX(), nextMoveBuild.getBuild().getY())) {
         // execute the build
-        this.officialBoard.buildFloor(nextMoveBuild.build.x, nextMoveBuild.build.y);
+        this.officialBoard.buildFloor(nextMoveBuild.getBuild().getX(), nextMoveBuild.getBuild().getY());
         // Check if the build results in the other player losing
         BoardStatus bs = new BoardStatus(this.officialBoard, this.currentStatus);
         if (RuleChecker.isGameOver(this.officialBoard, bs.filterWorkers(p.getWorkerIDs())) == GameOverStatus.NO_MOVE_BUILD) {
@@ -294,6 +295,12 @@ public class Referee implements IReferee{
           updateObserver(p.getName() + " has made a winning Build! The other player is unable to move.");
           return;
         }
+        else {
+          updateObserver(this.officialBoard.asJSONArray()+"\n");
+        }
+
+
+
       }
       else {
         this.updateObserver(p.getName() + " has made an illegal build action.");

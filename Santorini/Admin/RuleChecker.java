@@ -234,11 +234,11 @@ public class RuleChecker{
   public static Board performAction(Board board, Action action) {
     Board result = new Board(board);
 
-    if(action.actionType == Status.MOVE) {
-      result.moveWorker(action.workerID, action.x, action.y);
+    if(action.getActionType() == Status.MOVE) {
+      result.moveWorker(action.getWorkerID(), action.getX(), action.getY());
     }
-    if(action.actionType == Status.BUILD) {
-      result.buildFloor(action.x, action.y);
+    if(action.getActionType() == Status.BUILD) {
+      result.buildFloor(action.getX(), action.getY());
     }
 
     return result;
@@ -253,9 +253,9 @@ public class RuleChecker{
   public static Board performAction(Board board, MoveBuild moveBuild) {
     Board result = new Board(board);
 
-    result.moveWorker(moveBuild.workerID, moveBuild.xMove, moveBuild.yMove);
+    result.moveWorker(moveBuild.getWorkerID(), moveBuild.getxMove(), moveBuild.getyMove());
 
-    result.buildFloor(moveBuild.xBuild, moveBuild.yBuild);
+    result.buildFloor(moveBuild.getxBuild(), moveBuild.getyBuild());
 
     return result;
   }

@@ -31,8 +31,8 @@ public class BreakerStrategyTest {
         setup();
         IAction place = strat.getNextAction(new BoardStatus(board, Status.PLACE), p1Workers);
         Action placeAction = (Action) place;
-        assertEquals(placeAction.x, 0);
-        assertEquals(placeAction.y, 0);
+        assertEquals(placeAction.getX(), 0);
+        assertEquals(placeAction.getY(), 0);
     }
 
     @Test
@@ -42,8 +42,8 @@ public class BreakerStrategyTest {
         this.board.placeWorker(0,0,"one1", 0);
         IAction place = strat.getNextAction(new BoardStatus(board, Status.PLACE), p2Workers);
         Action placeAction = (Action) place;
-        assertEquals(placeAction.x, 1);
-        assertEquals(placeAction.y, 1);
+        assertEquals(placeAction.getX(), 1);
+        assertEquals(placeAction.getY(), 1);
     }
 
     @Test
@@ -58,10 +58,10 @@ public class BreakerStrategyTest {
         p1Workers.add(2);
         IAction place = strat.getNextAction(new BoardStatus(board, Status.MOVEBUILD), p1Workers);
         MoveBuild moveBuild = (MoveBuild) place;
-        assertEquals(moveBuild.xMove, -1);
-        assertEquals(moveBuild.yMove, -1);
-        assertEquals(moveBuild.xBuild, -1);
-        assertEquals(moveBuild.yBuild, -1);
+        assertEquals(moveBuild.getxMove(), -1);
+        assertEquals(moveBuild.getyMove(), -1);
+        assertEquals(moveBuild.getxBuild(), -1);
+        assertEquals(moveBuild.getyBuild(), -1);
     }
 
 }
