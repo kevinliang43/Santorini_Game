@@ -49,12 +49,12 @@ public class TranslatorTest {
 
     MoveBuild moveBuild = new MoveBuild(move, build);
 
-    String expected = "[\"one1\", \"PUT\", \"SOUTH\", \"EAST\", \"SOUTH\"]";
+    String expected = "[\"one1\",\"PUT\",\"SOUTH\",\"EAST\",\"SOUTH\"]";
     assertEquals(Translator.moveBuildAsJSON(board, moveBuild), expected);
     move = new Action(Status.MOVE, worker11, 3, 4, "one1");
     build = new Action(Status.BUILD, worker11, 2, 3, "one1");
     moveBuild = new MoveBuild(move, build);
-    expected = "[\"one1\", \"EAST\", \"SOUTH\", \"WEST\", \"NORTH\"]";
+    expected = "[\"one1\",\"EAST\",\"SOUTH\",\"WEST\",\"NORTH\"]";
     assertEquals(Translator.moveBuildAsJSON(board, moveBuild), expected);
 
 

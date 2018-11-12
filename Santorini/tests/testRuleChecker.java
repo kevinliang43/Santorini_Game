@@ -141,9 +141,9 @@ public class testRuleChecker {
     assertEquals(legals.size(), 108);
     for(int i = 0; i < legals.size(); i++){
       if(i < legals.size()/2) {
-        assertEquals(legals.get(i).workerID, worker11);
+        assertEquals(legals.get(i).getWorkerID(), worker11);
       } else {
-        assertEquals(legals.get(i).workerID, worker12);
+        assertEquals(legals.get(i).getWorkerID(), worker12);
       }
     }
 

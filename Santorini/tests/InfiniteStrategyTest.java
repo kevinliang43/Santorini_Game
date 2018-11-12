@@ -31,8 +31,8 @@ public class InfiniteStrategyTest {
         setup();
         IAction place = strat.getNextAction(new BoardStatus(board, Status.PLACE), p1Workers);
         Action placeAction = (Action) place;
-        assertEquals(placeAction.x, 0);
-        assertEquals(placeAction.y, 0);
+        assertEquals(placeAction.getX(), 0);
+        assertEquals(placeAction.getY(), 0);
     }
 
     @Test
@@ -42,8 +42,8 @@ public class InfiniteStrategyTest {
         this.board.placeWorker(0,0,"one1", 0);
         IAction place = strat.getNextAction(new BoardStatus(board, Status.PLACE), p2Workers);
         Action placeAction = (Action) place;
-        assertEquals(placeAction.x, 1);
-        assertEquals(placeAction.y, 1);
+        assertEquals(placeAction.getX(), 1);
+        assertEquals(placeAction.getY(), 1);
     }
 
 }

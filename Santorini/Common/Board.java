@@ -1,3 +1,6 @@
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -271,30 +274,52 @@ public class Board implements IBoard {
   }
 
   public String asJSONArray() {
-    String board = "[";
+    ObjectMapper mapper = new ObjectMapper();
+    ArrayNode resultNode = mapper.createArrayNode();
+
     for (int row = 0; row < this.BOARD_X; row++) {
-      board += "[";
+      ArrayNode currentRow = mapper.createArrayNode();
       for (int col = 0; col < this.BOARD_Y; col++) {
         Square currentCell = this.cells[row][col];
 
         if (currentCell.isOccupied()) {
-          board += "\"" + currentCell.asString() + "\"";
-        }
-        else {
-          board += currentCell.asString();
+          currentRow.add(currentCell.asString());
+        } else {
+          currentRow.add(Integer.parseInt(currentCell.asString()));
         }
 
-        if (col != this.BOARD_Y - 1) {
-          board += ", ";
-        }
       }
-      board += "]";
-      if (row != this.BOARD_X - 1) {
-        board += ",\n ";
-      }
+      resultNode.add(currentRow);
     }
-    board += "]";
-    return board;
+
+    return resultNode.toString();
+
+
+
+//    String board = "[";
+//    for (int row = 0; row < this.BOARD_X; row++) {
+//      board += "[";
+//      for (int col = 0; col < this.BOARD_Y; col++) {
+//        Square currentCell = this.cells[row][col];
+//
+//        if (currentCell.isOccupied()) {
+//          board += "\"" + currentCell.asString() + "\"";
+//        }
+//        else {
+//          board += currentCell.asString();
+//        }
+//
+//        if (col != this.BOARD_Y - 1) {
+//          board += ", ";
+//        }
+//      }
+//      board += "]";
+//      if (row != this.BOARD_X - 1) {
+//        board += ",\n ";
+//      }
+//    }
+//    board += "]";
+//    return board;
 
   }
 }

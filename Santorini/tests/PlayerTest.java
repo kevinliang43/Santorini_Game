@@ -73,9 +73,9 @@ public class PlayerTest {
     assertEquals(action instanceof Action, true);
     if (action instanceof  Action) {
       Action place = (Action)action;
-      assertEquals(place.x, 0);
-      assertEquals(place.y,  0);
-      assertEquals(place.workerID, -1);
+      assertEquals(place.getX(), 0);
+      assertEquals(place.getY(),  0);
+      assertEquals(place.getWorkerID(), -1);
     }
   }
 
@@ -88,9 +88,9 @@ public class PlayerTest {
     assertEquals(action instanceof Action, true);
     if (action instanceof  Action) {
       Action place = (Action)action;
-      assertEquals(place.x, 5);
-      assertEquals(place.y,  5);
-      assertEquals(place.workerID, -1);
+      assertEquals(place.getX(), 5);
+      assertEquals(place.getY(),  5);
+      assertEquals(place.getWorkerID(), -1);
     }
   }
 
@@ -104,9 +104,9 @@ public class PlayerTest {
     assertEquals(action instanceof Action, true);
     if (action instanceof  Action) {
       Action place = (Action)action;
-      assertEquals(place.x, 1);
-      assertEquals(place.y,  1);
-      assertEquals(place.workerID, -1);
+      assertEquals(place.getX(), 1);
+      assertEquals(place.getY(),  1);
+      assertEquals(place.getWorkerID(), -1);
     }
   }
 
@@ -121,9 +121,9 @@ public class PlayerTest {
     assertEquals(action instanceof Action, true);
     if (action instanceof  Action) {
       Action place = (Action)action;
-      assertEquals(place.x, 4);
-      assertEquals(place.y,  5);
-      assertEquals(place.workerID, -1);
+      assertEquals(place.getX(), 4);
+      assertEquals(place.getY(),  5);
+      assertEquals(place.getWorkerID(), -1);
     }
   }
 

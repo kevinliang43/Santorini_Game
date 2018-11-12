@@ -1,4 +1,5 @@
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -294,17 +295,10 @@ public class TournamentManager implements ITournamentManager{
    */
   private String tournamentResultAsJSON() {
 
-    String JSONString = "[";
-
-    //Removed Players
-    JSONString += this.removedPlayersAsJSON() + ", [";
-
-    //Add Game Results
-
     List<GameResult> results = this.getGameResults();
 
     // Sort game results by p1 v rest, p2 v rest ... etc
-    List<GameResult> sortedResults = new ArrayList<>();
+    ArrayList<GameResult> sortedResults = new ArrayList<>();
 
     for (int i = 0; i < this.allPlayers.size(); i++) {
       Player currentPlayer = this.allPlayers.get(i);
@@ -315,39 +309,8 @@ public class TournamentManager implements ITournamentManager{
       }
       results.removeAll(sortedResults);
     }
-
-    for (int i = 0; i < sortedResults.size(); i++) {
-      JSONString += sortedResults.get(i).asJSONString();
-      if (i < sortedResults.size() - 1) {
-        JSONString += ", ";
-      }
-    }
-
-    JSONString += "]]";
-    return JSONString;
-
-
+    return Translator.tournamentResultsAsJSON((ArrayList<Player>)this.removedPlayers, sortedResults);
   }
-
-  /**
-   * Formats this Tournament's removed Player as JSON array of JSON Strings
-   * @return
-   */
-  private String removedPlayersAsJSON() {
-    String retString = "[";
-    for (int i = 0; i < this.removedPlayers.size(); i++) {
-      Player player = this.removedPlayers.get(i);
-      retString += "\"" + player.getName() + "\"";
-      if (i < this.removedPlayers.size() - 1) {
-        retString += ", ";
-      }
-    }
-    retString += "]";
-    return retString;
-  }
-
-
-
 
   //CLIENT
 

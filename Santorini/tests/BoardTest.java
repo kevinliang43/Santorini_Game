@@ -355,7 +355,7 @@ public class BoardTest {
     Board b = new Board();
     b.placeWorker(2, 3, "two1", 1);
     b.placeWorker(0, 0, "one1", 0);
-    String expected = "[[\"0one1\", 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, \"0two1\", 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]";
+    String expected = "[[\"0one1\",0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,\"0two1\",0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]]";
     assertEquals(b.asJSONArray(), expected);
   }
 
