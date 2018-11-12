@@ -27,6 +27,16 @@ public class Referee implements IReferee{
   private HashMap<Player, Integer> playerWins;
   private ArrayList<Observer> observers;
 
+  //String messages sent to users
+  private final String NOT_ENOUGH_PLAYERS = "Cannot Start a game without max number of players.";
+  private final String INVALID_NUM_GAMES = "Cannot run a best of N games, where N is less than 1 or even.";
+  private final String ILLEGAL_PLACE = " has made an illegal place action.";
+  private final String WINNING_MOVE = " has made a winning Move!";
+  private final String WINNING_BUILD = " has made a winning Build! The other player is unable to move.";
+  private final String ILLEGAL_BUILD = " has made an illegal build action.";
+  private final String ILLEGAL_MOVE = " has made an illegal move action.";
+  private final String INVALID_PLAYER_NAME = "A Player with that name already exists!";
+
   public Referee() {
     this.players = new ArrayList<>();
     this.officialBoard = new Board();
@@ -59,11 +69,11 @@ public class Referee implements IReferee{
    */
   public Player runGame(int numGames) throws IllegalArgumentException {
     if (numGames < 1 || numGames % 2 == 0) {
-      throw new IllegalArgumentException("Cannot run a best of N games, where N is less than 1 or even.");
+      throw new IllegalArgumentException(this.INVALID_NUM_GAMES);
     }
 
     if (this.players.size() != MAX_PLAYERS) {
-      throw new IllegalStateException("Cannot Start a game without max number of players.");
+      throw new IllegalStateException(this.NOT_ENOUGH_PLAYERS);
     }
 
     for (int currentGame = 0; currentGame < numGames; currentGame++) {
@@ -125,7 +135,7 @@ public class Referee implements IReferee{
   public Player runGame() throws IllegalStateException {
     // Check that there are MAX_PLAYERS contained
     if (this.players.size() != MAX_PLAYERS) {
-      throw new IllegalStateException("Cannot start a game without max number of players.");
+      throw new IllegalStateException(this.NOT_ENOUGH_PLAYERS);
     }
 
     // Send initial board State to observers
@@ -222,7 +232,7 @@ public class Referee implements IReferee{
   private void placePhase(Player p, Action nextPlace, int workerID) {
 
     if (nextPlace.getActionType() != Status.PLACE || !RuleChecker.isPlaceLegal(this.officialBoard, nextPlace.getX(), nextPlace.getY())) {
-      this.updateObserver(p.getName() + " has made an illegal place action.");
+      this.updateObserver(p.getName() + this.ILLEGAL_PLACE);
       this.gameOver(p);
       return;
 
@@ -274,7 +284,7 @@ public class Referee implements IReferee{
         // Update Observer
         updateObserver(Translator.moveBuildAsJSON(initBoard, new MoveBuild(nextMoveBuild.getMove(), null)));
         updateObserver(this.officialBoard.asJSONArray()+"\n");
-        updateObserver(p.getName() + " has made a winning Move!");
+        updateObserver(p.getName() + this.WINNING_MOVE);
         return;
       }
 
@@ -292,7 +302,7 @@ public class Referee implements IReferee{
           this.currentStatus = Status.GAMEOVER;
           // Update Observer
           updateObserver(this.officialBoard.asJSONArray()+"\n");
-          updateObserver(p.getName() + " has made a winning Build! The other player is unable to move.");
+          updateObserver(p.getName() + this.WINNING_BUILD);
           return;
         }
         else {
@@ -303,13 +313,13 @@ public class Referee implements IReferee{
 
       }
       else {
-        this.updateObserver(p.getName() + " has made an illegal build action.");
+        this.updateObserver(p.getName() + this.ILLEGAL_BUILD);
         this.gameOver(p);
       }
 
     }
     else {
-      this.updateObserver(p.getName() + " has made an illegal move action.");
+      this.updateObserver(p.getName() + this.ILLEGAL_MOVE);
       this.gameOver(p);
     }
 
@@ -334,7 +344,7 @@ public class Referee implements IReferee{
           throws IllegalArgumentException{
     for (Player p : this.players) {
       if (p.getName().equals(aChallengersName)) {
-        throw new IllegalArgumentException("A Player with that name already exists!");
+        throw new IllegalArgumentException(this.INVALID_PLAYER_NAME);
       }
     }
     Player aNewChallenger = new Player(aChallengersName, players.size(), aChallengersStrategy);
