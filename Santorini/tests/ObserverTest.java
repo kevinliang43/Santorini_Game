@@ -5,6 +5,10 @@ import static org.junit.Assert.assertEquals;
 public class ObserverTest {
 
     Observer o;
+    Referee ref;
+    BreakerPlayer p1;
+    StayAlivePlayer p2;
+
     public ObserverTest() {
 
     }
@@ -12,6 +16,9 @@ public class ObserverTest {
     //initializes the observer to test
     public void init() {
         this.o = new Observer("Kevin");
+        this.p1 = new BreakerPlayer("Marina", 0);
+        this.p2 = new StayAlivePlayer("Bob", 1);
+
     }
 
     //tests that appending a string adds to the newUpdates appendable
@@ -49,6 +56,16 @@ public class ObserverTest {
         o.append("testing again");
         assertEquals(o.readNewUpdates(), "testing again\n");
         assertEquals(o.getHistory(), "test string\ntesting again\n");
+    }
+
+    //tests that running a game will report the entire history
+    @Test
+    public void runGameTest1() {
+        init();
+        this.ref.addObserver("Kevin");
+        this.ref.runGame();
+        System.out.println(this.ref.getObservers().get(0).getHistory());
+
     }
 
 
