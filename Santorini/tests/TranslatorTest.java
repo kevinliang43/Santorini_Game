@@ -19,6 +19,12 @@ public class TranslatorTest {
   int worker22;
 
   StayAliveStrategy strat;
+  BreakerStrategy breakerStrat;
+
+  Player p1;
+  Player p2;
+  Player p3;
+
 
   @Before
   public void setup() {
@@ -38,8 +44,16 @@ public class TranslatorTest {
     p2Workers.add(worker22);
 
     strat = new StayAliveStrategy(true, 1);
+    breakerStrat = new BreakerStrategy();
+
+    p1 = new Player("Marina", 0, breakerStrat);
+    p2 = new Player("Kevin", 1, strat);
+    p3 = new Player("Bob", 2, breakerStrat);
+
+
   }
 
+  //testing writing a movebuild as JSON
   @Test
   public void testMoveBuild() {
     setup();
@@ -58,5 +72,35 @@ public class TranslatorTest {
     assertEquals(Translator.moveBuildAsJSON(board, moveBuild), expected);
 
 
+  }
+
+  //testing converStringListToJSONArray helper function in the Translater class
+  @Test
+  public void testConvert() {
+    ArrayList<String> los = new ArrayList<>();
+    los.add("one");
+    los.add("two");
+    los.add("three");
+
+    String expected = "[\"one\",\"two\",\"three\"]";
+    assertEquals(Translator.convertStringListToJSONArray(los), expected);
+  }
+
+  //testing tournamentResultsAsJSON method in Translator class
+  @Test
+  public void testTournamentResult() {
+    setup();
+    ArrayList<Player> removedPlayers = new ArrayList<>();
+    removedPlayers.add(p1);
+    ArrayList<GameResult> results = new ArrayList<>();
+    GameResult result1 = new GameResult(this.p1, this.p2);
+    GameResult result2 = new GameResult(this.p3, this.p2);
+    GameResult result3 = new GameResult(this.p1, this.p2);
+    results.add(result1);
+    results.add(result2);
+    results.add(result3);
+
+    String expected = "[[\"Marina\"],[[\"Marina\",\"Kevin\"],[\"Bob\",\"Kevin\"],[\"Marina\",\"Kevin\"]]]";
+    assertEquals(Translator.tournamentResultsAsJSON(removedPlayers,results), expected);
   }
 }
