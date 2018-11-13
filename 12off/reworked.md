@@ -21,3 +21,16 @@
  * Changed our n-out.json to match the newly created JSON obejcts using JSON package within xrun
  * Changed fields in GameResult to be private and added getter methods
  * Updated unit tests with new JSON format
+ 
+ <h2> Commit a2e46b8 </h2> 
+ <h3> Adding new tests to Observer </h3> 
+  * Added new unit tests for the Observer Class to support our new JSON format
+  
+ <h2> Commit 296f017 </h2> 
+ <h3> Switching from using hard coded String values to having global final representations </h3> 
+  * Moving hard coded Strings in Referee class to be global final class variables
+  
+ <h2> Commit af5f242 </h2> 
+ <h3> Adding Unit Tests </3> 
+  * Added unit tests for the Game Result class
+  * Added unit tests for the Translator class
