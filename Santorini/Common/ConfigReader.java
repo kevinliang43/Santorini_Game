@@ -62,6 +62,9 @@ public class ConfigReader {
    * PathString is a Linux Path to a dynamically loadable component that
    * implements the respective player or observer.
    *
+   * If more than one player contains the same name, a new name will be automatically generated
+   * for subsequent players.
+   *
    * @param playersArgs List of Player Args
    * @return List of Generated Players
    */
