@@ -16,6 +16,7 @@ import java.util.Scanner;
  */
 public class ConfigReader {
 
+
   /**
    * Creates a List of Observers, given a list of Observer Args
    * Observer Args are in the form [Name, PathString]

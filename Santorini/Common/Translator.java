@@ -1,7 +1,9 @@
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Translator Class to convert Board states into JSON.
@@ -131,6 +133,34 @@ public class Translator {
 
     }
     return retString;
+  }
+
+  /**
+   * Checks to see if a JsonNode representing a Config File in JSON Format contains
+   * the correct given fields.
+   * @param configNode JsonNode to be checked for proper fields.
+   * @param fields Fields to be checked for.
+   * @return boolean representing if JsonNode has correctFields.
+   */
+  public static boolean checkFields(JsonNode configNode, ArrayList<String> fields) {
+    Iterator<String> fieldNamesIt = configNode.fieldNames();
+    ArrayList<String> actualFields = new ArrayList<>();
+    while (fieldNamesIt.hasNext()) {
+      actualFields.add(fieldNamesIt.next());
+    }
+
+    for (int i = 0; i < fields.size(); i++) {
+      if (!actualFields.contains(fields.get(i))){
+        return false;
+      }
+    }
+    for (int i = 0; i < actualFields.size(); i++) {
+      if (!fields.contains(actualFields.get(i))) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
 

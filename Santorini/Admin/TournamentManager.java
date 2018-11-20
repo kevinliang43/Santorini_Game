@@ -2,7 +2,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -106,6 +108,15 @@ public class TournamentManager implements ITournamentManager{
     // Add Players
     // Read Config File to Get Players and Observers
     JsonNode config = ConfigReader.readAndParse().get(0);
+
+    // Check to see if Config file is properly formatted:
+
+
+    // Check if Field names are valid (i.e Config File was properly formatted)
+    if (!Translator.checkFields(config, new ArrayList<>(Arrays.asList("players", "observers")))) {
+      throw new IllegalStateException("Config File is not formatted correctly.");
+    }
+
     ArrayList<ArrayList<String>> playersArgs = ConfigReader.getFields("players", config);
     ArrayList<ArrayList<String>> observersArgs = ConfigReader.getFields("observers", config);
     // Add AI Players and Observers to this Tournament from Config File

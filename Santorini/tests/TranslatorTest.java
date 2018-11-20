@@ -1,7 +1,10 @@
+import com.fasterxml.jackson.databind.JsonNode;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 
@@ -102,5 +105,61 @@ public class TranslatorTest {
 
     String expected = "[[\"Marina\"],[[\"Marina\",\"Kevin\"],[\"Bob\",\"Kevin\"],[\"Marina\",\"Kevin\"]]]";
     assertEquals(Translator.tournamentResultsAsJSON(removedPlayers,results), expected);
+  }
+
+  @Test
+  public void testCheckFields() {
+    ArrayList<String> correctFields = new ArrayList<>(Arrays.asList("min players", "port", "waiting for", "repeat"));
+    String test = "{ \"min players\" : 3, \"port\"        : 56789, \"waiting for\" : 10, \"repeat\"      : 0}";
+    try {
+      JsonNode testNode = ConfigReader.parse(test).get(0);
+      boolean result = Translator.checkFields(testNode, correctFields);
+      assertEquals(result, true);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+  }
+
+  @Test
+  public void testCheckFieldsTooManyFields() {
+    ArrayList<String> correctFields = new ArrayList<>(Arrays.asList("min players", "port", "waiting for", "repeat"));
+    String test = "{ \"min players\" : 3, \"port\"        : 56789, \"waiting for\" : 10, \"repeat\"      : 0, \"lol\" : 3}";
+    try {
+      JsonNode testNode = ConfigReader.parse(test).get(0);
+      boolean result = Translator.checkFields(testNode, correctFields);
+      assertEquals(result, false);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+  }
+
+  @Test
+  public void testCheckFieldsTooFewFields() {
+    ArrayList<String> correctFields = new ArrayList<>(Arrays.asList("min players", "port", "waiting for", "repeat"));
+    String test = "{ \"min players\" : 3, \"port\"        : 56789, \"waiting for\" : 10}";
+    try {
+      JsonNode testNode = ConfigReader.parse(test).get(0);
+      boolean result = Translator.checkFields(testNode, correctFields);
+      assertEquals(result, false);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+  }
+
+  @Test
+  public void testCheckFieldsIncorrectFieldName() {
+    ArrayList<String> correctFields = new ArrayList<>(Arrays.asList("min_players", "port", "waiting for", "repeat"));
+    String test = "{ \"min players\" : 3, \"port\"        : 56789, \"waiting for\" : 10, \"repeat\"      : 0}";
+    try {
+      JsonNode testNode = ConfigReader.parse(test).get(0);
+      boolean result = Translator.checkFields(testNode, correctFields);
+      assertEquals(result, false);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
   }
 }
