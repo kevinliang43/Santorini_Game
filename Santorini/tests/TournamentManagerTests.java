@@ -14,16 +14,16 @@ public class TournamentManagerTests {
         this.tm = new TournamentManager(2, 10, 2000, 1, 3);
     }
     //commented out tests for private functions
-//    //tests that begin game successfully runs a game between two players
-//    @Test
-//    public void testBeginGame() {
-//        init();
-//        Player p1 = new StayAlivePlayer("marina",0);
-//        Player p2 = new BreakerPlayer("kevin", 1);
-//        Referee ref = tm.beginGame(p1,p2);
-//        assertEquals(ref.getKickedPlayer(), p2);
-//        assertEquals(ref.getWinner(), p1);
-//    }
+    //tests that begin game successfully runs a game between two players
+    @Test
+    public void testBeginGame() {
+        init();
+        Player p1 = new StayAlivePlayer("marina",0);
+        Player p2 = new BreakerPlayer("kevin", 1);
+        Referee ref = tm.beginGame(p1,p2);
+        assertEquals(ref.getKickedPlayer(), p2);
+        assertEquals(ref.getWinner(), p1);
+    }
 //
 //    //tests that begin game returns null when one player is null
 //    @Test

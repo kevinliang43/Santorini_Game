@@ -1,10 +1,7 @@
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -120,9 +117,9 @@ public class TournamentManager implements ITournamentManager{
     ArrayList<ArrayList<String>> playersArgs = ConfigReader.getFields("players", config);
     ArrayList<ArrayList<String>> observersArgs = ConfigReader.getFields("observers", config);
     // Add AI Players and Observers to this Tournament from Config File
-    this.players = ConfigReader.buildPlayers(playersArgs);
-    this.allPlayers = new ArrayList<>(this.players);
-    this.observers = ConfigReader.buildObservers(observersArgs);
+    this.players.addAll(ConfigReader.buildPlayers(playersArgs));
+    this.allPlayers.addAll(new ArrayList<>(this.players));
+    this.observers.addAll(ConfigReader.buildObservers(observersArgs));
 
     //TODO: KEEP TRACK OF NUMBER OF PLAYERS IF ADDING PLAYERS LATER.
 
