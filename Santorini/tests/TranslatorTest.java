@@ -1,8 +1,12 @@
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -175,6 +179,77 @@ public class TranslatorTest {
     String expected = "[[\"kevin1\",2,3],[\"kevin2\",0,1]]";
 
     assertEquals(expected, actual);
+  }
+
+  @Test
+  public void testMessageType() {
+    String oppName = "\"Kevin\"";
+    String playingAs = "[\"playing-as\", \"kevin\"]";
+    String board = "[[\"0one1\",0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,\"0two1\",0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]]";
+    String emptyPlace = "[]";
+    String nonEmptyPlace = "[[\"kevin\", 1, 1]]";
+    String inform1 = "[[\"Kevin\", \"Marina\"]]";
+    String inform2 = "[[\"Kevin\", \"Marina\"], [\"Kevin\", \"Marina\"]]";
+    String inform3 = "[[\"Kevin\", \"Marina\", \"irregular\"], [\"Kevin\", \"Marina\"]]";
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+      JsonNode messageNode = mapper.readTree(oppName);
+      assertEquals(Translator.messageType(messageNode), MessageType.OPP_NAME);
+      messageNode = mapper.readTree(board);
+      assertEquals(Translator.messageType(messageNode), MessageType.TAKE_TURN);
+      messageNode = mapper.readTree(playingAs);
+      assertEquals(Translator.messageType(messageNode), MessageType.PLAYING_AS);
+      messageNode = mapper.readTree(emptyPlace);
+      assertEquals(Translator.messageType(messageNode), MessageType.PLACEMENT);
+      messageNode = mapper.readTree(nonEmptyPlace);
+      assertEquals(Translator.messageType(messageNode), MessageType.PLACEMENT);
+      messageNode = mapper.readTree(inform1);
+      assertEquals(Translator.messageType(messageNode), MessageType.INFORM_PLAYERS);
+      messageNode = mapper.readTree(inform2);
+      assertEquals(Translator.messageType(messageNode), MessageType.INFORM_PLAYERS);
+      messageNode = mapper.readTree(inform3);
+      assertEquals(Translator.messageType(messageNode), MessageType.INFORM_PLAYERS);
+    } catch (IOException e) {
+
+    }
+  }
+
+  @Test
+  public void testPlaceActionAsJSON() {
+    Action place = new Action(Status.PLACE, 1, 2, 3, "KEIVN1");
+    String placeJSON = Translator.placeActionAsJSON(place);
+    String expected = "[2,3]";
+    assertEquals(expected, placeJSON);
+
+    place = new Action(Status.PLACE, 1, 4, 5, "KEIVN1");
+    placeJSON = Translator.placeActionAsJSON(place);
+    expected = "[4,5]";
+    assertEquals(expected, placeJSON);
+  }
+
+  @Test
+  public void testConvertJSONToBoard() {
+
+    String testBoard = "[[\"2one1\", 3, 0, 0, 0, 0], [0, \"0one2\", \"1two1\", 0, 0, 0], [0, 0, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0], [0, 0, 0, 0, 0, \"0two2\"], [0, 0, 0, 0, 0, 0]]";
+    String name = "one";
+    ArrayList ids = new ArrayList(Arrays.asList(1, 3));
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+      JsonNode testNode = mapper.readTree(testBoard);
+      Board b = Translator.convertJSONToBoard(name, (ArrayNode)testNode, ids);
+      assertEquals(testNode.toString(), b.asJSONArray());
+    } catch (IOException e) {
+
+    }
+  }
+
+  @Test
+  public void testConvertJSONToAction() {
+    Square sq = new Square(3, 3);
+    sq.setOccupied(true, 1, "kevin");
+    String json = "[\"kevin\", \"EAST\", \"SOUTH\", \"WEST\", \"NORTH\"]";
+    IAction mb = Translator.convertJSONToAction(sq, json);
+    System.out.println(mb.toString());
   }
 
 }

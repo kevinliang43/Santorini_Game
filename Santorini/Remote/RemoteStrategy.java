@@ -86,33 +86,21 @@ public class RemoteStrategy implements Strategy {
       // Give up
       //String, which represents the name of a player that is giving up;
       if (action.isTextual()) {
-        //TODO Implement new type of action called GiveUpAction
         return new GiveUpAction();
       }
-
       // Winning Move [Worker,EastWest,NorthSouth], which represents a winning move
       // or Move Build
       else {
         String workerName = action.get(0).asText();
         int workerID = workerIDs.get(0);
-
-        for (int i :workerIDs) {
+        for (int i : workerIDs) {
           if (b.getWorkerSquare(i).getWorkerName() == workerName) {
             workerID = i;
           }
         }
-        int mx = action.get(1).asInt();
-        int my = action.get(2).asInt();
-        Action move = new Action(Status.MOVE, workerID ,mx, my, workerName);
+        IAction mb = Translator.convertJSONToAction(b.getWorkerSquare(workerID), action.toString());
+        return mb;
 
-        // MoveBuild
-        if (action.size() == 5) {
-          int bx = action.get(3).asInt();
-          int by = action.get(4).asInt();
-          Action build = new Action(Status.BUILD, workerID, bx, by, workerName);
-          MoveBuild moveBuild = new MoveBuild(move, build);
-          return moveBuild;
-        }
       }
 
     } catch (IOException e) {

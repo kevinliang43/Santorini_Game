@@ -36,8 +36,15 @@ public class xclients {
     ArrayList<ClientSideProxy> proxies = new ArrayList<>();
 
     for (Player player: players) {
-      ClientSideProxy curProxy = new ClientSideProxy(player, ip, port);
-      proxies.add(curProxy);
+      Thread playerThread = new Thread() {
+        @Override
+        public void run() {
+          ClientSideProxy curProxy = new ClientSideProxy(player, ip, port);
+          proxies.add(curProxy);
+          //curProxy.main();
+        }
+      };
+      playerThread.start();
     }
 
 

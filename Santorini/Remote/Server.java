@@ -49,10 +49,13 @@ public class Server {
     // Accept Players Phase
     this.acceptPlayersPhase();
 
-//    // Construct Tournament
-//    TournamentManager manager = new TournamentManager(this.newPlayers, MIN_PLAYERS, MAX_PLAYERS, ROUND_TIMEOUT, NUM_ROUNDS, GAMES_PER_ROUND);
-//    //Run the Tournament
-//    manager.main();
+    for (Player player : this.newPlayers) {
+      System.out.println(player.getName());
+    }
+    // Construct Tournament
+    TournamentManager manager = new TournamentManager(this.newPlayers, MIN_PLAYERS, MAX_PLAYERS, ROUND_TIMEOUT, NUM_ROUNDS, GAMES_PER_ROUND);
+    //Run the Tournament
+    manager.mainNoConfig();
     // Close
     try {
       this.serverSocket.close();
@@ -156,14 +159,14 @@ public class Server {
     executor.shutdownNow();
     // Any hanging threads will have their associated Clients
     // disconnected and the threads are shutdown.
-    for (Socket clientSocket : clientSockets) {
-      try {
-        clientSocket.close();
-      } catch (IOException e) {
-        // If there is an error with closing the socket,
-        // The socket is already closed. Do nothing
-      }
-    }
+//    for (Socket clientSocket : clientSockets) {
+//      try {
+//        clientSocket.close();
+//      } catch (IOException e) {
+//        // If there is an error with closing the socket,
+//        // The socket is already closed. Do nothing
+//      }
+//    }
 
   }
 

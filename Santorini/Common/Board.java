@@ -293,33 +293,5 @@ public class Board implements IBoard {
     }
 
     return resultNode.toString();
-
-
-
-//    String board = "[";
-//    for (int row = 0; row < this.BOARD_X; row++) {
-//      board += "[";
-//      for (int col = 0; col < this.BOARD_Y; col++) {
-//        Square currentCell = this.cells[row][col];
-//
-//        if (currentCell.isOccupied()) {
-//          board += "\"" + currentCell.asString() + "\"";
-//        }
-//        else {
-//          board += currentCell.asString();
-//        }
-//
-//        if (col != this.BOARD_Y - 1) {
-//          board += ", ";
-//        }
-//      }
-//      board += "]";
-//      if (row != this.BOARD_X - 1) {
-//        board += ",\n ";
-//      }
-//    }
-//    board += "]";
-//    return board;
-
   }
 }

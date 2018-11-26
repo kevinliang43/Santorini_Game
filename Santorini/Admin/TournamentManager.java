@@ -159,6 +159,25 @@ public class TournamentManager implements ITournamentManager{
     System.exit(0);
   }
 
+  public void mainNoConfig() {
+    this.allPlayers.addAll(new ArrayList<>(this.players));
+    // Start Tournament
+    this.runTournament();
+
+    // End Tournament
+    // Print [[Removed Players], [[Game1Result], [Game2Result] ...]
+
+    String JSONResults = this.tournamentResultAsJSON();
+
+    // Inform Players of Outcome of game
+    for (Player player : this.allPlayers) {
+      player.sendMessage(JSONResults);
+    }
+
+    System.out.println(JSONResults);
+    System.exit(0);
+  }
+
 //  //main method only for testing purposes that returns the removed players
 //  public String main(ArrayList<Player> players, ArrayList<Observer> obs) throws IllegalStateException{
 //    this.players = players;

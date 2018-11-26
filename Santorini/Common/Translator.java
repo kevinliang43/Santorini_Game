@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -139,6 +140,110 @@ public class Translator {
     return retString;
   }
 
+  private static int convertDirToNum(String dir) {
+    if (dir.equals("NORTH") || dir.equals("WEST")) {
+      return -1;
+    }
+    else if (dir.equals("SOUTH") || dir.equals("EAST")) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+
+  }
+
+  public static String placeActionAsJSON(Action placeAction) {
+    ObjectMapper mapper = new ObjectMapper();
+    ArrayNode resultNode = mapper.createArrayNode();
+    resultNode.add(placeAction.getX());
+    resultNode.add(placeAction.getY());
+    return resultNode.toString();
+  }
+
+  public static IAction convertJSONToAction(Square workerSquare, String json) {
+    int x = workerSquare.getX();
+    int y = workerSquare.getY();
+    int workerID = workerSquare.getWorkerID();
+    String workerName = workerSquare.getWorkerName();
+
+    try {
+      JsonNode node = ConfigReader.parse(json).get(0);
+      int mx = x + convertDirToNum(node.get(1).asText());
+      int my = y + convertDirToNum(node.get(2).asText());
+      Action move = new Action(Status.MOVE, workerID, mx, my, workerName);
+
+      if (node.size() == 5) {
+        int bx = mx + convertDirToNum(node.get(3).asText());
+        int by = my + convertDirToNum(node.get(4).asText());
+        Action build = new Action(Status.BUILD, workerID, bx, by, workerName);
+        MoveBuild moveBuild = new MoveBuild(move, build);
+        return moveBuild;
+      }
+      else {
+        return move;
+      }
+
+    } catch (IOException e) {
+    }
+
+
+    return null;
+  }
+
+  public static Board convertJSONToBoard(String playerName, ArrayNode boardNode, ArrayList<Integer> workerIds) {
+    if (boardNode.size() != 6 || boardNode.get(0).size() != 6) {
+      throw new IllegalArgumentException("Cannot Construct Board from this.");
+    }
+
+    // Setup new board and available IDs
+    Board b = new Board();
+    ArrayList<Integer> availableIds = new ArrayList<>(Arrays.asList(0, 1, 2, 3));
+    for (int i = 0; i < 4; i++) {
+      if (!workerIds.contains(i)){
+        availableIds.add(i);
+      }
+    }
+
+    // Iterate through and generate board
+    for (int row = 0; row < boardNode.size(); row++) {
+      for (int col = 0; col < boardNode.get(0).size(); col++) {
+        JsonNode square = boardNode.get(row).get(col);
+        // Cell is a Height
+        if (square.isInt()) {
+          b.setFloor(row, col, square.asInt());
+        }
+        else {
+
+          // Parse args
+          String JsonString = square.asText();
+          int cellHeight = Integer.parseInt(JsonString.substring(0, 1));
+          int workerNum = Integer.parseInt(JsonString.substring(JsonString.length()-1));
+          String workerName = JsonString.substring(1,JsonString.length()-1);
+          int workerID = availableIds.get(0);
+          // if its one of the player's workers
+          if (workerName.equals(playerName)) {
+            if (workerNum == 1) {
+              workerID = Math.min(workerIds.get(0), workerIds.get(1));
+            } else {
+              workerID = Math.max(workerIds.get(0), workerIds.get(1));
+            }
+          }
+          else {
+            availableIds.remove(0);
+          }
+
+          b.setFloor(row, col, cellHeight);
+          b.placeWorker(row, col, workerName+workerNum, workerID);
+
+        }
+      }
+    }
+
+    return b;
+
+  }
+
   /**
    * Checks to see if a JsonNode representing a Config File in JSON Format contains
    * the correct given fields.
@@ -182,6 +287,13 @@ public class Translator {
 
   }
 
+  /**
+   * Checks to see if the given string is a valid JSON Object
+   * in string format
+   * @param JSONString String to be checked
+   * @return boolean representing whether or not the given String
+   * is a valid JSON Object
+   */
   public static boolean isValidJSON(String JSONString) {
     try {
       final ObjectMapper mapper = new ObjectMapper();
@@ -191,6 +303,56 @@ public class Translator {
       return false;
     }
   }
+
+  /**
+   *
+   * Logic that Handles and determines the type of message that
+   * a given JsonNode is (JsonNode represents some type of JsonObject)
+   *
+   * Currently, there are five different types of messages that this
+   * Proxy will encounter FROM the server.
+   * 1. Playing-As (["playing-as" Name])
+   * 2. other (JSON String of next opponent.)
+   * 3. Placement ([[Worker,Coordinate,Coordinate],...])
+   * 4. Take Turn (Board)
+   * 5. Informing Players (JSON array of EncounterOutcomes)
+   *    EncounterOutcome is one of the following:
+   *        [String, String], which is the name of the winner followed by the loser;
+   *        [String, String, "irregular"], which is like the first alternative but signals that the losing player misbehaved.
+   *
+   *
+   * If the JSON Node is not one of the above, then it will return null.
+   *
+   * @param node Node to be Checked for MessageType
+   * @return One of MessageTypes (See MessageType enum for more info.)
+   */
+  public static MessageType messageType(JsonNode node) {
+    if (node.isTextual()) {
+      return MessageType.OPP_NAME;
+    }
+    else if (node.isArray()){
+      ArrayNode arrayNode = (ArrayNode)node;
+      // Playing As
+      if (arrayNode.size() == 2 && arrayNode.get(0).isTextual() && arrayNode.get(1).isTextual()) {
+        return MessageType.PLAYING_AS;
+      }
+      // Board
+      else if (arrayNode.size() == 6 && arrayNode.get(0).size() == 6) {
+        return MessageType.TAKE_TURN;
+      }
+      // Placement
+      else if (arrayNode.size() == 0 || arrayNode.get(0).get(1).isInt()) {
+        return MessageType.PLACEMENT;
+      }
+      // Inform Players
+      else {
+        return MessageType.INFORM_PLAYERS;
+      }
+    }
+    return null;
+  }
+
+
 
 
 }
