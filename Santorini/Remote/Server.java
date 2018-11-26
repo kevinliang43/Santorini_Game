@@ -49,9 +49,6 @@ public class Server {
     // Accept Players Phase
     this.acceptPlayersPhase();
 
-    for (Player player : this.newPlayers) {
-      System.out.println(player.getName());
-    }
 //    // Construct Tournament
 //    TournamentManager manager = new TournamentManager(this.newPlayers, MIN_PLAYERS, MAX_PLAYERS, ROUND_TIMEOUT, NUM_ROUNDS, GAMES_PER_ROUND);
 //    //Run the Tournament
@@ -232,7 +229,7 @@ public class Server {
    * @param clientSocket Client requesting a new Signup
    * @param newSignUp Name sent by the Client.
    */
-  private void signup(Socket clientSocket, String newSignUp, BufferedReader reader) {
+  private synchronized void signup(Socket clientSocket, String newSignUp, BufferedReader reader) {
 
     try {
       // If New Signup Name Exists:

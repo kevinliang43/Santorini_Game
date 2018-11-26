@@ -23,6 +23,7 @@ public class xclients {
       throw new IllegalStateException("Config File is not formatted correctly.");
     }
 
+    // Set up Variables into usable format
     ArrayList<ArrayList<String>> playersArgs = ConfigReader.getFields("players", config);
     ArrayList<ArrayList<String>> observersArgs = ConfigReader.getFields("observers", config);
 
@@ -31,27 +32,14 @@ public class xclients {
     String ip = config.get("ip").asText();
     int port = config.get("port").asInt();
 
+    // Create Client Side Proxies
     ArrayList<ClientSideProxy> proxies = new ArrayList<>();
 
     for (Player player: players) {
-//      try {
-//        Thread.sleep(250);
-//      } catch (InterruptedException e) {
-//      }
-
-      System.out.println(player.getName());
       ClientSideProxy curProxy = new ClientSideProxy(player, ip, port);
       proxies.add(curProxy);
     }
 
-//    try {
-//      Socket socket = new Socket("localhost", 56789);
-//      InputStream inputStream = socket.getInputStream();
-//      OutputStream outputStream = socket.getOutputStream();
-//      outputStream.write("\"Kevin\"".getBytes());
-//    } catch (Exception e) {
-//      e.printStackTrace();
-//    }
 
 
 
