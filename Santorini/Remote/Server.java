@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
@@ -23,13 +22,22 @@ import java.util.concurrent.Executors;
  */
 public class Server {
 
+  // Default Server Variables
   private static int MIN_PLAYERS = 2;
   private static int PORT_NUMBER = 50000;
   private static int ADD_PLAYER_TIMEOUT = 10000;
   private static int REPEAT = 0;
 
+  // Default Tournament Variables
+  private static int MAX_PLAYERS = 64;
+  private static int ROUND_TIMEOUT = 30000;
+  private static int NUM_ROUNDS = 2;
+  private static int GAMES_PER_ROUND = 3;
+
+  // Server Setup Variables
   private ServerSocket serverSocket = null;
   private ArrayList<String> signedUp = new ArrayList<>();
+  private ArrayList<Player> newPlayers = new ArrayList<>();
 
   //Field Names
   private static ArrayList<String> FIELD_NAMES = new ArrayList<>(Arrays.asList(
@@ -40,8 +48,22 @@ public class Server {
     this.serverSetup();
     // Accept Players Phase
     this.acceptPlayersPhase();
-    System.out.println("Reached End, waiting for clients.");
-    //System.exit(0);
+
+    for (Player player : this.newPlayers) {
+      System.out.println(player.getName());
+    }
+//    // Construct Tournament
+//    TournamentManager manager = new TournamentManager(this.newPlayers, MIN_PLAYERS, MAX_PLAYERS, ROUND_TIMEOUT, NUM_ROUNDS, GAMES_PER_ROUND);
+//    //Run the Tournament
+//    manager.main();
+    // Close
+    try {
+      this.serverSocket.close();
+    } catch (IOException e) {
+      // Close the Server
+    }
+
+
 
   }
 
@@ -101,7 +123,8 @@ public class Server {
     // List of opened up Sockets waiting for input
     ArrayList<Socket> clientSockets = new ArrayList<>();
     // while sign up time is still available
-    while (System.currentTimeMillis() - startTime < ADD_PLAYER_TIMEOUT) {
+    //while (System.currentTimeMillis() - startTime < ADD_PLAYER_TIMEOUT) {
+    for (int i = 0; i < this.MAX_PLAYERS; i++) {
       // Build new Thread to listen for and accept incoming sign ups
       Thread listenerThread = new Thread() {
         @Override
@@ -113,7 +136,7 @@ public class Server {
             // Connection received, get reference to the client socket
             clientSockets.add(clientSocket);
             // Handle Client Socket for Signup
-            clientSocketHandle(clientSocket); // TODO: SEND BACK NAME
+            clientSocketHandle(clientSocket);
             // Once Process has been completed, remove reference of client socket from
             // list of Sockets that are mid-process in their respective threads
             clientSockets.remove(clientSocket);
@@ -126,9 +149,16 @@ public class Server {
       // Execute the thread
       executor.execute(listenerThread);
     }
+    // WAIT FOR TIMEOUT
+    try {
+      Thread.sleep(ADD_PLAYER_TIMEOUT);
+    } catch (InterruptedException e ){
+    }
+
     // After Timeout has been reached, Shutdown all threads from executor
     executor.shutdownNow();
-    // Any hanging threads are disconnected and shutdown.
+    // Any hanging threads will have their associated Clients
+    // disconnected and the threads are shutdown.
     for (Socket clientSocket : clientSockets) {
       try {
         clientSocket.close();
@@ -164,45 +194,69 @@ public class Server {
       StringBuilder messageBuilder = new StringBuilder();
       String registerMessage = "";
 
-      while ((registerMessage = bufferedReader.readLine()) != null) {
-        messageBuilder.append(registerMessage);
+      JsonNode messageNode = null;
 
+      while (messageNode == null) {
+        registerMessage = bufferedReader.readLine();
+        messageBuilder.append(registerMessage);
+        try {
+          messageNode = ConfigReader.parse(messageBuilder.toString()).get(0);
+        } catch (Exception e) {
+
+        }
       }
-      // Check Message
-      try {
-        JsonNode messageNode = ConfigReader.parse(messageBuilder.toString()).get(0);
-        // If Valid Signup, Signup
-        if (messageNode.isTextual()) {
-          String newSignUp = messageNode.asText();
-          // If New Signup Name Exists:
-          if (this.signedUp.contains(newSignUp)) {
-            // Generate new Name
-            while (signedUp.contains(newSignUp)) {
-              newSignUp+= signedUp.size();
-            }
-            // Send Back new Name
-            ObjectMapper mapper = new ObjectMapper();
-            ArrayNode responseNode = mapper.createArrayNode();
-            responseNode.add("playing-as");
-            responseNode.add(newSignUp);
-            clientSocket.getOutputStream().write(responseNode.toString().getBytes());
-          }
-          // Add name to preprocessing List.
-          this.signedUp.add(newSignUp);
-          System.out.println(newSignUp);
+      if (messageNode.isTextual()) { //TODO ENFORCE LOWERCASE
+        String newSignUp = messageNode.asText();
+        this.signup(clientSocket, newSignUp, bufferedReader);
         }
         // Otherwise Immediately Close Connection
         else {
           clientSocket.close();
         }
-      } catch (Exception e) {
-        // Signup Message is incorrectly formatted
-        // Close Connection
-        clientSocket.close();
-      }
     } catch (IOException e) {
       // Errors in obtaining connection to client
       // Do nothing, connection does not exist.
+    }
+
+  }
+
+  /**
+   * Updates the Server with the new Client signup.
+   * Checks to see if given name is taken already.
+   * If not, the name is added to a preprocessing list.
+   * If so, a unique name is generated for the new Client,
+   * and the Client is sent back a JSON message in the form: ["playing-as" Name]
+   *
+   * Afterwards, a new Proxy Player is constructed for the Client and saved for later use.
+   *
+   * @param clientSocket Client requesting a new Signup
+   * @param newSignUp Name sent by the Client.
+   */
+  private void signup(Socket clientSocket, String newSignUp, BufferedReader reader) {
+
+    try {
+      // If New Signup Name Exists:
+      if (this.signedUp.contains(newSignUp)) {
+        // Generate new Name
+        while (signedUp.contains(newSignUp)) {
+          newSignUp += signedUp.size();
+        }
+        // Send Back new Name
+        ObjectMapper mapper = new ObjectMapper();
+        ArrayNode responseNode = mapper.createArrayNode();
+        responseNode.add("playing-as");
+        responseNode.add(newSignUp);
+        clientSocket.getOutputStream().write((responseNode.toString() + "\n").getBytes());
+      }
+      // Add name to preprocessing List.
+      this.signedUp.add(newSignUp);
+
+      // Create new ProxyPlayer
+      RemoteStrategy strat = new RemoteStrategy(clientSocket, reader);
+      ProxyPlayer newPlayer = new ProxyPlayer(newSignUp, this.newPlayers.size(), strat);
+      this.newPlayers.add(newPlayer);
+    } catch (IOException e) {
+      // If Connection is closed while signing up, do nothing
     }
 
   }
@@ -243,12 +297,6 @@ public class Server {
       e.printStackTrace();
     }
     this.serverSocket = serverSocket;
-    // FIXME Does the Server socket need a timeout in the signup phase?
-//    try {
-//      this.serverSocket.setSoTimeout(ADD_PLAYER_TIMEOUT);
-//    } catch (SocketException e) {
-//      e.printStackTrace();
-//    }
   }
 
 

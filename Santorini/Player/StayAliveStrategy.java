@@ -199,4 +199,9 @@ public class StayAliveStrategy implements Strategy {
       return false;
     }
   }
+
+  @Override
+  public void sendMessage(String message) {
+
+  }
 }

@@ -2,6 +2,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -40,6 +41,9 @@ public class Translator {
       ArrayNode singleResult = mapper.createArrayNode();
       singleResult.add(results.get(i).getWinner().getName());
       singleResult.add(results.get(i).getLoser().getName());
+      if (results.get(i).isIrregular()) {
+        singleResult.add("irregular");
+      }
       resultsNode.add(singleResult);
     }
     resultNode.add(removedPlayersNode);
@@ -161,6 +165,31 @@ public class Translator {
     }
 
     return true;
+  }
+
+  public static String placementMessage(ArrayList<Square> workerSquares) {
+    ObjectMapper mapper = new ObjectMapper();
+    ArrayNode responseNode = mapper.createArrayNode();
+    for (Square square : workerSquares) {
+      ArrayNode workerPlace = mapper.createArrayNode();
+      workerPlace.add(square.getWorkerName());
+      workerPlace.add(square.getX());
+      workerPlace.add(square.getY());
+      responseNode.add(workerPlace);
+    }
+    return responseNode.toString();
+
+
+  }
+
+  public static boolean isValidJSON(String JSONString) {
+    try {
+      final ObjectMapper mapper = new ObjectMapper();
+      mapper.readTree(JSONString);
+      return true;
+    } catch (IOException e) {
+      return false;
+    }
   }
 
 

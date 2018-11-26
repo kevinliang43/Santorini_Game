@@ -68,9 +68,9 @@ public class ConfigReader {
    * @param playersArgs List of Player Args
    * @return List of Generated Players
    */
-  public static ArrayList<Player> buildPlayers(ArrayList<ArrayList<String>> playersArgs) {
+  public static ArrayList<Player> buildPlayers(ArrayList<ArrayList<String>> playersArgs, int numStart) {
     ArrayList<Player> playerObjs = new ArrayList<>();
-    int numPlayer = 0;
+    int numPlayer = numStart;
     for (ArrayList<String> playerArgs : playersArgs) {
       // Check for existing name, make new name
       ArrayList<String> existingPlayerNames = new ArrayList<>();
@@ -208,7 +208,12 @@ public class ConfigReader {
     Scanner scanner = new Scanner(System.in);
     StringBuilder builder = new StringBuilder();
 
-    while (scanner.hasNextLine()) {
+//    while (scanner.hasNextLine()) {
+//      builder.append(scanner.nextLine());
+//    }
+    builder.append(scanner.nextLine());
+
+    while (!Translator.isValidJSON(builder.toString())) {
       builder.append(scanner.nextLine());
     }
 

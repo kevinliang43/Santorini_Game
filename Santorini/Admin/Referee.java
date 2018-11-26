@@ -16,7 +16,7 @@ import java.util.List;
 public class Referee implements IReferee{
   public final int MAX_PLAYERS = 2;
   public final int WORKERS_PER_PLAYER = 2;
-  public final long TIMEOUT = 2000; //in milliseconds. divide by 1000 for seconds
+  public final long TIMEOUT = 15000; //in milliseconds. divide by 1000 for seconds
 
   private ArrayList<Player> players;
   private Board officialBoard;
@@ -153,6 +153,10 @@ public class Referee implements IReferee{
             // action was created in time
             placePhase(player, (Action)nextAction, workerNum);
             workerNum++;
+            if (this.players.size() != this.MAX_PLAYERS) {
+              // Player was Kicked out
+              return this.winningPlayer;
+            }
           }
           else {
             // Action was not created in time
@@ -172,9 +176,25 @@ public class Referee implements IReferee{
       }
       // Get next action from player
       IAction nextAction = this.tryGetMove(currentPlayer);
-      if (nextAction != null && nextAction instanceof MoveBuild) {
+      if (nextAction != null) {
         // action was created in time
-        turnPhase(currentPlayer, (MoveBuild)nextAction);
+        if (nextAction instanceof MoveBuild) {
+          turnPhase(currentPlayer, (MoveBuild) nextAction);
+        }
+        else { // Giveup
+          this.updateObserver("\"Player Gave Up.\"");
+          // Determine Winner
+          if (this.currentTurn == Turn.PLAYER1 || this.kickedPlayer != null) {
+            this.winningPlayer = players.get(1);
+          }
+          else {
+            this.winningPlayer = players.get(0);
+          }
+
+          return this.winningPlayer;
+
+        }
+
       }
       else {
         // Action was not created in time

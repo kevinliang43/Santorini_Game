@@ -42,4 +42,9 @@ public class BreakerStrategy implements Strategy {
 
     return retAction;
   }
+
+  @Override
+  public void sendMessage(String message) {
+
+  }
 }

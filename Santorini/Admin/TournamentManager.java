@@ -58,7 +58,7 @@ public class TournamentManager implements ITournamentManager{
     // List of All players
     this.players = new ArrayList<>();
     // List of active Players
-    this.players = new ArrayList<>();
+    this.allPlayers = new ArrayList<>();
     //list of removed Players
     this.removedPlayers = new ArrayList<>();
     //list of all Referee games active
@@ -69,6 +69,25 @@ public class TournamentManager implements ITournamentManager{
     this.scoreMap = new HashMap<>();
   }
 
+  public TournamentManager(List<Player> players, int minPlayers, int maxPlayers, int timeout, int numRoundRobins, int gamesPerRound) throws IllegalStateException {
+    this.MIN_PLAYERS = minPlayers;
+    this.MAX_PLAYERS = maxPlayers;
+    this.TIMEOUT = timeout;
+    this.NUM_ROUND_ROBINS = numRoundRobins;
+    this.NUM_GAMES_PER_ROUND = gamesPerRound;
+    // List of All players
+    this.players = players;
+    // List of active Players
+    this.allPlayers = new ArrayList<>();
+    //list of removed Players
+    this.removedPlayers = new ArrayList<>();
+    //list of all Referee games active
+    this.allGames = new ArrayList<>();
+    //list of all Observers
+    this.observers = new ArrayList<>();
+    // score Map
+    this.scoreMap = new HashMap<>();
+  }
 
   /**
    * Main function for the Tournament Manager.
@@ -117,11 +136,10 @@ public class TournamentManager implements ITournamentManager{
     ArrayList<ArrayList<String>> playersArgs = ConfigReader.getFields("players", config);
     ArrayList<ArrayList<String>> observersArgs = ConfigReader.getFields("observers", config);
     // Add AI Players and Observers to this Tournament from Config File
-    this.players.addAll(ConfigReader.buildPlayers(playersArgs));
+    this.players.addAll(ConfigReader.buildPlayers(playersArgs, this.players.size()));
     this.allPlayers.addAll(new ArrayList<>(this.players));
     this.observers.addAll(ConfigReader.buildObservers(observersArgs));
 
-    //TODO: KEEP TRACK OF NUMBER OF PLAYERS IF ADDING PLAYERS LATER.
 
     // Start Tournament
     this.runTournament();
@@ -129,7 +147,15 @@ public class TournamentManager implements ITournamentManager{
     // End Tournament
     // Print [[Removed Players], [[Game1Result], [Game2Result] ...]
 
-    System.out.println(this.tournamentResultAsJSON());
+    String JSONResults = this.tournamentResultAsJSON();
+
+    // Inform Players of Outcome of game
+    for (Player player : this.allPlayers) {
+      player.sendMessage(JSONResults);
+    }
+
+
+    //System.out.println(JSONResults);
     System.exit(0);
   }
 
@@ -234,6 +260,11 @@ public class TournamentManager implements ITournamentManager{
     // removedPlayers does not contain either player.
     if (player1 != null && player2 != null &&
             !this.removedPlayers.contains(player1) && !this.removedPlayers.contains(player2)) {
+
+      // Update with names
+      player1.sendMessage("\"" + player2.getName() + "\"");
+      player2.sendMessage("\"" + player1.getName() + "\"");
+
       Referee ref = new Referee(player1, player2);
       ref.runGame(this.NUM_GAMES_PER_ROUND);
       return ref;
@@ -262,7 +293,7 @@ public class TournamentManager implements ITournamentManager{
       if (game.getKickedPlayer() != null) {
         // If the other person has not been kicked in any other game, construct the game result object
         if (!this.removedPlayers.contains(game.getWinner())) {
-          results.add(new GameResult(game.getWinner(), game.getKickedPlayer()));
+          results.add(new GameResult(game.getWinner(), game.getKickedPlayer(), true));
         }
       }
       // No people were removed
@@ -274,11 +305,11 @@ public class TournamentManager implements ITournamentManager{
 
         // Base Case, winner is not in removedPlayers
         if (!this.removedPlayers.contains(winner)) {
-          results.add(new GameResult(winner, loser));
+          results.add(new GameResult(winner, loser, false));
         }
         // Case: Winner is in  removed players, loser is not
         else if (this.removedPlayers.contains(winner) && !this.removedPlayers.contains(loser)) {
-          results.add(new GameResult(loser, winner));
+          results.add(new GameResult(loser, winner, false));
         }
         // Other wise, both players are in removedplayers, result of match is thrown away.
       }

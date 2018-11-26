@@ -31,5 +31,10 @@ public class InfinitePlaceStrategy implements Strategy {
 
     return retAction;
   }
+
+  @Override
+  public void sendMessage(String message) {
+
+  }
 }
 

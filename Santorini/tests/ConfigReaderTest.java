@@ -1,5 +1,8 @@
+import com.fasterxml.jackson.databind.JsonNode;
+
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
@@ -64,7 +67,7 @@ public class ConfigReaderTest {
         requests.add(p1);
         requests.add(p2);
 
-        players = cr.buildPlayers(requests);
+        players = cr.buildPlayers(requests, 0);
         assertEquals(players.get(0).getName(), "ILikeFruitLoop");
         assertEquals(players.get(1).getName(), "snap");
 
@@ -90,6 +93,40 @@ public class ConfigReaderTest {
         obs = cr.buildObservers(requests);
         assertEquals(obs.get(0).getName(), "iSee");
         assertEquals(obs.get(1).getName(), "hullo");
+
+    }
+
+    @Test
+    public void testParse() {
+        try {
+            ArrayList<JsonNode> place = ConfigReader.parse("[1,2]");
+            int x = place.get(0).get(0).asInt();
+            int y = place.get(0).get(1).asInt();
+            assertEquals(x, 1);
+            assertEquals(y, 2);
+
+            ArrayList<JsonNode> giveUp = ConfigReader.parse("\"kevin\"");
+            assertEquals(giveUp.get(0).isTextual(), true);
+            assertEquals(giveUp.get(0).isInt(), false);
+
+            ArrayList<JsonNode> move = ConfigReader.parse("[\"kevin1\", 1, 2]");
+            assertEquals(move.get(0).size(), 3);
+            assertEquals(move.get(0).get(0).asText(), "kevin1");
+            assertEquals(move.get(0).get(1).asInt(), 1);
+            assertEquals(move.get(0).get(2).asInt(), 2);
+
+            ArrayList<JsonNode> movebuild = ConfigReader.parse("[\"kevin1\", 1, 2, 1, 3]");
+            assertEquals(movebuild.get(0).size(), 5);
+            assertEquals(movebuild.get(0).get(0).asText(), "kevin1");
+            assertEquals(movebuild.get(0).get(1).asInt(), 1);
+            assertEquals(movebuild.get(0).get(2).asInt(), 2);
+            assertEquals(movebuild.get(0).get(3).asInt(), 1);
+            assertEquals(movebuild.get(0).get(4).asInt(), 3);
+        }
+        catch (IOException e) {
+
+        }
+
 
     }
 

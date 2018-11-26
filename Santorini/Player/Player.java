@@ -79,4 +79,13 @@ public class Player implements IPlayer{
     this.workerIDs = new ArrayList<>();
     this.workerNames = new ArrayList<>();
   }
+
+  /**
+   * Sends a message in the form of JSON Text to the Client (if exists)
+   * If client doesnt exists (AI Player), then this method does nothing.
+   * @param message JSON Message To send
+   */
+  public void sendMessage(String message) {
+    this.bestStrategy.sendMessage(message);
+  }
 }

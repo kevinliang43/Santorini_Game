@@ -15,7 +15,7 @@ public class GameResultTest {
     this.p1 = new Player("one", 0, new StayAliveStrategy(true, 2));
     //player that uses strat2 (furthest)
     this.p2 = new Player("two", 0, new StayAliveStrategy(false, 2));
-    this.result = new GameResult(p1,p2);
+    this.result = new GameResult(p1,p2,false);
   }
 
   //testing the getter methods in the GameResult class

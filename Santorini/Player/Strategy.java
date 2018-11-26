@@ -18,4 +18,11 @@ public interface Strategy {
    * @return The next Action to perform.
    */
   IAction getNextAction(BoardStatus b, ArrayList<Integer> workerIDs);
+
+  /**
+   * Sends a Message in the form of JSON text to the Client (If exists)
+   * If Not, this method should do nothing.
+   * @param message
+   */
+  public void sendMessage(String message);
 }

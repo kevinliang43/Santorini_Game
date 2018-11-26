@@ -39,4 +39,9 @@ public class InfiniteStrategy implements Strategy{
 
     return retAction;
   }
+
+  @Override
+  public void sendMessage(String message) {
+
+  }
 }

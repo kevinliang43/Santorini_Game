@@ -96,9 +96,9 @@ public class TranslatorTest {
     ArrayList<Player> removedPlayers = new ArrayList<>();
     removedPlayers.add(p1);
     ArrayList<GameResult> results = new ArrayList<>();
-    GameResult result1 = new GameResult(this.p1, this.p2);
-    GameResult result2 = new GameResult(this.p3, this.p2);
-    GameResult result3 = new GameResult(this.p1, this.p2);
+    GameResult result1 = new GameResult(this.p1, this.p2, false);
+    GameResult result2 = new GameResult(this.p3, this.p2, false);
+    GameResult result3 = new GameResult(this.p1, this.p2, false);
     results.add(result1);
     results.add(result2);
     results.add(result3);
@@ -162,4 +162,19 @@ public class TranslatorTest {
     }
 
   }
+
+  @Test
+  public void testPlacementMessage() {
+    Square sq0 = new Square(2, 3, 1, true, 1, "kevin1");
+    Square sq1 = new Square(0, 1, 1, true, 0, "kevin2");
+    ArrayList<Square> list = new ArrayList<>();
+    list.add(sq0);
+    list.add(sq1);
+
+    String actual = Translator.placementMessage(list);
+    String expected = "[[\"kevin1\",2,3],[\"kevin2\",0,1]]";
+
+    assertEquals(expected, actual);
+  }
+
 }

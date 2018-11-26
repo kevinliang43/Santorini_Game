@@ -7,12 +7,14 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
  */
 public class GameResult {
 
-  private Player winner; // Loser of the game
-  private Player loser; //
+  private Player winner; // winner of the game
+  private Player loser; // loser of the game
+  private boolean irregular; // Did either Player misbehave? (Timeout/Breaker/Infinite..)
 
-  GameResult(Player winner, Player loser) {
+  GameResult(Player winner, Player loser, boolean irregular) {
     this.winner = winner;
     this.loser = loser;
+    this.irregular = irregular;
   }
 
   /**
@@ -55,6 +57,10 @@ public class GameResult {
     return "Winner: " + winner.getName() + " Loser: " + loser.getName();
   }
 
+  public boolean isIrregular() {
+    return this.irregular;
+  }
+
   /**
    * Converts the Result Object into a readable JSON Format
    * @return JSONFormat of this Result Object
@@ -64,6 +70,9 @@ public class GameResult {
     ArrayNode arrayNode = mapper.createArrayNode();
     arrayNode.add(this.winner.getName());
     arrayNode.add(this.loser.getName());
+    if (this.irregular) {
+      arrayNode.add("irregular");
+    }
     return arrayNode.toString();
   }
 

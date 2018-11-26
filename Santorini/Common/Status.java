@@ -9,5 +9,5 @@
  *      The Turn enum will represent the winner if there is one, or DRAW if there isn't.
  */
 public enum Status {
-  PLACE, MOVE, BUILD, MOVEBUILD, GAMEOVER
+  PLACE, MOVE, BUILD, MOVEBUILD, GAMEOVER, GIVEUP
 }
