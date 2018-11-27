@@ -6,6 +6,7 @@
 <b> Lib </b> : Holds all library-like code needed for our implementations <br />
 <b> Design </b> : Holds all design specifications and plans <br />
 <b> Observer </b> : Holds all observer-specific code <br /> 
+<b> Remote </b> : Holds all remote components 
 
 <h3> Common/GamePieces/src </h3>
 
@@ -62,6 +63,15 @@
  * <b> Observer.java </b> : Class representing and observer object of a game of Santorini
  
  
+ <h3> Remote </h3> 
+ 
+ * <b> ClientSideProxy.java </b> : Class acting as a remote client
+ * <b> MessageType.java </b> : Enumeration representing the different types of messages a remote client should expect
+ * <b> ProxyPlayer.java </b> : Class representing a remote player object
+ * <b> RemoteStrategy.java </b> : Class representing a strategy that chooses moves from a remote client
+ * <b> Server.java </b> : Class representing the Server of a Santorini Game Server
+ 
+ 
  <h2> Testing </h2> 
  
  To Run TESTME testing suite:
@@ -84,6 +94,10 @@ Unit Tests Created for Week 11: </br>
   * <b> InfiniteStrategyTest.java </b> : tests the functions within the InfiniteStrategy class
   * <b> TournamentManagerTests.java </b> : tests the functions within the TournamentManager class
 
+Unit Tests Created for Week 13: </br> 
+  * <b> ProxyPlayerTest.java </b> : tests the functions within the ProxyPlayer class
+  * <b> RemoteStrategyTest.java </b> : tests the functions within the RemoteStrategy class using a mock Socket
+ 
  
 Each test suite is found within the folder corresponding to that week. For example, xboard tests are found in the 6 folder. For instructions on how to run the tests, see the TestMe file within each weeks folder.
 
@@ -91,3 +105,5 @@ Each test suite is found within the folder corresponding to that week. For examp
 
 
 11- Implementing the Tournament Manager: xrun and santorini.rc can be found within the 11 folder. santorini.rc holds the system-level tests
+
+13- Implementing Remote Proxies: xserver and xclient can be found within the 13 folder
