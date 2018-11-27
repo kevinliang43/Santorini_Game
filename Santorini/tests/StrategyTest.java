@@ -181,8 +181,4 @@ public class StrategyTest {
 //    assertPlaceEquals(-1, -1, place);
 //  }
 
-  private void assertPlaceEquals(int x, int y, Action place) {
-    assertEquals(x, place.getX());
-    assertEquals(y, place.getY());
-  }
 }

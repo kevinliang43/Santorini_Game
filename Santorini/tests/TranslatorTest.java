@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.omg.CORBA.TRANSACTION_MODE;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -111,6 +112,7 @@ public class TranslatorTest {
     assertEquals(Translator.tournamentResultsAsJSON(removedPlayers,results), expected);
   }
 
+  //testing that the check fields sees correct configuration files as true
   @Test
   public void testCheckFields() {
     ArrayList<String> correctFields = new ArrayList<>(Arrays.asList("min players", "port", "waiting for", "repeat"));
@@ -125,6 +127,7 @@ public class TranslatorTest {
 
   }
 
+  //testing that the check fields sees incorrect configuration files as false with extra fields
   @Test
   public void testCheckFieldsTooManyFields() {
     ArrayList<String> correctFields = new ArrayList<>(Arrays.asList("min players", "port", "waiting for", "repeat"));
@@ -139,6 +142,7 @@ public class TranslatorTest {
 
   }
 
+  //testing that the check fields sees incorrect configuration files when too few fields
   @Test
   public void testCheckFieldsTooFewFields() {
     ArrayList<String> correctFields = new ArrayList<>(Arrays.asList("min players", "port", "waiting for", "repeat"));
@@ -153,6 +157,7 @@ public class TranslatorTest {
 
   }
 
+  //testing that check fields sees incorrect configuration files when incorrect names
   @Test
   public void testCheckFieldsIncorrectFieldName() {
     ArrayList<String> correctFields = new ArrayList<>(Arrays.asList("min_players", "port", "waiting for", "repeat"));
@@ -167,6 +172,7 @@ public class TranslatorTest {
 
   }
 
+  //test that placementMessage returns expected JSON list back
   @Test
   public void testPlacementMessage() {
     Square sq0 = new Square(2, 3, 1, true, 1, "kevin1");
@@ -181,6 +187,7 @@ public class TranslatorTest {
     assertEquals(expected, actual);
   }
 
+  //tests for messageType
   @Test
   public void testMessageType() {
     String oppName = "\"Kevin\"";
@@ -209,11 +216,14 @@ public class TranslatorTest {
       assertEquals(Translator.messageType(messageNode), MessageType.INFORM_PLAYERS);
       messageNode = mapper.readTree(inform3);
       assertEquals(Translator.messageType(messageNode), MessageType.INFORM_PLAYERS);
+      messageNode = mapper.readTree("5");
+      assertEquals(Translator.messageType(messageNode), null);
     } catch (IOException e) {
 
     }
   }
 
+  //test that placeActions are written correctly as JSON
   @Test
   public void testPlaceActionAsJSON() {
     Action place = new Action(Status.PLACE, 1, 2, 3, "KEIVN1");
@@ -227,6 +237,7 @@ public class TranslatorTest {
     assertEquals(expected, placeJSON);
   }
 
+  //tests that we can correctly generate a Board from a JSON specification
   @Test
   public void testConvertJSONToBoard() {
 
@@ -243,13 +254,45 @@ public class TranslatorTest {
     }
   }
 
+  //tests that converting a JSON action correctly makes a movebuild
   @Test
-  public void testConvertJSONToAction() {
+  public void testConvertJSONToActionMB() {
     Square sq = new Square(3, 3);
     sq.setOccupied(true, 1, "kevin");
     String json = "[\"kevin\", \"EAST\", \"SOUTH\", \"WEST\", \"NORTH\"]";
     IAction mb = Translator.convertJSONToAction(sq, json);
-    System.out.println(mb.toString());
+    assertEquals(mb.toString(), "move 1 to 4,4 build 1 to 3,3" );
   }
 
+  //tests that converting a JSON action correctly makes a move
+  @Test
+  public void testConvertJSONToActionM() {
+    Square sq = new Square(3, 3);
+    sq.setOccupied(true, 1, "kevin");
+    String json = "[\"kevin\", \"EAST\", \"SOUTH\"]";
+    IAction mb = Translator.convertJSONToAction(sq, json);
+    assertEquals(mb.toString(), "move 1 to 4,4" );
+  }
+
+  //testing isValidJSON on different strings
+  @Test
+  public void testIsValidJSON() {
+    String json = "5";
+    assertEquals(Translator.isValidJSON(json), true);
+    json = "\"hello\"";
+    assertEquals(Translator.isValidJSON(json), true);
+    json = "\"hello\"";
+    assertEquals(Translator.isValidJSON(json), true);
+    json = "[\"hello\", 5]";
+    assertEquals(Translator.isValidJSON(json), true);
+    json = "[\"hello\"";
+    assertEquals(Translator.isValidJSON(json), false);
+    json = "[[\"hello\"],[5]]";
+    assertEquals(Translator.isValidJSON(json), true);
+    json = "hello\"";
+    assertEquals(Translator.isValidJSON(json), false);
+    json = "[\"hello\"";
+    assertEquals(Translator.isValidJSON(json), false);
+
+  }
 }

@@ -10,7 +10,8 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({BoardStatusTest.class, BoardStatusTest.class, PlayerTest.class, StrategyTest.class,
         RefereeTest.class, testRuleChecker.class, testWorker.class, ObserverTest.class, BoardTest.class,
-        ConfigReaderTest.class, TranslatorTest.class, BreakerStrategyTest.class, InfiniteStrategyTest.class})
+        ConfigReaderTest.class, TranslatorTest.class, BreakerStrategyTest.class, InfiniteStrategyTest.class,
+        RemoteStrategyTest.class, ProxyPlayerTest.class})
 
 public class MainTest {
 

@@ -10,6 +10,9 @@ public class PlayerTest {
     public Action getNextAction(BoardStatus b, ArrayList<Integer> workerIDs) {
       return null;
     }
+    @Override
+    public void sendMessage(String message) {
+    }
   }
 
   Player p1;

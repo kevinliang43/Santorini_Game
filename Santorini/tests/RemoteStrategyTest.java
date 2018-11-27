@@ -13,53 +13,8 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-
+//tests for the remote strategy class
 public class RemoteStrategyTest {
-  Socket serverSocket;
-  Socket clientSocket;
-  InputStream clientInputStream;
-  OutputStream clientOutputStream;
-
-//  @Before
-//  public void init() {
-//    try {
-////      Thread serverAccept = new Thread() {
-////        @Override
-////        public void run() {
-////          try {
-////            // Open up mock server Socket for accepting
-////            Socket serverSocket = new Socket("localhost", 4444);
-////            //ServerSocket acceptServerSocket = new ServerSocket("localhost", 4444);
-////            //acceptServerSocket.setReuseAddress(true);
-////            //acceptServerSocket.bind(new InetSocketAddress(4444));
-////            serverSocket = acceptServerSocket.accept();
-////          } catch (IOException e) {
-////            e.printStackTrace();
-////          }
-////        }
-////      };
-////
-////      serverAccept.start();
-////
-////      SocketAddress address = new InetSocketAddress(4444);
-////      // Create and connect client socket to test server
-////      this.clientSocket = new Socket();
-////      this.clientSocket.connect(address);
-//      this.clientSocket = new Socket("localhost", 4444);
-//
-//      this.clientInputStream = this.clientSocket.getInputStream();
-//      this.clientOutputStream = this.clientSocket.getOutputStream();
-//    } catch (IOException e) {
-//      e.printStackTrace();
-//    }
-//
-//  }
-
-//  @Test
-//  public void testGetNextAction() {
-//    this.init();
-//
-//  }
   Socket mocket;
   InputStream in;
   OutputStream out;
@@ -155,38 +110,7 @@ public class RemoteStrategyTest {
   @Test
   public void testGetMoveBuildAction(){
     setupForMB();
-    String data = "[\"marina1\",0,1,0,0]";
-    this.in = new ByteArrayInputStream(data.getBytes());
-    this.out = new ByteArrayOutputStream();
-    this.mocket = new Mocket(this.in, this.out);
-    RemoteStrategy strat = new RemoteStrategy(this.mocket);
-    ArrayList<Integer> workerIDs = new ArrayList<>();
-    workerIDs.add(0);
-    workerIDs.add(2);
-    MoveBuild action = (MoveBuild)strat.getNextAction(this.boardStat, workerIDs);
-
-    //generating the expected moveBuild output
-    Action move = new Action(Status.MOVE, 0, 0, 1, "marina1");
-    Action build = new Action(Status.BUILD, 0, 0, 0, "marina1");
-    MoveBuild expected = new MoveBuild(move, build);
-
-
-    assertEquals(action.getActionType(), expected.getActionType());
-    assertEquals(action.getWorkerID(), expected.getWorkerID());
-    assertEquals(action.getxMove(), expected.getxMove());
-    assertEquals(action.getyMove(), expected.getyMove());
-    assertEquals(action.getxBuild(), expected.getxBuild());
-    assertEquals(action.getyBuild(), expected.getyBuild());
-  }
-
-  //testing getting the next MoveBuild action from a remote player with an invalid action.
-  //the invalid action should be returned as the strategy does not deal with rule
-  //checking
-  @Test
-  public void testGetMoveBuildActionInvalid(){
-    setupForMB();
-    //this move will try to move "marina1" onto another worker
-    String data = "[\"marina1\",1,1,0,0]";
+    String data = "[\"marina1\",\"EAST\",\"SOUTH\",\"WEST\",\"NORTH\"]";
     this.in = new ByteArrayInputStream(data.getBytes());
     this.out = new ByteArrayOutputStream();
     this.mocket = new Mocket(this.in, this.out);
@@ -208,41 +132,70 @@ public class RemoteStrategyTest {
     assertEquals(action.getyMove(), expected.getyMove());
     assertEquals(action.getxBuild(), expected.getxBuild());
     assertEquals(action.getyBuild(), expected.getyBuild());
+  }
+
+  //testing getting the next MoveBuild action from a remote player with an invalid action.
+  //the invalid action should be returned as the strategy does not deal with rule
+  //checking
+  @Test
+  public void testGetMoveBuildActionInvalid(){
+    setupForMB();
+    //this move will try to move "marina1" onto another worker
+    String data = "[\"marina1\",\"EAST\",\"NORTH\",\"WEST\",\"NORTH\"]";
+    this.in = new ByteArrayInputStream(data.getBytes());
+    this.out = new ByteArrayOutputStream();
+    this.mocket = new Mocket(this.in, this.out);
+    RemoteStrategy strat = new RemoteStrategy(this.mocket);
+    ArrayList<Integer> workerIDs = new ArrayList<>();
+    workerIDs.add(0);
+    workerIDs.add(2);
+    MoveBuild action = (MoveBuild)strat.getNextAction(this.boardStat, workerIDs);
+
+    //generating the expected moveBuild output
+    Action move = new Action(Status.MOVE, 0, 1, -1, "marina1");
+    Action build = new Action(Status.BUILD, 0, 0, -2, "marina1");
+    MoveBuild expected = new MoveBuild(move, build);
+
+
+    assertEquals(action.getActionType(), expected.getActionType());
+    assertEquals(action.getWorkerID(), expected.getWorkerID());
+    assertEquals(action.getxMove(), expected.getxMove());
+    assertEquals(action.getyMove(), expected.getyMove());
+    assertEquals(action.getxBuild(), expected.getxBuild());
+    assertEquals(action.getyBuild(), expected.getyBuild());
 
   }
-//
-//  //testing if only a single Move is passed in, not a MoveBuild
-//  //TODO this should return a move
-//  @Test
-//  public void testOnlyMove(){
-//    setupForMB();
-//    //this move will try to move "marina1" onto another worker
-//    String data = "[\"marina1\",1,0]";
-//    this.in = new ByteArrayInputStream(data.getBytes());
-//    this.out = new ByteArrayOutputStream();
-//    this.mocket = new Mocket(this.in, this.out);
-//    RemoteStrategy strat = new RemoteStrategy(this.mocket);
-//    ArrayList<Integer> workerIDs = new ArrayList<>();
-//    workerIDs.add(0);
-//    workerIDs.add(2);
-//    Action action = (Action)strat.getNextAction(this.boardStat, workerIDs);
-//
-//    //generating the expected moveBuild output
-//    Action expected = new Action(Status.MOVE, 0, 1, 0, "marina1");
-//
-//
-//    assertEquals(action.getActionType(), expected.getActionType());
-//    assertEquals(action.getWorkerID(), expected.getWorkerID());
-//    assertEquals(action.getX(), expected.getX());
-//    assertEquals(action.getY(), expected.getY());
-//    }
+
+  //testing if only a single Move is passed in, not a MoveBuild
+  @Test
+  public void testOnlyMove(){
+    setupForMB();
+    //this move will try to move "marina1" onto another worker
+    String data = "[\"marina1\",\"EAST\",\"SOUTH\"]";
+    this.in = new ByteArrayInputStream(data.getBytes());
+    this.out = new ByteArrayOutputStream();
+    this.mocket = new Mocket(this.in, this.out);
+    RemoteStrategy strat = new RemoteStrategy(this.mocket);
+    ArrayList<Integer> workerIDs = new ArrayList<>();
+    workerIDs.add(0);
+    workerIDs.add(2);
+    Action action = (Action)strat.getNextAction(this.boardStat, workerIDs);
+
+    //generating the expected moveBuild output
+    Action expected = new Action(Status.MOVE, 0, 1, 1, "marina1");
+
+
+    assertEquals(action.getActionType(), expected.getActionType());
+    assertEquals(action.getWorkerID(), expected.getWorkerID());
+    assertEquals(action.getX(), expected.getX());
+    assertEquals(action.getY(), expected.getY());
+    }
 
   //tests that when the input sees only a json string that it's interpreted as a
   //GiveUpAction
   @Test
   public void testGivingUpAction(){
     setupForMB();
-    //TODO does not check for actual name, just that it is a text element
     //having the player "marina" give up
     String data = "\"marina\"";
     this.in = new ByteArrayInputStream(data.getBytes());
@@ -261,23 +214,23 @@ public class RemoteStrategyTest {
 
   //tests if invalid json is input, null is returned as the action
   //this throws an error, is this what we want? TODO
-//  @Test
-//  public void testInvalidJSONRequest(){
-//    setupForMB();
-//    //invalid json text request
-//    String data = "5";
-//    this.in = new ByteArrayInputStream(data.getBytes());
-//    this.out = new ByteArrayOutputStream();
-//    this.mocket = new Mocket(this.in, this.out);
-//    this.boardStat.setStatus(Status.MOVEBUILD);
-//    RemoteStrategy strat = new RemoteStrategy(this.mocket);
-//    ArrayList<Integer> workerIDs = new ArrayList<>();
-//    workerIDs.add(0);
-//    workerIDs.add(2);
-//    IAction action = strat.getNextAction(this.boardStat, workerIDs);
-//    assertEquals(action, null);
-//
-//  }
+  @Test (expected = NullPointerException.class)
+  public void testInvalidJSONRequest(){
+    setupForMB();
+    //invalid json text request
+    String data = "5";
+    this.in = new ByteArrayInputStream(data.getBytes());
+    this.out = new ByteArrayOutputStream();
+    this.mocket = new Mocket(this.in, this.out);
+    this.boardStat.setStatus(Status.MOVEBUILD);
+    RemoteStrategy strat = new RemoteStrategy(this.mocket);
+    ArrayList<Integer> workerIDs = new ArrayList<>();
+    workerIDs.add(0);
+    workerIDs.add(2);
+    IAction action = strat.getNextAction(this.boardStat, workerIDs);
+    assertEquals(action, null);
+
+  }
 
   //tests that sending messages to the remote strategy correctly writes to the output stream
   @Test
