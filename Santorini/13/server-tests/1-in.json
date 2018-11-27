@@ -15,3 +15,8 @@
   "observers" : [],
   "ip"        : "localhost",
   "port"      : 56789}
+
+{ "players"   : [["good", "Kevin", "PathString"], ["good", "Marina", "Nothing"]],
+  "observers" : [],
+  "ip"        : "localhost",
+  "port"      : 56789}

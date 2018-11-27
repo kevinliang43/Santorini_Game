@@ -36,7 +36,7 @@ public class ClientSideProxy {
 
       //Send JSON String of this Proxy's Player Name
       // AKA, Send "SIGNUP" message to server
-      String name = "\"" + this.player.getName() + "\"";
+      String name = "\"" + this.player.getName() + "\"\n";
       this.outputStream.write(name.getBytes());
     } catch (IOException e) {
       e.printStackTrace();
@@ -48,7 +48,7 @@ public class ClientSideProxy {
     // there is a possible optional receive ["playing-as", Name]
     // OR JSON String name of first opponent
 
-    while (this.clientSocket.isConnected()) {
+    while (!this.clientSocket.isClosed()) {
       // Get the next Message
       JsonNode message = this.readInStream();
       messageHandler(message);
@@ -84,6 +84,7 @@ public class ClientSideProxy {
     }
     //2. other (JSON String of next opponent.)
     else if (messageType.equals(MessageType.OPP_NAME)) {
+      this.player.resetWorkers();
       // Print the Message
       // No Response needed from Client
       //System.out.println(current.asText());
@@ -91,6 +92,9 @@ public class ClientSideProxy {
     }
     //3. Placement ([[Worker,Coordinate,Coordinate],...])
     else if (messageType.equals(MessageType.PLACEMENT)) {
+      if (current.size() <= 1) {
+        this.player.resetWorkers();
+      }
       placeHandler((ArrayNode) current);
     }
     //4. Take Turn (Board)
@@ -103,6 +107,12 @@ public class ClientSideProxy {
       // Print the Message
       // No Response needed from Client
       //System.out.println(current.asText());
+      //FIXME CLOSE SOCKET?
+      try {
+        this.clientSocket.close();
+      } catch (IOException e) {
+
+      }
 
     }
 
@@ -120,14 +130,18 @@ public class ClientSideProxy {
     //TODO DO WE NEED TO TIME THIS OUT?
     Action placeAction = (Action)player.getNextAction(b, Status.PLACE);
 
+    //add to this worker
+    this.player.addWorkerID(b.getWorkerIDs().size());
+    this.player.addWorkerName(this.player.getName() + (this.player.getWorkerIDs().size() + 1));
+
     // Convert to JSON and write to OutStream
     String placeJSON = Translator.placeActionAsJSON(placeAction);
     this.writeToOutStream(placeJSON);
   }
 
   private void moveBuildHandler(ArrayNode node) {
-    Board b = Translator.convertJSONToBoard(player.getName(), node, player.getWorkerIDs());
-    MoveBuild moveBuild = (MoveBuild)player.getNextAction(b, Status.MOVEBUILD);
+    Board b = Translator.convertJSONToBoard(this.player.getName(), node, this.player.getWorkerIDs());
+    MoveBuild moveBuild = (MoveBuild)this.player.getNextAction(b, Status.MOVEBUILD);
 
     String mbJSON = Translator.moveBuildAsJSON(b, moveBuild);
     this.writeToOutStream(mbJSON);

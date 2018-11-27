@@ -130,7 +130,8 @@ public class StayAliveStrategy implements Strategy {
         //and see if that game is over with the player winning. If so, return true
         if(RuleChecker.isGameOver(newBoard, myWorkers) == GameOverStatus.WINNING_FLOOR) {
           if(DEBUG) System.err.println("You win, reached third floor with " + mb);
-          return mb;
+          MoveBuild mb2 = new MoveBuild(mb.getMove(), null);
+          return mb2;
         }// else, see if the opponent can win from that position. If they can, continue to search
         if(canOpWin(newBoard, opponentWorkers, myWorkers, acc - 1)) {
           if(DEBUG) System.err.println("You lose, opponent can win after your " + mb);

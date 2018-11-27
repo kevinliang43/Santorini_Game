@@ -48,10 +48,6 @@ public class Server {
     this.serverSetup();
     // Accept Players Phase
     this.acceptPlayersPhase();
-
-    for (Player player : this.newPlayers) {
-      System.out.println(player.getName());
-    }
     // Construct Tournament
     TournamentManager manager = new TournamentManager(this.newPlayers, MIN_PLAYERS, MAX_PLAYERS, ROUND_TIMEOUT, NUM_ROUNDS, GAMES_PER_ROUND);
     //Run the Tournament
@@ -206,7 +202,7 @@ public class Server {
         }
       }
       if (messageNode.isTextual()) { //TODO ENFORCE LOWERCASE
-        String newSignUp = messageNode.asText();
+        String newSignUp = messageNode.asText().toLowerCase();
         this.signup(clientSocket, newSignUp, bufferedReader);
         }
         // Otherwise Immediately Close Connection

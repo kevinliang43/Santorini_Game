@@ -167,7 +167,7 @@ public class TournamentManager implements ITournamentManager{
     // End Tournament
     // Print [[Removed Players], [[Game1Result], [Game2Result] ...]
 
-    String JSONResults = this.tournamentResultAsJSON();
+    String JSONResults = this.encountersAsJSON();
 
     // Inform Players of Outcome of game
     for (Player player : this.allPlayers) {
@@ -368,6 +368,25 @@ public class TournamentManager implements ITournamentManager{
       results.removeAll(sortedResults);
     }
     return Translator.tournamentResultsAsJSON((ArrayList<Player>)this.removedPlayers, sortedResults);
+  }
+
+  private String encountersAsJSON() {
+    List<GameResult> results = this.getGameResults();
+    // Sort game results by p1 v rest, p2 v rest ... etc
+    ArrayList<GameResult> sortedResults = new ArrayList<>();
+
+    for (int i = 0; i < this.allPlayers.size(); i++) {
+      Player currentPlayer = this.allPlayers.get(i);
+      for (GameResult result : results) {
+        if (result.getWinner().getName().equals(currentPlayer.getName()) || result.getLoser().getName().equals(currentPlayer)) {
+          sortedResults.add(result);
+        }
+      }
+      results.removeAll(sortedResults);
+    }
+
+    return Translator.encountersAsJSON(sortedResults);
+
   }
 
   //CLIENT
