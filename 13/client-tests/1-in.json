@@ -1,9 +1,8 @@
 { 
-    "players"   : [["good", "Kevin", "PathString"], 
-                  ["breaker", "Marina", "Nothing"], 
-                  ["infinite", "Bob",  "Santorini/out/production/Santorini/InfinitePlayer.class"],
-                  ["infinite", "Bob2", "Santorini/out/production/Santorini/InfinitePlacePlayer.class"]],
+    "players"   : [["good", "kevin", "Santorini/out/production/Santorini/StayAlivePlayer.class"], 
+                  ["infinite", "marina", "Santorini/out/production/Santorini/InfinitePlayer.class"], 
+                  ["infinite", "bob",  "Santorini/out/production/Santorini/InfinitePlayer.class"]],
     "observers" : [],
-    "ip"        : "127.0.0.1",
+    "ip"        : "localhost",
     "port"      : 55556
 }

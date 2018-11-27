@@ -42,12 +42,19 @@ public class xclients {
         }
       };
       try {
-        Thread.sleep(1000);
+        Thread.sleep(1200);
       } catch(InterruptedException e) {
       }
 
       playerThread.start();
     }
+
+    try {
+      Thread.sleep(40000);
+    } catch (InterruptedException e) {
+
+    }
+    System.exit(0);
 
 
 

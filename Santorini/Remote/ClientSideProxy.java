@@ -23,6 +23,14 @@ public class ClientSideProxy {
   OutputStream outputStream;
   BufferedReader inputReader;
 
+  /**
+   * Constructor for a Client Side Proxy.
+   * Will Create a Proxy, and attempts to connect to a given IP and PORT Number.
+   * Afterwards, it will send the initial sign up message request.
+   * @param player Player that this Proxy is connected to.
+   * @param ip IP to connect to.
+   * @param port PORT to connect to.
+   */
   ClientSideProxy(Player player, String ip, int port) {
     this.player = player;
     try {
@@ -43,6 +51,11 @@ public class ClientSideProxy {
     }
   }
 
+  /**
+   * Main Function of this Client proxy.
+   * While the connection remains open to the Server,
+   * it will read in the next JSON Message, and handle it accordingly.
+   */
   public void main() {
     // After Signup, There is either:
     // there is a possible optional receive ["playing-as", Name]
@@ -107,7 +120,6 @@ public class ClientSideProxy {
       // Print the Message
       // No Response needed from Client
       //System.out.println(current.asText());
-      //FIXME CLOSE SOCKET?
       try {
         this.clientSocket.close();
       } catch (IOException e) {
@@ -118,6 +130,17 @@ public class ClientSideProxy {
 
   }
 
+  /**
+   * Handler for a Placement Message, stored in an ArrayNode.
+   * Placement Message contains information about currently placed Workers and their locations.
+   * This information is then passed to the Player proxied by this Proxy, and requests an
+   * Action from the Player.
+   * Player action is then obtained and converted into JSON, where it is sent to the Server.
+   *
+   * @param node Placement Message Stored in an ArrayNode. Contains information about currently
+   *             placed workers and their location in the form of
+   *             JSON Array of [Name, Coordinate, Coordinate]
+   */
   private void placeHandler(ArrayNode node) {
     // Setup GetNextAction Args
     Board b = new Board();
@@ -127,7 +150,6 @@ public class ClientSideProxy {
       int y = node.get(i).get(2).asInt();
       b.placeWorker(x, y, workerName, Board.INVALID_WORKER_ID);
     }
-    //TODO DO WE NEED TO TIME THIS OUT?
     Action placeAction = (Action)player.getNextAction(b, Status.PLACE);
 
     //add to this worker
@@ -139,6 +161,16 @@ public class ClientSideProxy {
     this.writeToOutStream(placeJSON);
   }
 
+  /**
+   * Handles a Take-turn request.
+   * A ArrayNode storing information about the current Board state in the form of JSON
+   * is transformed into a usable Board Object and sent to this Proxy's connected Player
+   * to allow the Player to determine its next action.
+   *
+   * This Action (Move/MoveBuild/Giveup) is then converted back into JSON and sent to the Server
+   * to be handled.
+   * @param node Container for Board State Information in the form of JSON Array of Cells
+   */
   private void moveBuildHandler(ArrayNode node) {
     Board b = Translator.convertJSONToBoard(this.player.getName(), node, this.player.getWorkerIDs());
     MoveBuild moveBuild = (MoveBuild)this.player.getNextAction(b, Status.MOVEBUILD);
