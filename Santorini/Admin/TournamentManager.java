@@ -159,6 +159,10 @@ public class TournamentManager implements ITournamentManager{
     System.exit(0);
   }
 
+  /**
+   * Main function (Same as Main defined above), however, it does not read in a config file.
+   * Rather, it will run a Tournament with Players already added.
+   */
   public void mainNoConfig() {
     this.allPlayers.addAll(new ArrayList<>(this.players));
     // Start Tournament
@@ -177,21 +181,6 @@ public class TournamentManager implements ITournamentManager{
     System.out.println(JSONResults);
     System.exit(0);
   }
-
-//  //main method only for testing purposes that returns the removed players
-//  public String main(ArrayList<Player> players, ArrayList<Observer> obs) throws IllegalStateException{
-//    this.players = players;
-//    this.allPlayers = new ArrayList<>(this.players);
-//    this.observers = obs;
-//
-//    // Start Tournament
-//    this.runTournament();
-//
-//    // End Tournament
-//    // Print [[Removed Players], [[Game1Result], [Game2Result] ...]
-//    return this.removedPlayersAsJSON();
-//  }
-
 
   /**
    * Runs a tournament between this tournaments players in a Round Robin fashion
@@ -370,6 +359,14 @@ public class TournamentManager implements ITournamentManager{
     return Translator.tournamentResultsAsJSON((ArrayList<Player>)this.removedPlayers, sortedResults);
   }
 
+  /**
+   * Returns the list of encounters outcomes from this completed Tournament.
+   * where EncounterOutcome is one of the following:
+   *    1. [String, String], which is the name of the winner followed by the loser;
+   *    2. [String, String, "irregular"], which is like the first alternative but signals that the losing player misbehaved.
+   *
+   * @return JSON String representing a list of Encounter Outcomes.
+   */
   private String encountersAsJSON() {
     List<GameResult> results = this.getGameResults();
     // Sort game results by p1 v rest, p2 v rest ... etc

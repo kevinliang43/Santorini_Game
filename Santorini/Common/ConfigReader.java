@@ -207,19 +207,12 @@ public class ConfigReader {
   public static ArrayList<JsonNode> readAndParse() {
     Scanner scanner = new Scanner(System.in);
     StringBuilder builder = new StringBuilder();
-
-//    while (scanner.hasNextLine()) {
-//      builder.append(scanner.nextLine());
-//    }
     builder.append(scanner.nextLine());
 
     while (!Translator.isValidJSON(builder.toString())) {
       builder.append(scanner.nextLine());
     }
-
     String requestString = builder.toString();
-
-
 
     // Parse input to JsonNode
     ArrayList<JsonNode> requests = new ArrayList<>();
@@ -243,8 +236,6 @@ public class ConfigReader {
     ArrayList<JsonNode> requestList = new ArrayList<>();
     ObjectMapper objectMapper = new ObjectMapper();
     JsonParser parser = objectMapper.getFactory().createParser(jsonString);
-
-
     while (!parser.isClosed()) {
       JsonNode currentNode = null;
 

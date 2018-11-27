@@ -57,6 +57,13 @@ public class Translator {
   }
 
 
+  /**
+   * Converts a given ArrayList of String into its JSON Array format.
+   * EX: ["String", "String", ...]
+   *
+   * @param toConvert ArrayList of Strings to convert into a JSON Array
+   * @return JSON Array of Strings
+   */
   public static String convertStringListToJSONArray(ArrayList<String> toConvert) {
     ObjectMapper mapper = new ObjectMapper();
     ArrayNode resultNode = mapper.createArrayNode();
@@ -153,6 +160,12 @@ public class Translator {
 
   }
 
+  /**
+   * Converts a given placeAction into JSON Format to fit a "place" message.
+   * A Place message is a [Coordinate, Coordinate], where Coordinate is an integer from 0 to 5
+   * @param placeAction to be Converted
+   * @return String representing the place Action in a JSON Array.
+   */
   public static String placeActionAsJSON(Action placeAction) {
     ObjectMapper mapper = new ObjectMapper();
     ArrayNode resultNode = mapper.createArrayNode();
@@ -161,6 +174,17 @@ public class Translator {
     return resultNode.toString();
   }
 
+  /**
+   * Converts a given JSON String represnting a Move or MoveBuild into its appropriate IAction Object
+   * A Move is [WorkerName, EASTWEST, NORTHSOUTH]
+   * A MoveBuild is a [WorkerName, EASTWEST, NORTHSOUTH, EASTWEST, NORTHSOUTH]
+   * A Worker Name is a String representing the Worker being used
+   * EASTWEST is one of "EAST" or "WEST"
+   * NORTHSOUTH is one of "NORTH" or "SOUTH"
+   * @param workerSquare location of the given worker before moving or building.
+   * @param json String version of the Move or Movebuild to be converted into a usable object.
+   * @return IAction representing the Move or MoveBuild
+   */
   public static IAction convertJSONToAction(Square workerSquare, String json) {
     int x = workerSquare.getX();
     int y = workerSquare.getY();
@@ -191,6 +215,23 @@ public class Translator {
     return null;
   }
 
+  /**
+   * Converts a JSON Array of Arrays representing a Board in JSON Format into an actual Board Object
+   * A Board is [[Cell, ...], ...]
+   * A Cell is one of: a Height or a BuildingWorker
+   * A Height is an Integer between 0 and 4
+   * A BuildingWorker is a String that starts with a single digit followed by a Worker.
+   * The first digit represents the Height of the building.
+   *
+   * A Worker is a string of lowercase letters that ends in either 1 or 2.
+   * The last digit indicates whether it is the first or the second worker of a player.
+   * The lowercase letters make up the Name of the player that owns the worker.
+   *
+   * @param playerName Name of the Current Player
+   * @param boardNode ArrayNode containing the JSON Array of Array representing the Board in JSON
+   * @param workerIds IDs of the Workers of the Current Player
+   * @return Copy of the Board JSON in a Board Object.
+   */
   public static Board convertJSONToBoard(String playerName, ArrayNode boardNode, ArrayList<Integer> workerIds) {
     if (boardNode.size() != 6 || boardNode.get(0).size() != 6) {
       throw new IllegalArgumentException("Cannot Construct Board from this.");
@@ -273,6 +314,18 @@ public class Translator {
     return true;
   }
 
+  /**
+   * Creates a Placement Message to be sent by a Server to its clients.
+   * A Placement is a JSON array of the following shape [WorkerPlace, ...].
+   * It consists of maximally three WorkerPlaces.
+   *
+   * A WorkerPlace is a JSON array: [Worker,Coordinate,Coordinate].
+   *
+   * A Coordinate is a natural number between 0 and 5 (inclusive).
+   *
+   * @param workerSquares List of existing workers and the squares they are on
+   * @return JSON String Placement Message
+   */
   public static String placementMessage(ArrayList<Square> workerSquares) {
     ObjectMapper mapper = new ObjectMapper();
     ArrayNode responseNode = mapper.createArrayNode();
@@ -353,6 +406,15 @@ public class Translator {
     return null;
   }
 
+  /**
+   * Converts a List of GameResult objects into a JSON Array of EncounterOutcomes
+   *
+   * EncounterOutcome is one of the following:
+   * [String, String], which is the name of the winner followed by the loser;
+   * [String, String, "irregular"], which is like the first alternative but signals that the losing player misbehaved.
+   * @param results List of Game Results
+   * @return JSON Array of EcounterOutcomes
+   */
   public static String encountersAsJSON(ArrayList<GameResult> results) {
     ObjectMapper mapper = new ObjectMapper();
     ArrayNode resultsNode = mapper.createArrayNode();

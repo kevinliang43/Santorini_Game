@@ -190,17 +190,12 @@ public class Referee implements IReferee{
           else {
             this.winningPlayer = players.get(0);
           }
-
           return this.winningPlayer;
-
         }
 
       }
       else {
         // Action was not created in time
-
-
-        //FIXME TEST
         this.updateObserver("\"Player Timed out\"");
 
         this.gameOver(currentPlayer);
