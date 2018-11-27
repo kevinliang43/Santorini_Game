@@ -145,7 +145,7 @@ public class ConfigReader {
     // Create Player
     Object obj = null;
     try {
-      obj = clazz.getConstructors()[0].newInstance(name, id);
+      obj = clazz.getConstructors()[0].newInstance(name.toLowerCase(), id);
     } catch (Exception e) {
       e.printStackTrace();
     }

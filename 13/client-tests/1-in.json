@@ -1,0 +1,9 @@
+{ 
+    "players"   : [["good", "Kevin", "PathString"], 
+                  ["breaker", "Marina", "Nothing"], 
+                  ["infinite", "Bob",  "Santorini/out/production/Santorini/InfinitePlayer.class"],
+                  ["infinite", "Bob2", "Santorini/out/production/Santorini/InfinitePlacePlayer.class"]],
+    "observers" : [],
+    "ip"        : "127.0.0.1",
+    "port"      : 55556
+}

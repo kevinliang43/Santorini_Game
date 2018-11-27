@@ -16,7 +16,7 @@ import java.util.List;
 public class Referee implements IReferee{
   public final int MAX_PLAYERS = 2;
   public final int WORKERS_PER_PLAYER = 2;
-  public final long TIMEOUT = 20000; //in milliseconds. divide by 1000 for seconds
+  public final long TIMEOUT = 10000; //in milliseconds. divide by 1000 for seconds
 
   private ArrayList<Player> players;
   private Board officialBoard;

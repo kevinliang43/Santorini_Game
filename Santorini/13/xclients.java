@@ -1,9 +1,6 @@
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -41,9 +38,14 @@ public class xclients {
         public void run() {
           ClientSideProxy curProxy = new ClientSideProxy(player, ip, port);
           proxies.add(curProxy);
-          //curProxy.main();
+          curProxy.main();
         }
       };
+      try {
+        Thread.sleep(1000);
+      } catch(InterruptedException e) {
+      }
+
       playerThread.start();
     }
 

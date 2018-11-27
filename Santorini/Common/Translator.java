@@ -169,13 +169,13 @@ public class Translator {
 
     try {
       JsonNode node = ConfigReader.parse(json).get(0);
-      int mx = x + convertDirToNum(node.get(1).asText());
-      int my = y + convertDirToNum(node.get(2).asText());
+      int mx = x + convertDirToNum(node.get(2).asText());
+      int my = y + convertDirToNum(node.get(1).asText());
       Action move = new Action(Status.MOVE, workerID, mx, my, workerName);
 
       if (node.size() == 5) {
-        int bx = mx + convertDirToNum(node.get(3).asText());
-        int by = my + convertDirToNum(node.get(4).asText());
+        int bx = mx + convertDirToNum(node.get(4).asText());
+        int by = my + convertDirToNum(node.get(3).asText());
         Action build = new Action(Status.BUILD, workerID, bx, by, workerName);
         MoveBuild moveBuild = new MoveBuild(move, build);
         return moveBuild;
@@ -198,7 +198,7 @@ public class Translator {
 
     // Setup new board and available IDs
     Board b = new Board();
-    ArrayList<Integer> availableIds = new ArrayList<>(Arrays.asList(0, 1, 2, 3));
+    ArrayList<Integer> availableIds = new ArrayList<>();
     for (int i = 0; i < 4; i++) {
       if (!workerIds.contains(i)){
         availableIds.add(i);
@@ -220,7 +220,7 @@ public class Translator {
           int cellHeight = Integer.parseInt(JsonString.substring(0, 1));
           int workerNum = Integer.parseInt(JsonString.substring(JsonString.length()-1));
           String workerName = JsonString.substring(1,JsonString.length()-1);
-          int workerID = availableIds.get(0);
+          int workerID = 0;
           // if its one of the player's workers
           if (workerName.equals(playerName)) {
             if (workerNum == 1) {
@@ -230,6 +230,7 @@ public class Translator {
             }
           }
           else {
+            workerID = availableIds.get(0);
             availableIds.remove(0);
           }
 
@@ -350,6 +351,23 @@ public class Translator {
       }
     }
     return null;
+  }
+
+  public static String encountersAsJSON(ArrayList<GameResult> results) {
+    ObjectMapper mapper = new ObjectMapper();
+    ArrayNode resultsNode = mapper.createArrayNode();
+
+    // Sorted Results
+    for (int i = 0; i < results.size(); i++) {
+      ArrayNode singleResult = mapper.createArrayNode();
+      singleResult.add(results.get(i).getWinner().getName());
+      singleResult.add(results.get(i).getLoser().getName());
+      if (results.get(i).isIrregular()) {
+        singleResult.add("irregular");
+      }
+      resultsNode.add(singleResult);
+    }
+    return resultsNode.toString();
   }
 
 
