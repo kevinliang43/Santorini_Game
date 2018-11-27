@@ -64,6 +64,7 @@
  
  
  <h3> Remote </h3> 
+ 
  * <b> ClientSideProxy.java </b> : Class acting as a remote client
  * <b> MessageType.java </b> : Enumeration representing the different types of messages a remote client should expect
  * <b> ProxyPlayer.java </b> : Class representing a remote player object
