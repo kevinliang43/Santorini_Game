@@ -2,4 +2,4 @@
 
 cd "$(dirname "$0")"
 cd ..
-java -jar ./Santorini/out/artifacts/XServer_jar/Santorini.jar
+java -jar ./Santorini/out/artifacts/XServer_jar/Santorini.jar -XX:ParallelGCThreads=10 -XX:ConcGCThreads=10
