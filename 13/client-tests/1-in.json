@@ -3,6 +3,6 @@
                   ["infinite", "marina", "Santorini/out/production/Santorini/InfinitePlayer.class"], 
                   ["infinite", "bob",  "Santorini/out/production/Santorini/InfinitePlayer.class"]],
     "observers" : [],
-    "ip"        : "localhost",
+    "ip"        : "127.0.0.1",
     "port"      : 55556
 }
