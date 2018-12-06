@@ -1,0 +1,9 @@
+{ 
+        "players"   : [["good", "kevin", "Santorini/out/production/Santorini/StayAlivePlayer.class"], 
+                       ["good", "bob", "Santorini/out/production/Santorini/StayAlivePlayer.class"],
+                       ["good", "marley", "Santorini/out/production/Santorini/StayAlivePlayer.class"],
+                       ["good", "marina", "Santorini/out/production/Santorini/StayAlivePlayer.class"]],
+        "observers" : [],
+        "ip"        : "127.0.0.1",
+        "port"      : 55559
+}

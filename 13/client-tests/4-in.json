@@ -1,6 +1,7 @@
 { 
     "players"   : [["good", "kevin", "Santorini/out/production/Santorini/StayAlivePlayer.class"], 
-                  ["infinite", "marina", "Santorini/out/production/Santorini/InfinitePlayer.class"], 
+                  ["good", "beck", "Santorini/out/production/Santorini/StayAlivePlayer.class"],
+                  ["good", "marina", "Santorini/out/production/Santorini/StayAlivePlayer.class"], 
                   ["infinite", "bob",  "Santorini/out/production/Santorini/InfinitePlayer.class"]],
     "observers" : [],
     "ip"        : "127.0.0.1",
